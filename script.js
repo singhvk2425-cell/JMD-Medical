@@ -225,7 +225,8 @@ setInterval(updateClock, 1000);
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
-    const searchVal = document.getElementById("searchInput").value;
+    const searchInput = document.getElementById("searchInput");
+    const searchVal = searchInput ? searchInput.value : "";
     
     if (!medList) return;
     medList.innerHTML = "";
@@ -277,17 +278,19 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
+// 🛠️ Fixed Quantity Change Logic (Consistent ID used)
 function changeQty(idx, delta) {
-    const el = document.getElementById(`qty-val-${idx}`);
+    const el = document.getElementById(`q-val-${idx}`);
     if (el) {
         let val = parseInt(el.innerText) + delta;
         if(val >= 1) el.innerText = val;
     }
 }
 
+// 🛒 Cart Logic
 function addToCart(idx) {
     const med = medicines[idx];
-    const qtyEl = document.getElementById(`qty-val-${idx}`);
+    const qtyEl = document.getElementById(`q-val-${idx}`);
     if (!qtyEl) return;
     
     const orderedQty = parseInt(qtyEl.innerText);
@@ -300,6 +303,7 @@ function addToCart(idx) {
     }
     
     updateCartUI();
+    console.log(med.name + " added to cart");
 }
 
 function updateCartUI() {
