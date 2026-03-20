@@ -23,90 +23,161 @@ body {
 
 .container { width: 92%; max-width: 1200px; margin: auto; }
 
-/* Header Styling - Re-Centered */
+/* Header Styling - Perfectly Centered for JMD Medical */
 .main-header {
     background: white;
-    padding: 10px 0;
+    padding: 15px 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
-.header-flex { display: flex; justify-content: center; align-items: center; position: relative; }
+.header-flex { 
+    display: flex; 
+    flex-direction: column; /* Mobile friendly center alignment */
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+}
 
-.header-branding { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.sign-logo { height: 60px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); } /* Logo setting */
+.header-branding { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 8px; 
+    text-align: center;
+}
 
-.brand-name { display: block; font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
-.brand-sub { font-size: 11px; color: #666; font-weight: 500; text-align: center; }
+/* Aapka Signboard Logo Style */
+.sign-logo { 
+    height: 80px; /* Thoda bada kiya taaki text saaf dikhe */
+    width: auto;
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    border: 2px solid #eee;
+}
 
-.header-right { position: absolute; right: 20px; display: flex; align-items: center; gap: 20px; }
+.brand-name { 
+    display: block; 
+    font-size: 28px; 
+    font-weight: 800; 
+    color: var(--primary); 
+    letter-spacing: 1px;
+    margin: 0;
+}
+.brand-sub { 
+    font-size: 13px; 
+    color: #555; 
+    font-weight: 600; 
+    text-align: center;
+    max-width: 300px;
+}
+
+/* Tools like Clock and Cart aligned correctly */
+.header-tools {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 15px;
+}
+
 .clock-display { 
-    background: var(--dark); color: #00d2ff; 
-    padding: 5px 12px; border-radius: 20px; 
-    font-size: 13px; font-weight: 600;
+    background: var(--dark); 
+    color: #00d2ff; 
+    padding: 6px 15px; 
+    border-radius: 20px; 
+    font-size: 14px; 
+    font-weight: 600;
     box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
 }
 
-.cart-btn { position: relative; cursor: pointer; font-size: 22px; color: var(--primary); transition: 0.3s; }
+.cart-btn { 
+    position: relative; 
+    cursor: pointer; 
+    font-size: 24px; 
+    color: var(--primary); 
+    transition: 0.3s; 
+}
+
 #cart-badge {
-    position: absolute; top: -10px; right: -12px; 
-    background: var(--accent); color: white; 
-    font-size: 11px; padding: 2px 7px; border-radius: 50%;
+    position: absolute; 
+    top: -10px; 
+    right: -12px; 
+    background: var(--accent); 
+    color: white; 
+    font-size: 11px; 
+    padding: 2px 7px; 
+    border-radius: 50%;
     font-weight: 700;
 }
 
 /* Hero Section */
 .hero-search { padding: 40px 0; text-align: center; }
-.hero-search h1 { font-size: 30px; color: var(--dark); font-weight: 700; }
-.hero-search p { color: #555; margin-bottom: 25px; }
+.hero-search h1 { font-size: 32px; color: var(--dark); font-weight: 700; margin-bottom: 5px; }
+.hero-search p { color: #666; margin-bottom: 25px; font-weight: 500; }
+
 .search-wrapper { position: relative; max-width: 550px; margin: auto; }
 .search-wrapper input { 
-    width: 100%; padding: 15px 50px; border-radius: 40px; 
-    border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    width: 100%; padding: 15px 55px; border-radius: 40px; 
+    border: 2px solid transparent; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
     font-size: 16px; outline: none;
+    transition: 0.3s;
 }
-.search-wrapper i { position: absolute; left: 20px; top: 18px; color: #999; }
+.search-wrapper input:focus { border-color: var(--primary); }
+.search-wrapper i { position: absolute; left: 22px; top: 18px; color: #999; font-size: 18px; }
 
-/* Stock Grid */
+/* Stock Grid Indicators */
 .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.legend { font-size: 12px; display: flex; gap: 15px; }
-.dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-.green { background: var(--success); } .orange { background: var(--warning); } .red { background: var(--accent); }
+.legend { font-size: 13px; display: flex; gap: 15px; font-weight: 600; }
+.dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
+.green { background: var(--success); } 
+.orange { background: var(--warning); } 
+.red { background: var(--accent); }
 
 .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 40px; }
 .med-card { 
-    background: white; padding: 20px; border-radius: 15px; 
+    background: white; padding: 22px; border-radius: 18px; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
     display: flex; flex-direction: column;
+    border: 1px solid #f0f0f0;
 }
-.med-card h3 { font-size: 16px; color: var(--primary); height: 45px; overflow: hidden; }
+.med-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.med-card h3 { font-size: 17px; color: var(--primary); height: 50px; overflow: hidden; font-weight: 700; margin-bottom: 10px; }
 
-/* Sidebar Cart */
+/* Sidebar Cart Settings */
 .cart-sidebar {
     position: fixed; right: -400px; top: 0; width: 350px; height: 100%;
-    background: white; z-index: 2000; transition: 0.4s; padding: 25px;
-    display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    background: white; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+    padding: 30px; display: flex; flex-direction: column; 
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
 }
 .cart-sidebar.open { right: 0; }
-.total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+.total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--dark); }
 .whatsapp-btn { 
     background: #25d366; color: white; border: none; width: 100%; 
-    padding: 15px; border-radius: 10px; font-size: 16px; 
-    font-weight: 700; cursor: pointer; 
+    padding: 16px; border-radius: 12px; font-size: 17px; 
+    font-weight: 700; cursor: pointer; transition: 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
 }
+.whatsapp-btn:hover { background: #1ebe57; transform: scale(1.02); }
 
 /* Floating Cancel Button */
 .floating-cancel {
-    position: fixed; bottom: 25px; left: 25px;
+    position: fixed; bottom: 30px; left: 30px;
     background: var(--accent); color: white; border: none;
-    padding: 14px 24px; border-radius: 50px; font-weight: 600;
-    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
-    cursor: pointer; z-index: 3000; transition: all 0.3s ease;
+    padding: 15px 25px; border-radius: 50px; font-weight: 700;
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+    cursor: pointer; z-index: 3000; transition: 0.3s;
     display: flex; align-items: center; gap: 10px;
 }
+.floating-cancel:hover { background: #c0392b; transform: scale(1.05); }
 
-footer { text-align: center; padding: 40px 0; background: #eee; margin-top: 20px; color: #555; }
-footer h3 { font-size: 18px; margin-bottom: 15px; color: var(--primary); }
-footer p { font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-footer i { color: var(--primary); font-size: 16px; }
+/* Footer Design */
+footer { 
+    text-align: center; padding: 50px 0; background: #f9f9f9; 
+    margin-top: 40px; color: #444; border-top: 1px solid #ddd;
+}
+footer h3 { font-size: 20px; margin-bottom: 20px; color: var(--primary); font-weight: 700; }
+footer p { font-size: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500; }
+footer i { color: var(--primary); font-size: 18px; }
