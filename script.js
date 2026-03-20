@@ -1,4 +1,4 @@
-// 1. SETTINGS: Apna WhatsApp Number yahan badlein
+// 1. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 
 // 2. INITIAL DATA
@@ -209,34 +209,45 @@ const initialMedicines = [
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
 ];
 
-// Browser memory logic
+// Browser memory se data lena
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
 let lastOrder = null;
 
+// Browser mein data save karna
 function syncStorage() {
     localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
 }
 
+// 🕒 Live Clock
 function updateClock() {
     const clockEl = document.getElementById('live-clock');
     if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 
+// 📦 FIXED DISPLAY LOGIC
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
-    const searchVal = document.getElementById("searchInput") ? document.getElementById("searchInput").value : "";
+    const searchInput = document.getElementById("searchInput");
+    const searchVal = searchInput ? searchInput.value.trim() : "";
     
     if (!medList) return;
     medList.innerHTML = "";
 
-    let displayData = (isShowingAll || searchVal !== "") ? data : data.slice(0, 10);
-
-    if (showMoreBtn) {
-        showMoreBtn.style.display = (data.length <= 10 || isShowingAll || searchVal !== "") ? "none" : "inline-block";
+    // IMPORTANT: Agar search ho raha hai toh poori data dikhao (Filtered)
+    // Warna agar search khali hai toh "Show More" ke hisab se slice karo
+    let displayData;
+    if (searchVal !== "") {
+        displayData = data; // Search par poora filtered result dikhao
+        if (showMoreBtn) showMoreBtn.style.display = "none"; 
+    } else {
+        displayData = isShowingAll ? data : data.slice(0, 10);
+        if (showMoreBtn) {
+            showMoreBtn.style.display = (data.length <= 10 || isShowingAll) ? "none" : "inline-block";
+        }
     }
 
     displayData.forEach((med) => {
@@ -320,30 +331,22 @@ function updateCartUI() {
 
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
-    
     lastOrder = JSON.parse(JSON.stringify(cart));
-
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
             targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
         }
     });
-
     syncStorage();
-
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A--------------------------%0A";
     cart.forEach((item, index) => {
         text += `${index + 1}. *${item.name}* (${item.orderedQty})%0A`;
     });
-    text += `*Total: ₹${document.getElementById('cartTotal').innerText}*`;
-    
     window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
-
     cart = [];
     updateCartUI();
     displayMeds(medicines);
-
     const cancelBtn = document.getElementById("cancelOrderBtn");
     if(cancelBtn) cancelBtn.style.display = "flex";
 }
@@ -368,12 +371,11 @@ function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
 function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
 
-// 🔍 FIXED SEARCH LOGIC
+// 🔍 THE SEARCH FUNCTION (RE-BUILT)
 function searchMedicine() {
     const val = document.getElementById("searchInput").value.toLowerCase();
-    // Search within 'medicines' array (which is live stock)
     const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
-    displayMeds(filtered);
+    displayMeds(filtered); // Passing filtered data to display function
 }
 
 window.onload = () => {
