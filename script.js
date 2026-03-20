@@ -209,13 +209,12 @@ const initialMedicines = [
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
 ];
 
-// Browser memory se data lena
+// Browser memory logic
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
-let lastOrder = null; // Pichle order ko yaad rakhne ke liye naya variable
+let lastOrder = null; // Backup for cancel
 
-// Browser mein data save karna
 function syncStorage() {
     localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
 }
@@ -227,7 +226,7 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// 📦 Main Display Logic
+// 📦 Main Display
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -285,10 +284,12 @@ function addToCart(idx) {
     const qtyEl = document.getElementById(`qty-box-${idx}`);
     if (!med || !qtyEl) return;
     const orderedQty = parseInt(qtyEl.innerText);
+    
     if (orderedQty > med.qty) {
         alert("Stock kam hai!");
         return;
     }
+    
     const existing = cart.find(i => i.name === med.name);
     if(existing) existing.orderedQty += orderedQty;
     else cart.push({...med, orderedQty: orderedQty});
@@ -319,14 +320,14 @@ function updateCartUI() {
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
-// 📲 WhatsApp Checkout & Stock Update WITH CANCEL LOGIC
+// 📲 WhatsApp Checkout & Stock Update
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
     
-    // Backup current cart for cancellation
+    // Create backup for cancellation before clearing cart
     lastOrder = JSON.parse(JSON.stringify(cart));
 
-    // Stock ghatana
+    // Deduct Stock
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
@@ -342,34 +343,37 @@ function sendWhatsAppOrder() {
     });
     text += `*Total: ₹${document.getElementById('cartTotal').innerText}*`;
     
-    const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
-    window.open(whatsappURL, '_blank');
+    window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
 
     cart = [];
     updateCartUI();
     displayMeds(medicines);
 
-    // Cancel ka option puchna jab user wapas aaye
-    setTimeout(() => {
-        if(confirm("Order place ho gaya! Kya aap ise cancel karke stock wapas lana chahte hain?")) {
-            cancelLastOrder();
-        }
-    }, 3000);
+    // Show Floating Cancel Button
+    const cancelBtn = document.getElementById("cancelOrderBtn");
+    if(cancelBtn) cancelBtn.style.display = "flex";
 }
 
-// 🔄 Order Cancel Logic
+// 🔄 Floating Cancel Function
 function cancelLastOrder() {
     if (!lastOrder) return;
+    
     lastOrder.forEach(item => {
         const targetMed = medicines.find(m => m.name === item.name);
         if (targetMed) {
             targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
         }
     });
+
     syncStorage();
     lastOrder = null;
     displayMeds(medicines);
-    alert("Stock wapas update ho gaya!");
+    
+    // Hide button
+    const cancelBtn = document.getElementById("cancelOrderBtn");
+    if(cancelBtn) cancelBtn.style.display = "none";
+    
+    alert("Stock update ho gaya (Order Cancelled)!");
 }
 
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
