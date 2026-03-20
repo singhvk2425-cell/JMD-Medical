@@ -1,8 +1,8 @@
 // 1. SETTINGS: Apna WhatsApp Number yahan badlein
 const myWhatsAppNumber = "9110116102"; 
 
-// 2. MEDICINE DATA (Aapki Excel file se)
-const medicines = [
+// 2. INITIAL DATA (Sirf pehli baar ke liye jab user site kholega)
+const initialMedicines = [
     { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
     { "name": "3ML", "qty": 205.0, "rate": 0.0 },
     { "name": "5 ML", "qty": 207.0, "rate": 0.0 },
@@ -209,19 +209,26 @@ const medicines = [
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
 ];
 
+// 3. STORAGE LOGIC: Browser ki memory se data uthana
+// Agar pehle se data saved hai toh wo uthayega, nahi toh initial list lega
+let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
+
 let cart = [];
 let isShowingAll = false;
+
+// Stock ko hamesha ke liye browser mein save karne ka function
+function syncStorage() {
+    localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
+}
 
 // 🕒 Live Clock
 function updateClock() {
     const clockEl = document.getElementById('live-clock');
-    if (clockEl) {
-        clockEl.innerText = new Date().toLocaleTimeString();
-    }
+    if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 
-// 📦 Main Display Function
+// 📦 Display Function
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -230,22 +237,19 @@ function displayMeds(data) {
     if (!medList) return;
     medList.innerHTML = "";
 
-    // Search ya Show More ke hisaab se data chun-na
     let displayData = (isShowingAll || searchVal !== "") ? data : data.slice(0, 10);
 
-    // Button dikhane ka logic
     if (showMoreBtn) {
         showMoreBtn.style.display = (data.length <= 10 || isShowingAll || searchVal !== "") ? "none" : "inline-block";
     }
 
     displayData.forEach((med) => {
-        // Index dhoondhne ke liye poore array ka istemal karein
+        // Unique index dhoondhna cart ke liye
         const realIdx = medicines.findIndex(m => m.name === med.name);
         
         const card = document.createElement("div");
         card.className = "med-card";
         
-        // Color indicators based on stock
         let border = "border-left: 5px solid #28a745"; 
         if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; 
         else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; 
@@ -253,13 +257,13 @@ function displayMeds(data) {
         card.style = border;
         card.innerHTML = `
             <h3>${med.name}</h3>
-            <p>Stock: <b>${med.qty} Units</b></p>
+            <p>Stock: <b id="stock-val-${realIdx}">${med.qty} Units</b></p>
             <p style="color:#28a745; font-weight:700">Price: ₹${med.rate}</p>
             <div class="qty-row">
                 <span>Qty:</span>
                 <div class="qty-btns">
                     <button class="q-btn" onclick="changeQty(${realIdx}, -1)">-</button>
-                    <b id="qty-val-${realIdx}">1</b>
+                    <b id="qty-box-${realIdx}">1</b>
                     <button class="q-btn" onclick="changeQty(${realIdx}, 1)">+</button>
                 </div>
             </div>
@@ -271,43 +275,40 @@ function displayMeds(data) {
     });
 }
 
-// 🛠️ Simple Change Quantity Logic
 function changeQty(idx, delta) {
-    const el = document.getElementById(`qty-val-${idx}`);
+    const el = document.getElementById(`qty-box-${idx}`);
     if (el) {
         let val = parseInt(el.innerText) + delta;
         if(val >= 1) el.innerText = val;
     }
 }
 
-// 🛒 Cart Logic
 function addToCart(idx) {
     const med = medicines[idx];
-    const qtyEl = document.getElementById(`qty-val-${idx}`);
+    const qtyEl = document.getElementById(`qty-box-${idx}`);
     if (!med || !qtyEl) return;
     
     const orderedQty = parseInt(qtyEl.innerText);
-    const existing = cart.find(i => i.name === med.name);
     
-    if(existing) {
-        existing.orderedQty += orderedQty;
-    } else {
-        cart.push({...med, orderedQty: orderedQty});
+    // Check agar stock se zyada order toh nahi kar raha
+    if (orderedQty > med.qty) {
+        alert("Stock kam hai! Sirf " + med.qty + " units available hain.");
+        return;
     }
+
+    const existing = cart.find(i => i.name === med.name);
+    if(existing) existing.orderedQty += orderedQty;
+    else cart.push({...med, orderedQty: orderedQty});
     
     updateCartUI();
-    // Alert hata diya hai taaki kaam makkhan chale
-    console.log(med.name + " added to cart");
 }
 
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
     const list = document.getElementById('cartItems');
     const totalEl = document.getElementById('cartTotal');
-    
     if (badge) badge.innerText = cart.length;
     let total = 0;
-    
     if(!list) return;
 
     if(cart.length === 0) {
@@ -320,42 +321,32 @@ function updateCartUI() {
     cart.forEach((item, i) => {
         const itemTotal = item.rate * item.orderedQty;
         total += itemTotal;
-        list.innerHTML += `
-            <div style="padding:10px 0; border-bottom:1px solid #eee">
-                <b>${item.name}</b><br>
-                ${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
-                <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
-            </div>
-        `;
+        list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee">
+            <b>${item.name}</b><br>
+            ${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
+            <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
+        </div>`;
     });
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
-function removeItem(i) {
-    cart.splice(i, 1);
-    updateCartUI();
-}
-
-function toggleCart() {
-    const sidebar = document.getElementById('cartSidebar');
-    if (sidebar) sidebar.classList.toggle('open');
-}
-
-// 📲 WhatsApp Checkout & Stock Update
+// 📲 MAIN FUNCTION: Stock ghatana aur WhatsApp par bhejna
 function sendWhatsAppOrder() {
-    if(cart.length === 0) {
-        alert("Pehle cart mein medicines add karein!");
-        return;
-    }
+    if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
     
-    // Stock ghatane ka logic
+    // 1. Stock se minus karna
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
-            targetMed.qty = Math.max(0, (targetMed.qty - cartItem.orderedQty).toFixed(2));
+            // New Stock = Old Stock - Ordered Qty
+            targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
         }
     });
 
+    // 2. Naya stock hamesha ke liye browser mein save karna
+    syncStorage();
+
+    // 3. Message taiyar karna
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
     text += "--------------------------%0A";
     cart.forEach((item, index) => {
@@ -363,29 +354,22 @@ function sendWhatsAppOrder() {
         text += `   Qty: ${item.orderedQty} | Rate: ₹${item.rate}%0A`;
     });
     text += "--------------------------%0A";
-    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*%0A%0A`;
-    text += "📍 Location: Binodpur, Katihar";
+    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*`;
     
     const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
     window.open(whatsappURL, '_blank');
 
+    // 4. Cart khali karna aur UI refresh karna
     cart = [];
     updateCartUI();
-    displayMeds(medicines);
+    displayMeds(medicines); // Page par 399 se 390 dikhne lagega
 }
 
-function showAllMeds() {
-    isShowingAll = true;
-    displayMeds(medicines);
-}
+function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
+function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
+function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
+function searchMedicine() { displayMeds(medicines); }
 
-function searchMedicine() {
-    const val = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
-    displayMeds(filtered);
-}
-
-// Init
 window.onload = () => {
     displayMeds(medicines);
     updateClock();
