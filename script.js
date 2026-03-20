@@ -1,9 +1,9 @@
-// 1. Apna WhatsApp Number yahan badlein (91 ke saath)
-const myWhatsAppNumber = "9110116102"; 
+// 1. SETTINGS: Apna WhatsApp Number yahan badlein
+const myWhatsAppNumber = "9110116102X"; 
 
-// 2. Excel se nikala gaya Pura Stock Data
+// 2. COMPLETE MEDICINE DATA (From your Excel)
 const medicines = [
-    { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
+   { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
     { "name": "3ML", "qty": 205.0, "rate": 0.0 },
     { "name": "5 ML", "qty": 207.0, "rate": 0.0 },
     { "name": "ABDOMINAL BELT REGUL", "qty": 3.0, "rate": 0.0 },
@@ -207,52 +207,125 @@ const medicines = [
     { "name": "COVATIL CV 500", "qty": 2.0, "rate": 716.34 },
     { "name": "Cabliz 0.5", "qty": 1.0, "rate": 190.96 },
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
+
 ];
 
-const medList = document.getElementById("medList");
+let cart = [];
 
-// Function to Display Data
+// 🕒 Live Clock
+function updateClock() {
+    const now = new Date();
+    document.getElementById('live-clock').innerText = now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+
+// 📦 Display Medicines
 function displayMeds(data) {
+    const medList = document.getElementById("medList");
     medList.innerHTML = "";
-    data.forEach(med => {
+    data.forEach((med, index) => {
         const card = document.createElement("div");
         card.className = "med-card";
         
-        let statusText = "";
-        let borderStyle = "";
+        let border = "border-left: 5px solid #28a745"; // Available
+        if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; // Out
+        else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; // Low
 
-        // Status Logic
-        if (med.qty <= 0) {
-            statusText = "<span style='color:red'>[Out of Stock]</span>";
-            borderStyle = "border-left: 5px solid #ff4d4d";
-        } else if (med.qty <= 10) {
-            statusText = "<span style='color:orange'>[Low Stock]</span>";
-            borderStyle = "border-left: 5px solid #ffa500";
-        } else {
-            statusText = "<span style='color:green'>[Available]</span>";
-            borderStyle = "border-left: 5px solid #28a745";
-        }
-
-        card.style = borderStyle;
+        card.style = border;
         card.innerHTML = `
             <h3>${med.name}</h3>
-            <p>Status: ${statusText}</p>
-            <p>Quantity: <b>${med.qty}</b></p>
-            <p class="price">Rate: ₹${med.rate}</p>
-            <a href="https://wa.me/${myWhatsAppNumber}?text=JMD Medical Order: ${med.name}" target="_blank" class="btn-order">
-                <i class="fab fa-whatsapp"></i> Order via WhatsApp
-            </a>
+            <p>Stock: <b>${med.qty} Units</b></p>
+            <p style="color:#28a745; font-weight:700">Price: ₹${med.rate}</p>
+            <div class="qty-row">
+                <span>Quantity:</span>
+                <div class="qty-btns">
+                    <button class="q-btn" onclick="changeQty(${index}, -1)">-</button>
+                    <b id="q-val-${index}">1</b>
+                    <button class="q-btn" onclick="changeQty(${index}, 1)">+</button>
+                </div>
+            </div>
+            <button class="add-btn" onclick="addToCart(${index})" ${med.qty <= 0 ? 'disabled' : ''}>
+                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Cart'}
+            </button>
         `;
         medList.appendChild(card);
     });
 }
 
-// Search Logic
+function changeQty(idx, delta) {
+    const el = document.getElementById(`q-val-${idx}`);
+    let val = parseInt(el.innerText) + delta;
+    if(val >= 1) el.innerText = val;
+}
+
+// 🛒 Cart Logic
+function addToCart(idx) {
+    const med = medicines[idx];
+    const orderedQty = parseInt(document.getElementById(`q-val-${idx}`).innerText);
+    
+    const existing = cart.find(i => i.name === med.name);
+    if(existing) existing.orderedQty += orderedQty;
+    else cart.push({...med, orderedQty});
+    
+    updateCartUI();
+    alert(med.name + " cart mein add ho gaya!");
+}
+
+function updateCartUI() {
+    document.getElementById('cart-badge').innerText = cart.length;
+    const list = document.getElementById('cartItems');
+    let total = 0;
+    
+    if(cart.length === 0) {
+        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
+        document.getElementById('cartTotal').innerText = "0.00";
+        return;
+    }
+
+    list.innerHTML = "";
+    cart.forEach((item, i) => {
+        const itemTotal = item.rate * item.orderedQty;
+        total += itemTotal;
+        list.innerHTML += `
+            <div style="padding:10px 0; border-bottom:1px solid #eee">
+                <b>${item.name}</b><br>
+                ${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
+                <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
+            </div>
+        `;
+    });
+    document.getElementById('cartTotal').innerText = total.toFixed(2);
+}
+
+function removeItem(i) {
+    cart.splice(i, 1);
+    updateCartUI();
+}
+
+function toggleCart() {
+    document.getElementById('cartSidebar').classList.toggle('open');
+}
+
+// 📲 WhatsApp Order
+function sendWhatsAppOrder() {
+    if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
+    
+    let text = "📦 *JMD MEDICAL ORDER*%0A--------------------------%0A";
+    cart.forEach(item => {
+        text += `• ${item.name} x ${item.orderedQty}%0A`;
+    });
+    text += `--------------------------%0A*Total Bill: ₹${document.getElementById('cartTotal').innerText}*%0A%0ABinodpur, Katihar.`;
+    
+    window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
+}
+
+// 🔍 Search
 function searchMedicine() {
-    const term = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = medicines.filter(m => m.name.toLowerCase().includes(term));
+    const val = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
     displayMeds(filtered);
 }
 
-// Initial Load
+// Init
 displayMeds(medicines);
+updateClock();
