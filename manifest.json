@@ -9,7 +9,8 @@
     {
       "src": "WhatsApp Image 2026-03-20 at 5.34.15 PM.jpeg",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }
