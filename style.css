@@ -23,7 +23,7 @@ body {
 
 .container { width: 92%; max-width: 1200px; margin: auto; }
 
-/* Header Styling - Perfectly Centered Branding */
+/* --- HEADER STYLING --- */
 .main-header {
     background: white;
     padding: 15px 0;
@@ -35,163 +35,98 @@ body {
 
 .header-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Center wider for JMD Medical name */
+    grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
     width: 100%;
 }
 
-/* 🟢 Circle Logo Logic (Add this to your HTML if you want logo back) */
-.sign-logo-small {
-    height: 60px;
-    width: 60px; /* Equal width/height for circle */
-    border-radius: 50%; /* Perfect Circle */
-    object-fit: cover; /* Photo square to circle fitting */
-    border: 3px solid var(--primary);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-.header-left-empty { display: block; }
-
-.header-center { 
-    text-align: center; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.brand-name { 
-    font-size: 30px; 
-    font-weight: 800; 
-    color: var(--primary); 
-    margin: 0;
-    letter-spacing: 1.5px;
-    line-height: 1.1;
-}
-
-.brand-sub { 
-    font-size: 13px; 
-    color: #555; 
-    font-weight: 600;
-    margin-top: 5px;
-}
-
-/* Right Side Tools */
-.header-right-tools { 
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center; 
-    gap: 20px; 
-}
-
-.clock-display { 
-    background: var(--dark); 
-    color: #00d2ff; 
-    padding: 6px 15px; 
-    border-radius: 20px; 
-    font-size: 13px; 
-    font-weight: 600;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-}
-
-.cart-btn { 
-    position: relative; 
-    cursor: pointer; 
-    font-size: 24px; 
-    color: var(--primary); 
-    transition: 0.3s; 
-}
-
-#cart-badge {
-    position: absolute; 
-    top: -10px; 
-    right: -12px; 
-    background: var(--accent); 
-    color: white; 
-    font-size: 11px; 
-    padding: 2px 7px; 
+/* History Button (Left) */
+.history-btn {
+    background: #f0f4f8;
+    border: none;
+    padding: 12px;
     border-radius: 50%;
-    font-weight: 700;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
 }
+.history-btn:hover { background: var(--primary); color: white; transform: rotate(-15deg); }
 
-/* Hero Section */
+.header-center { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.brand-name { font-size: 30px; font-weight: 800; color: var(--primary); margin: 0; letter-spacing: 1.5px; line-height: 1.1; }
+.brand-sub { font-size: 13px; color: #555; font-weight: 600; margin-top: 5px; }
+
+.header-right-tools { display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
+
+.clock-display { background: var(--dark); color: #00d2ff; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+
+.cart-btn { position: relative; cursor: pointer; font-size: 24px; color: var(--primary); transition: 0.3s; }
+#cart-badge { position: absolute; top: -10px; right: -12px; background: var(--accent); color: white; font-size: 11px; padding: 2px 7px; border-radius: 50%; font-weight: 700; }
+
+/* --- HERO & CATEGORY SECTION --- */
 .hero-search { padding: 40px 0; text-align: center; }
 .hero-search h1 { font-size: 32px; color: var(--dark); font-weight: 700; margin-bottom: 5px; }
 .hero-search p { color: #666; margin-bottom: 25px; font-weight: 500; }
 
-.search-wrapper { position: relative; max-width: 550px; margin: auto; }
-.search-wrapper input { 
-    width: 100%; padding: 15px 55px; border-radius: 40px; 
-    border: 2px solid transparent; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-    font-size: 16px; outline: none;
-    transition: 0.3s;
-}
+.search-wrapper { position: relative; max-width: 550px; margin: 0 auto 20px; }
+.search-wrapper input { width: 100%; padding: 15px 55px; border-radius: 40px; border: 2px solid transparent; box-shadow: 0 10px 30px rgba(0,0,0,0.1); font-size: 16px; outline: none; transition: 0.3s; }
 .search-wrapper input:focus { border-color: var(--primary); }
 .search-wrapper i { position: absolute; left: 22px; top: 18px; color: #999; font-size: 18px; }
 
-/* Stock Grid Indicators */
+/* Category Chips */
+.category-container { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.cat-chip {
+    padding: 8px 20px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #555;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s all ease;
+}
+.cat-chip.active, .cat-chip:hover { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0, 86, 179, 0.2); }
+
+/* --- INVENTORY GRID --- */
 .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .legend { font-size: 13px; display: flex; gap: 15px; font-weight: 600; }
 .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
-.green { background: var(--success); } 
-.orange { background: var(--warning); } 
-.red { background: var(--accent); }
+.green { background: var(--success); } .orange { background: var(--warning); } .red { background: var(--accent); }
 
 .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 40px; }
-.med-card { 
-    background: white; padding: 22px; border-radius: 18px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
-    display: flex; flex-direction: column;
-    border: 1px solid #f0f0f0;
-}
+.med-card { background: white; padding: 22px; border-radius: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; border: 1px solid #f0f0f0; }
 .med-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 .med-card h3 { font-size: 17px; color: var(--primary); height: 50px; overflow: hidden; font-weight: 700; margin-bottom: 10px; }
 
-/* Sidebar Cart */
-.cart-sidebar {
-    position: fixed; right: -400px; top: 0; width: 350px; height: 100%;
-    background: white; z-index: 2000; transition: 0.4s; 
-    padding: 30px; display: flex; flex-direction: column; 
-    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
-}
+/* --- SIDEBAR & MODAL --- */
+.cart-sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 30px; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.15); }
 .cart-sidebar.open { right: 0; }
 .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--dark); }
-.whatsapp-btn { 
-    background: #25d366; color: white; border: none; width: 100%; 
-    padding: 16px; border-radius: 12px; font-size: 17px; 
-    font-weight: 700; cursor: pointer; transition: 0.3s;
-}
+.whatsapp-btn { background: #25d366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.3s; }
 .whatsapp-btn:hover { background: #1ebe57; transform: scale(1.02); }
 
-/* Floating Cancel Button */
-.floating-cancel {
-    position: fixed; bottom: 30px; left: 30px;
-    background: var(--accent); color: white; border: none;
-    padding: 15px 25px; border-radius: 50px; font-weight: 700;
-    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-    cursor: pointer; z-index: 3000; transition: 0.3s;
-    display: flex; align-items: center; gap: 10px;
-}
+/* History Modal */
+.history-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+.history-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; padding: 25px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+/* --- UTILS --- */
+.floating-cancel { position: fixed; bottom: 30px; left: 30px; background: var(--accent); color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 700; box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4); cursor: pointer; z-index: 3000; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
 .floating-cancel:hover { background: #c0392b; transform: scale(1.05); }
 
-/* Footer Design */
-footer { 
-    text-align: center; padding: 50px 0; background: #f9f9f9; 
-    margin-top: 40px; color: #444; border-top: 1px solid #ddd;
-}
-footer h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
-footer p { font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-footer i { color: var(--primary); font-size: 18px; }
+footer { text-align: center; padding: 50px 0; background: #f9f9f9; margin-top: 40px; color: #444; border-top: 1px solid #ddd; }
 
-/* Mobile Responsive Adjustments */
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .header-layout {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    .header-left-empty { display: none; }
+    .header-layout { grid-template-columns: 1fr; gap: 15px; }
+    .header-left-empty { justify-content: center; display: flex; }
     .header-center { text-align: center; }
     .header-right-tools { justify-content: center; margin-top: 10px; }
     .brand-name { font-size: 24px; }
-    .sign-logo-small { height: 50px; width: 50px; } /* Mobile circle logo size */
 }
