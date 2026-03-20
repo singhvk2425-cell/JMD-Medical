@@ -393,3 +393,23 @@ window.onload = () => {
     displayMeds(medicines);
     updateClock();
 };
+
+// ==========================================
+// 🚀 PWA Logic (Asli App Feature) Yahan Se
+// ==========================================
+
+// 1. Service Worker Register karna
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      console.log('App ready to be installed!');
+    }).catch(err => console.log('SW registration failed:', err));
+  });
+}
+
+// 2. Browser ko batana ki ye Installable hai
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
