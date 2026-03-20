@@ -23,10 +23,10 @@ body {
 
 .container { width: 92%; max-width: 1200px; margin: auto; }
 
-/* Header Styling - 3 Column Layout (Left, Center, Right) */
+/* Header Styling - Perfectly Centered Branding */
 .main-header {
     background: white;
-    padding: 10px 0;
+    padding: 15px 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     position: sticky;
     top: 0;
@@ -35,25 +35,15 @@ body {
 
 .header-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Space divided into 3 parts */
+    grid-template-columns: 1fr 2fr 1fr; /* Space for balance, center is wider */
     align-items: center;
     width: 100%;
 }
 
-/* 1. Left Side: Logo */
-.header-left { 
-    display: flex; 
-    justify-content: flex-start; 
-}
-.sign-logo-small { 
-    height: 55px; 
-    width: auto;
-    border-radius: 5px; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
-    border: 1px solid #eee;
-}
+/* Left side empty for centering balance */
+.header-left-empty { display: block; }
 
-/* 2. Center: Branding */
+/* Center Branding - Main focus */
 .header-center { 
     text-align: center; 
     display: flex;
@@ -61,25 +51,26 @@ body {
     align-items: center;
 }
 .brand-name { 
-    font-size: 26px; 
+    font-size: 30px; 
     font-weight: 800; 
     color: var(--primary); 
     margin: 0;
-    letter-spacing: 1px;
-    line-height: 1.2;
+    letter-spacing: 1.5px;
+    line-height: 1.1;
 }
 .brand-sub { 
-    font-size: 12px; 
+    font-size: 13px; 
     color: #555; 
-    font-weight: 600; 
+    font-weight: 600;
+    margin-top: 5px;
 }
 
-/* 3. Right Side: Tools */
+/* Right Side Tools */
 .header-right-tools { 
     display: flex; 
     justify-content: flex-end; 
     align-items: center; 
-    gap: 15px; 
+    gap: 20px; 
 }
 
 .clock-display { 
@@ -146,10 +137,10 @@ body {
 .med-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 .med-card h3 { font-size: 17px; color: var(--primary); height: 50px; overflow: hidden; font-weight: 700; margin-bottom: 10px; }
 
-/* Sidebar Cart Settings */
+/* Sidebar Cart */
 .cart-sidebar {
     position: fixed; right: -400px; top: 0; width: 350px; height: 100%;
-    background: white; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+    background: white; z-index: 2000; transition: 0.4s; 
     padding: 30px; display: flex; flex-direction: column; 
     box-shadow: -10px 0 30px rgba(0,0,0,0.15);
 }
@@ -159,7 +150,6 @@ body {
     background: #25d366; color: white; border: none; width: 100%; 
     padding: 16px; border-radius: 12px; font-size: 17px; 
     font-weight: 700; cursor: pointer; transition: 0.3s;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 .whatsapp-btn:hover { background: #1ebe57; transform: scale(1.02); }
 
@@ -179,18 +169,18 @@ footer {
     text-align: center; padding: 50px 0; background: #f9f9f9; 
     margin-top: 40px; color: #444; border-top: 1px solid #ddd;
 }
-footer h3 { font-size: 20px; margin-bottom: 20px; color: var(--primary); font-weight: 700; }
-footer p { font-size: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500; }
+footer h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
+footer p { font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; }
 footer i { color: var(--primary); font-size: 18px; }
 
-/* Mobile Responsive */
+/* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
     .header-layout {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    .header-left, .header-center, .header-right-tools {
-        justify-content: center;
-    }
-    .sign-logo-small { height: 50px; }
+    .header-left-empty { display: none; }
+    .header-center { text-align: center; }
+    .header-right-tools { justify-content: center; margin-top: 10px; }
+    .brand-name { font-size: 24px; }
 }
