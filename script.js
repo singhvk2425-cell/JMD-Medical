@@ -1,4 +1,4 @@
-// 1. SETTINGS: Apna WhatsApp Number, User ID aur Admin Password yahan badlein
+// 1. SETTINGS: Apna WhatsApp Number, User ID aur Admin Password
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      // Aapki User ID
 const adminPass = "jmd123";       // Aapka Password
@@ -211,16 +211,13 @@ const initialMedicines = [
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
 ];
 
-// Browser memory logic
+// Memory logic
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
 let lastOrder = null;
 
-// --- STORAGE & CLOCK ---
-function syncStorage() {
-    localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
-}
+function syncStorage() { localStorage.setItem('jmd_inventory', JSON.stringify(medicines)); }
 
 function updateClock() {
     const clockEl = document.getElementById('live-clock');
@@ -285,12 +282,7 @@ function addToCart(idx) {
     const qtyEl = document.getElementById(`qty-box-${idx}`);
     if (!med || !qtyEl) return;
     const orderedQty = parseInt(qtyEl.innerText);
-    
-    if (orderedQty > med.qty) {
-        alert("Stock kam hai! Sirf " + med.qty + " units available hain.");
-        return;
-    }
-
+    if (orderedQty > med.qty) { alert("Stock kam hai!"); return; }
     const existing = cart.find(i => i.name === med.name);
     if(existing) existing.orderedQty += orderedQty;
     else cart.push({...med, orderedQty: orderedQty});
@@ -304,20 +296,17 @@ function updateCartUI() {
     if (badge) badge.innerText = cart.length;
     let total = 0;
     if(!list) return;
-
     if(cart.length === 0) {
         list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
         if (totalEl) totalEl.innerText = "0.00";
         return;
     }
-
     list.innerHTML = "";
     cart.forEach((item, i) => {
         const itemTotal = item.rate * item.orderedQty;
         total += itemTotal;
         list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee">
-            <b>${item.name}</b><br>
-            ${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
+            <b>${item.name}</b><br>${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
             <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
         </div>`;
     });
@@ -325,45 +314,35 @@ function updateCartUI() {
 }
 
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
+    if(cart.length === 0) return alert("Cart khali hai!");
     const totalAmount = document.getElementById('cartTotal').innerText;
     generatePDF(cart, totalAmount);
     saveToHistory(cart, totalAmount);
     lastOrder = JSON.parse(JSON.stringify(cart)); 
-
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
     });
-
     syncStorage();
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A--------------------------%0A";
     cart.forEach((item, index) => { text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`; });
-    text += `--------------------------%0A*Total Amount: ₹${totalAmount}*%0A%0A📍 Location: Binodpur, Katihar`;
-    
+    text += `--------------------------%0A*Total Amount: ₹${totalAmount}*%0A%0A📍 Katihar`;
     window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
     cart = []; updateCartUI(); displayMeds(medicines);
-    document.getElementById("cancelOrderBtn").style.display = "flex";
 }
 
 // --- PDF, HISTORY, CATEGORY LOGIC ---
 async function generatePDF(orderData, total) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.setFontSize(20); doc.setTextColor(0, 86, 179);
     doc.text("J.M.D. MEDICAL - INVOICE", 105, 20, { align: "center" });
-    doc.setFontSize(10); doc.setTextColor(100);
-    doc.text("Binodpur, Katihar, Bihar 854105 | Mo: 9110116102", 105, 28, { align: "center" });
     doc.text(`Date: ${new Date().toLocaleString()}`, 20, 40);
-    doc.line(20, 45, 190, 45);
-    let y = 55;
-    doc.setFontSize(11); doc.text("Medicine Name", 20, y); doc.text("Qty", 130, y); doc.text("Total", 160, y);
+    let y = 60;
     orderData.forEach(item => {
-        y += 10; doc.text(item.name, 20, y); doc.text(item.orderedQty.toString(), 130, y);
-        doc.text(`Rs.${(item.rate * item.orderedQty).toFixed(2)}`, 160, y);
+        doc.text(`${item.name} - Qty: ${item.orderedQty} - ₹${(item.rate * item.orderedQty).toFixed(2)}`, 20, y);
+        y += 10;
     });
-    doc.line(20, y+5, 190, y+5);
-    doc.setFontSize(14); doc.text(`Grand Total: Rs. ${total}`, 160, y + 15, { align: "right" });
+    doc.text(`Grand Total: Rs. ${total}`, 20, y + 10);
     doc.save(`JMD_Bill_${Date.now()}.pdf`);
 }
 
@@ -387,25 +366,12 @@ function showHistory() {
     let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
     list.innerHTML = history.length ? history.map(h => `
         <div style="border-bottom:1px solid #eee; padding:12px 0;">
-            <small style="color:#888;">${h.date}</small>
-            <p><b>Items:</b> ${h.items.map(i => i.name).join(", ")}</p>
+            <small>${h.date}</small><p><b>Items:</b> ${h.items.map(i => i.name).join(", ")}</p>
             <p style="color:#28a745; font-weight:700;">Total: ₹${h.total}</p>
-        </div>
-    `).join("") : "<p style='padding:20px; text-align:center;'>Abhi koi order nahi hai.</p>";
+        </div>`).join("") : "<p>No orders yet.</p>";
     modal.style.display = 'flex';
 }
 function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
-
-function cancelLastOrder() {
-    if (!lastOrder) return;
-    lastOrder.forEach(item => {
-        const targetMed = medicines.find(m => m.name === item.name);
-        if (targetMed) targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
-    });
-    syncStorage(); lastOrder = null; displayMeds(medicines); 
-    document.getElementById("cancelOrderBtn").style.display = "none";
-    alert("Order cancel ho gaya!");
-}
 
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
@@ -419,14 +385,11 @@ function searchMedicine() {
 
 // --- 🔐 ADMIN PANEL FUNCTIONS (FIXED LOGIN & ADD LOGIC) ---
 function openAdmin() {
-    const modal = document.getElementById('adminModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.getElementById('adminAuth').style.display = 'block';
-        document.getElementById('adminControls').style.display = 'none';
-        document.getElementById('adminUser').value = "";
-        document.getElementById('adminPass').value = "";
-    }
+    document.getElementById('adminModal').style.display = 'flex';
+    document.getElementById('adminAuth').style.display = 'block';
+    document.getElementById('adminControls').style.display = 'none';
+    document.getElementById('adminUser').value = "";
+    document.getElementById('adminPass').value = "";
 }
 
 function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
@@ -434,6 +397,7 @@ function closeAdmin() { document.getElementById('adminModal').style.display = 'n
 function loginAdmin() {
     const userTyped = document.getElementById('adminUser').value;
     const passTyped = document.getElementById('adminPass').value;
+    // vishal123 aur jmd123 check karega
     if (userTyped === adminID && passTyped === adminPass) {
         document.getElementById('adminAuth').style.display = 'none';
         document.getElementById('adminControls').style.display = 'block';
@@ -448,11 +412,16 @@ function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
     const addQty = parseFloat(document.getElementById('newStockQty').value);
     if(!isNaN(addQty)) {
-        // Logic: Purane mein naya JODNA (Addition)
-        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
-        syncStorage(); displayMeds(medicines);
-        alert(`${medicines[idx].name} mein ${addQty} units add ho gaye. Ab total: ${medicines[idx].qty}`);
-        loginAdmin(); // Refresh dropdown
+        // Yahan Addition (+) logic hai
+        const currentQty = parseFloat(medicines[idx].qty);
+        medicines[idx].qty = parseFloat((currentQty + addQty).toFixed(2));
+        syncStorage(); 
+        displayMeds(medicines);
+        alert(`${medicines[idx].name} mein ${addQty} units add ho gaye. Naya Total: ${medicines[idx].qty}`);
+        
+        // Dropdown refresh
+        const select = document.getElementById('medSelect');
+        select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (Stock: ${m.qty})</option>`).join("");
         document.getElementById('newStockQty').value = "";
     } else {
         alert("Sahi number daalein!");
@@ -460,9 +429,7 @@ function updateStockNow() {
 }
 
 function resetAllStock() {
-    if(confirm("Factory Reset? Poora stock purana ho jayega.")) {
-        localStorage.removeItem('jmd_inventory'); location.reload();
-    }
+    if(confirm("Factory Reset?")) { localStorage.removeItem('jmd_inventory'); location.reload(); }
 }
 
 window.onload = () => { displayMeds(medicines); updateClock(); };
