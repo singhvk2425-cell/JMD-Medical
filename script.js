@@ -1,5 +1,5 @@
 // 1. SETTINGS: Apna WhatsApp Number yahan badlein
-const myWhatsAppNumber = "9110116102X"; 
+const myWhatsAppNumber = "9110116102"; 
 
 // 2. COMPLETE MEDICINE DATA (From your Excel)
 const medicines = [
