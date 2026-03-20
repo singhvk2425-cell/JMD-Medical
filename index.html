@@ -3,26 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JMD Medical | Online Medicine Stock</title>
+    <title>JMD Medical | Online Pharmacy Store</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-plus-square"></i> JMD MEDICAL
+    <header class="main-header">
+        <div class="container header-flex">
+            <div class="logo-area">
+                <i class="fas fa-plus-medical"></i>
+                <div class="brand">
+                    <span class="brand-name">JMD MEDICAL</span>
+                    <span class="brand-sub">Binodpur, Katihar</span>
+                </div>
             </div>
-            <p class="location"><i class="fas fa-map-marker-alt"></i> Binodpur, Katihar</p>
+            
+            <div class="header-right">
+                <div id="live-clock" class="clock-display">00:00:00 PM</div>
+                <div class="cart-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-badge">0</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <section class="search-section">
+    <section class="hero-search">
         <div class="container">
-            <h1>Search Medicine & Check Stock</h1>
-            <div class="search-bar">
+            <h1>Check Medicine Stock Online</h1>
+            <p>JMD Medical: Trusted Pharmacy in Binodpur</p>
+            <div class="search-wrapper">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Medicine ka naam likhein..." onkeyup="searchMedicine()">
             </div>
@@ -31,16 +43,39 @@
 
     <main class="container">
         <div class="stock-header">
-            <h2>Current Inventory</h2>
-            <span id="update-date">Updated: Mar 20, 2026</span>
+            <h2>Available Inventory</h2>
+            <div class="legend">
+                <span class="dot green"></span> Available 
+                <span class="dot orange"></span> Low Stock 
+                <span class="dot red"></span> Out of Stock
+            </div>
         </div>
         
         <div class="med-grid" id="medList">
             </div>
     </main>
 
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-basket"></i> Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cartItems" class="cart-items-list">
+            <p style="text-align:center; padding:20px; color:#888;">Cart khali hai...</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total Amount:</span>
+                <span>₹<span id="cartTotal">0.00</span></span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
+                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+            </button>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2026 JMD Medical Binodpur. Aapki sehat, hamari prathmikta.</p>
+        <p>&copy; 2026 JMD Medical Binodpur | Developed for Vishal Kumar Singh</p>
     </footer>
 
     <script src="script.js"></script>
