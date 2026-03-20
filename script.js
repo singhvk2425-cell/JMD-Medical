@@ -451,6 +451,57 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
+// --- 🔐 ADMIN PANEL FUNCTIONS ---
+function openAdmin() {
+    const modal = document.getElementById('adminModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('adminAuth').style.display = 'block';
+        document.getElementById('adminControls').style.display = 'none';
+    }
+}
+
+function closeAdmin() {
+    document.getElementById('adminModal').style.display = 'none';
+}
+
+function loginAdmin() {
+    const passInput = document.getElementById('adminPass');
+    if (passInput.value === adminSecretPassword) {
+        document.getElementById('adminAuth').style.display = 'none';
+        document.getElementById('adminControls').style.display = 'block';
+        const select = document.getElementById('medSelect');
+        select.innerHTML = medicines.map((m, i) => 
+            `<option value="${i}">${m.name} (Current: ${m.qty})</option>`
+        ).join("");
+        alert("Login Success! Welcome Vishal Bhai.");
+    } else {
+        alert("Galat Password!");
+    }
+}
+
+function updateStockNow() {
+    const idx = document.getElementById('medSelect').value;
+    const newQty = parseFloat(document.getElementById('newStockQty').value);
+    if(!isNaN(newQty)) {
+        medicines[idx].qty = newQty;
+        syncStorage();
+        displayMeds(medicines);
+        alert(medicines[idx].name + " updated to " + newQty);
+        loginAdmin();
+        document.getElementById('newStockQty').value = "";
+    } else {
+        alert("Sahi number daalein!");
+    }
+}
+
+function resetAllStock() {
+    if(confirm("Reset to original?")) {
+        localStorage.removeItem('jmd_inventory');
+        location.reload();
+    }
+}
+
 window.onload = () => {
     displayMeds(medicines);
     updateClock();
