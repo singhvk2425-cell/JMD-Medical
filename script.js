@@ -1,9 +1,9 @@
 // 1. SETTINGS: Apna WhatsApp Number yahan badlein
 const myWhatsAppNumber = "9110116102"; 
 
-// 2. MEDICINE DATA (Wahi rahega)
+// 2. MEDICINE DATA (Aapki Excel file se)
 const medicines = [
-   { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
+    { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
     { "name": "3ML", "qty": 205.0, "rate": 0.0 },
     { "name": "5 ML", "qty": 207.0, "rate": 0.0 },
     { "name": "ABDOMINAL BELT REGUL", "qty": 3.0, "rate": 0.0 },
@@ -221,7 +221,7 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// 📦 Display Function (Fixed Quantity ID logic)
+// 📦 Main Display Function
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -230,19 +230,22 @@ function displayMeds(data) {
     if (!medList) return;
     medList.innerHTML = "";
 
+    // Search ya Show More ke hisaab se data chun-na
     let displayData = (isShowingAll || searchVal !== "") ? data : data.slice(0, 10);
 
+    // Button dikhane ka logic
     if (showMoreBtn) {
         showMoreBtn.style.display = (data.length <= 10 || isShowingAll || searchVal !== "") ? "none" : "inline-block";
     }
 
     displayData.forEach((med) => {
-        // Hum unique ID ke liye medicine name ka use karenge
-        const safeId = med.name.replace(/[^a-zA-Z0-9]/g, "");
+        // Index dhoondhne ke liye poore array ka istemal karein
+        const realIdx = medicines.findIndex(m => m.name === med.name);
         
         const card = document.createElement("div");
         card.className = "med-card";
         
+        // Color indicators based on stock
         let border = "border-left: 5px solid #28a745"; 
         if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; 
         else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; 
@@ -255,12 +258,12 @@ function displayMeds(data) {
             <div class="qty-row">
                 <span>Qty:</span>
                 <div class="qty-btns">
-                    <button class="q-btn" onclick="changeQtyDirect('${safeId}', -1)">-</button>
-                    <b id="qty-box-${safeId}">1</b>
-                    <button class="q-btn" onclick="changeQtyDirect('${safeId}', 1)">+</button>
+                    <button class="q-btn" onclick="changeQty(${realIdx}, -1)">-</button>
+                    <b id="qty-val-${realIdx}">1</b>
+                    <button class="q-btn" onclick="changeQty(${realIdx}, 1)">+</button>
                 </div>
             </div>
-            <button class="add-btn" onclick="addToCartByName('${med.name}', '${safeId}')" ${med.qty <= 0 ? 'disabled' : ''}>
+            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>
                 ${med.qty <= 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
         `;
@@ -268,34 +271,23 @@ function displayMeds(data) {
     });
 }
 
-function showAllMeds() {
-    isShowingAll = true;
-    displayMeds(medicines);
-}
-
-function searchMedicine() {
-    const val = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
-    displayMeds(filtered);
-}
-
 // 🛠️ Simple Change Quantity Logic
-function changeQtyDirect(safeId, delta) {
-    const el = document.getElementById(`qty-box-${safeId}`);
+function changeQty(idx, delta) {
+    const el = document.getElementById(`qty-val-${idx}`);
     if (el) {
         let val = parseInt(el.innerText) + delta;
         if(val >= 1) el.innerText = val;
     }
 }
 
-// 🛒 Cart Logic by Name (Safe for Search/Show More)
-function addToCartByName(name, safeId) {
-    const med = medicines.find(m => m.name === name);
-    const qtyEl = document.getElementById(`qty-box-${safeId}`);
+// 🛒 Cart Logic
+function addToCart(idx) {
+    const med = medicines[idx];
+    const qtyEl = document.getElementById(`qty-val-${idx}`);
     if (!med || !qtyEl) return;
     
     const orderedQty = parseInt(qtyEl.innerText);
-    const existing = cart.find(i => i.name === name);
+    const existing = cart.find(i => i.name === med.name);
     
     if(existing) {
         existing.orderedQty += orderedQty;
@@ -304,6 +296,8 @@ function addToCartByName(name, safeId) {
     }
     
     updateCartUI();
+    // Alert hata diya hai taaki kaam makkhan chale
+    console.log(med.name + " added to cart");
 }
 
 function updateCartUI() {
@@ -347,12 +341,14 @@ function toggleCart() {
     if (sidebar) sidebar.classList.toggle('open');
 }
 
+// 📲 WhatsApp Checkout & Stock Update
 function sendWhatsAppOrder() {
     if(cart.length === 0) {
         alert("Pehle cart mein medicines add karein!");
         return;
     }
     
+    // Stock ghatane ka logic
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
@@ -364,10 +360,11 @@ function sendWhatsAppOrder() {
     text += "--------------------------%0A";
     cart.forEach((item, index) => {
         text += `${index + 1}. *${item.name}*%0A`;
-        text += `   Qty: ${item.orderedQty}%0A`;
+        text += `   Qty: ${item.orderedQty} | Rate: ₹${item.rate}%0A`;
     });
     text += "--------------------------%0A";
-    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*`;
+    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*%0A%0A`;
+    text += "📍 Location: Binodpur, Katihar";
     
     const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
     window.open(whatsappURL, '_blank');
@@ -377,6 +374,18 @@ function sendWhatsAppOrder() {
     displayMeds(medicines);
 }
 
+function showAllMeds() {
+    isShowingAll = true;
+    displayMeds(medicines);
+}
+
+function searchMedicine() {
+    const val = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
+    displayMeds(filtered);
+}
+
+// Init
 window.onload = () => {
     displayMeds(medicines);
     updateClock();
