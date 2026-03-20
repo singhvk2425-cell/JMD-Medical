@@ -3,31 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JMD Medical - Online Pharmacy</title>
+    <title>JMD Medical | Online Medicine Stock</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
     <header>
-        <nav>
-            <div class="logo">JMD Medical</div>
-            <div class="search-box">
-                <input type="text" id="medSearch" placeholder="Medicine dhoondhein...">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-plus-square"></i> JMD MEDICAL
             </div>
-            <div class="cart-info">Cart: <span id="cartCount">0</span></div>
-        </nav>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> Binodpur, Katihar</p>
+        </div>
     </header>
 
-    <section class="hero">
-        <h1>Ab Medicine Mangwana Hua Aasaan</h1>
-        <p>JMD Medical: Aapki sehat, hamari zimmedari.</p>
+    <section class="search-section">
+        <div class="container">
+            <h1>Search Medicine & Check Stock</h1>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Medicine ka naam likhein..." onkeyup="searchMedicine()">
+            </div>
+        </div>
     </section>
 
-    <section class="stock-container">
-        <h2>Available Stock</h2>
-        <div class="med-grid" id="medGrid">
+    <main class="container">
+        <div class="stock-header">
+            <h2>Current Inventory</h2>
+            <span id="update-date">Updated: Mar 20, 2026</span>
+        </div>
+        
+        <div class="med-grid" id="medList">
             </div>
-    </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 JMD Medical Binodpur. Aapki sehat, hamari prathmikta.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
