@@ -1,9 +1,9 @@
 // 1. SETTINGS: Apna WhatsApp Number yahan badlein
 const myWhatsAppNumber = "9110116102"; 
 
-// 2. INITIAL DATA
+// 2. INITIAL DATA (Live Stock Data)
 const initialMedicines = [
-     { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
+    { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
     { "name": "3ML", "qty": 205.0, "rate": 0.0 },
     { "name": "5 ML", "qty": 207.0, "rate": 0.0 },
     { "name": "ABDOMINAL BELT REGUL", "qty": 3.0, "rate": 0.0 },
@@ -25,7 +25,7 @@ const initialMedicines = [
     { "name": "Abdobnal Belt U", "qty": 9.0, "rate": 0.0 },
     { "name": "Alex Lozenges 5mg", "qty": 7.0, "rate": 83.71 },
     { "name": "Ambroled-DX Syp", "qty": 3.0, "rate": 78.03 },
-    { "name": "Amelior-D3  Tab", "qty": 6.0, "rate": 177.0 },
+    { "name": "Amelior-D3 Tab", "qty": 6.0, "rate": 177.0 },
     { "name": "Applevit 4G cap", "qty": 1.0, "rate": 198.78 },
     { "name": "Ariflam MR tab", "qty": 8.0, "rate": 195.22 },
     { "name": "Asrizone-TZ 1.125 in", "qty": 64.0, "rate": 176.6 },
@@ -80,7 +80,7 @@ const initialMedicines = [
     { "name": "FLORASANTE CAP", "qty": 1.0, "rate": 198.6 },
     { "name": "Farofence CV", "qty": 17.0, "rate": 427.5 },
     { "name": "Farozius-200", "qty": 3.0, "rate": 416.93 },
-    { "name": "Fe Daily  Tab", "qty": 9.0, "rate": 221.12 },
+    { "name": "Fe Daily Tab", "qty": 9.0, "rate": 221.12 },
     { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "rate": 89.6 },
     { "name": "GLOVES 7 NO", "qty": 12.0, "rate": 0.0 },
     { "name": "Glexim CV 325", "qty": 3.0, "rate": 195.51 },
@@ -99,7 +99,7 @@ const initialMedicines = [
     { "name": "K-WIN 10 AMP", "qty": 5.0, "rate": 44.95 },
     { "name": "KLARIM-250 DRY SYP", "qty": 5.0, "rate": 162.69 },
     { "name": "LACTISYN SACHET", "qty": 15.0, "rate": 41.28 },
-    { "name": "LACTOGEN 1  400GM", "qty": 2.0, "rate": 408.71 },
+    { "name": "LACTOGEN 1 400GM", "qty": 2.0, "rate": 408.71 },
     { "name": "LACTOGEN 1 200G", "qty": 8.0, "rate": 218.75 },
     { "name": "LAXARIZ SYP", "qty": 22.0, "rate": 109.3 },
     { "name": "LIZOMAC 600MG", "qty": 2.0, "rate": 303.61 },
@@ -130,8 +130,8 @@ const initialMedicines = [
     { "name": "Pregazot NT", "qty": 4.0, "rate": 143.34 },
     { "name": "Prostalyn Cap", "qty": 8.0, "rate": 142.12 },
     { "name": "pharmazin MD-5", "qty": 12.0, "rate": 45.44 },
-    { "name": "RABEMAC -DSR    15 t", "qty": 7.0667, "rate": 165.22 },
-    { "name": "RAXOFLAM  TP", "qty": 19.2, "rate": 89.06 },
+    { "name": "RABEMAC -DSR 15 t", "qty": 7.0667, "rate": 165.22 },
+    { "name": "RAXOFLAM TP", "qty": 19.2, "rate": 89.06 },
     { "name": "REJULIV PLUS SYP", "qty": 2.0, "rate": 219.68 },
     { "name": "RIKVIT-HD", "qty": 35.0, "rate": 41.21 },
     { "name": "Rucam 400", "qty": 3.0, "rate": 318.0 },
@@ -171,13 +171,13 @@ const initialMedicines = [
     { "name": "Xtril Kid Syrup", "qty": 2.0, "rate": 63.85 },
     { "name": "xerolac cap", "qty": 5.0, "rate": 0.0 },
     { "name": "zikem-200 susp", "qty": 8.0, "rate": 69.23 },
-    { "name": "FOLYS CATHETAR  24", "qty": 20.0, "rate": 0.0 },
+    { "name": "FOLYS CATHETAR 24", "qty": 20.0, "rate": 0.0 },
     { "name": "GAUZE", "qty": 3.0, "rate": 58.83 },
     { "name": "INTRAFIX AIR", "qty": 24.0, "rate": 0.0 },
     { "name": "KITKATH 22", "qty": 11.0, "rate": 0.0 },
     { "name": "KITKATH 24", "qty": 17.0, "rate": 12.94 },
     { "name": "KLICK CLAMP", "qty": 89.0, "rate": 0.0 },
-    { "name": "MAMY POKO PANTS  1 P", "qty": 8.0, "rate": 0.0 },
+    { "name": "MAMY POKO PANTS 1 P", "qty": 8.0, "rate": 0.0 },
     { "name": "MAMYPOKO PANTS (M) 2", "qty": 4.0, "rate": 0.0 },
     { "name": "MICROPORE", "qty": 3.0, "rate": 0.0 },
     { "name": "STAYFREE XL MRP 40", "qty": 25.0, "rate": 0.0 },
@@ -185,7 +185,7 @@ const initialMedicines = [
     { "name": "ZIG ZIG COTTON", "qty": 10.0, "rate": 0.0 },
     { "name": "LIMCEE 500MG", "qty": 9.4, "rate": 18.59 },
     { "name": "CURASIDE-ET", "qty": 1.0, "rate": 130.0 },
-    { "name": "L-301  CAP", "qty": 4.0, "rate": 80.6 },
+    { "name": "L-301 CAP", "qty": 4.0, "rate": 80.6 },
     { "name": "AZOLE L syrup", "qty": 12.0, "rate": 14.14 },
     { "name": "AUSITUM CV 625", "qty": 15.0, "rate": 289.84 },
     { "name": "D-PROTIN POWDER", "qty": 1.0, "rate": 0.0 },
@@ -209,38 +209,34 @@ const initialMedicines = [
     { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
 ];
 
-// Browser memory se data lena
+// Browser memory logic
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
-let lastOrder = null; // Pichle order ko yaad rakhne ke liye backup
+let lastOrder = null;
 
-// Browser mein data save karna
 function syncStorage() {
     localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
 }
 
-// 🕒 Live Clock
 function updateClock() {
     const clockEl = document.getElementById('live-clock');
     if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 
-// 📦 Main Display Logic (Fix: Using Global Index)
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
-    const searchVal = document.getElementById("searchInput") ? document.getElementById("searchInput").value : "";
+    const searchInput = document.getElementById("searchInput");
+    const searchVal = searchInput ? searchInput.value.trim() : "";
     
     if (!medList) return;
     medList.innerHTML = "";
 
-    // IMPORTANT: Agar search ho raha hai toh poori data dikhao (Filtered)
-    // Warna agar search khali hai toh "Show More" ke hisab se slice karo
     let displayData;
     if (searchVal !== "") {
-        displayData = data; // Search par poora filtered result dikhao
+        displayData = data; 
         if (showMoreBtn) showMoreBtn.style.display = "none"; 
     } else {
         displayData = isShowingAll ? data : data.slice(0, 10);
@@ -250,9 +246,7 @@ function displayMeds(data) {
     }
 
     displayData.forEach((med) => {
-        // Find REAL index from the main medicines array (Important for buttons)
         const realIdx = medicines.findIndex(m => m.name === med.name);
-        
         const card = document.createElement("div");
         card.className = "med-card";
         
@@ -281,7 +275,6 @@ function displayMeds(data) {
     });
 }
 
-// 🛠️ Simple Change Quantity Logic
 function changeQty(idx, delta) {
     const el = document.getElementById(`qty-box-${idx}`);
     if (el) {
@@ -290,12 +283,10 @@ function changeQty(idx, delta) {
     }
 }
 
-// 🛒 Cart Logic
 function addToCart(idx) {
     const med = medicines[idx];
     const qtyEl = document.getElementById(`qty-box-${idx}`);
     if (!med || !qtyEl) return;
-    
     const orderedQty = parseInt(qtyEl.innerText);
     
     if (orderedQty > med.qty) {
@@ -337,14 +328,11 @@ function updateCartUI() {
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
-// 📲 WhatsApp Checkout & Stock Update (Fixed Deduction)
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
     
-    // Pichle order ko save kar lete hain cancel karne ke liye
     lastOrder = JSON.parse(JSON.stringify(cart)); 
 
-    // Asli medicines array se minus karna
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
@@ -352,10 +340,8 @@ function sendWhatsAppOrder() {
         }
     });
 
-    // Save Updated Stock to Browser
     syncStorage();
 
-    // WhatsApp Message Taiyar karna
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
     text += "--------------------------%0A";
     cart.forEach((item, index) => {
@@ -368,32 +354,27 @@ function sendWhatsAppOrder() {
     const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
     window.open(whatsappURL, '_blank');
 
-    // Reset Cart & UI
     cart = [];
     updateCartUI();
     displayMeds(medicines);
 
-    // Floating Cancel Button ko dikhao
     document.getElementById("cancelOrderBtn").style.display = "flex";
 }
 
-// 🔄 Floating Cancel Logic (Undo stock)
 function cancelLastOrder() {
     if (!lastOrder) return;
     
     lastOrder.forEach(item => {
         const targetMed = medicines.find(m => m.name === item.name);
         if (targetMed) {
-            // Stock wapas jodna
             targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
         }
     });
 
     syncStorage();
     lastOrder = null;
-    displayMeds(medicines); // Page refresh (jaise 390 se 399 dikhne lagega)
+    displayMeds(medicines); 
     
-    // Button ko wapas chhupa do
     document.getElementById("cancelOrderBtn").style.display = "none";
     alert("Order cancel ho gaya aur stock wapas add ho gaya!");
 }
@@ -402,10 +383,8 @@ function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
 function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
 
-// 🔍 FIXED SEARCH LOGIC
 function searchMedicine() {
     const val = document.getElementById("searchInput").value.toLowerCase();
-    // Search within 'medicines' array (which is live stock)
     const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
     displayMeds(filtered);
 }
