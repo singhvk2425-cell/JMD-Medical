@@ -1,7 +1,7 @@
 // 1. SETTINGS: Apna WhatsApp Number, User ID aur Admin Password yahan badlein
 const myWhatsAppNumber = "9110116102"; 
-const adminID = "vishal123";      // 👈 Aapki User ID
-const adminPass = "jmd123";       // 👈 Aapka Password
+const adminID = "vishal123";      // Aapki User ID
+const adminPass = "jmd123";       // Aapka Password
 
 // 2. INITIAL DATA (Live Stock Data)
 const initialMedicines = [
@@ -238,16 +238,8 @@ function displayMeds(data) {
     if (!medList) return;
     medList.innerHTML = "";
 
-    let displayData;
-    if (searchVal !== "") {
-        displayData = data; 
-        if (showMoreBtn) showMoreBtn.style.display = "none"; 
-    } else {
-        displayData = isShowingAll ? data : data.slice(0, 10);
-        if (showMoreBtn) {
-            showMoreBtn.style.display = (data.length <= 10 || isShowingAll) ? "none" : "inline-block";
-        }
-    }
+    let displayData = searchVal !== "" ? data : (isShowingAll ? data : data.slice(0, 10));
+    if (showMoreBtn) showMoreBtn.style.display = (searchVal !== "" || data.length <= 10 || isShowingAll) ? "none" : "inline-block";
 
     displayData.forEach((med) => {
         const realIdx = medicines.findIndex(m => m.name === med.name);
@@ -302,7 +294,6 @@ function addToCart(idx) {
     const existing = cart.find(i => i.name === med.name);
     if(existing) existing.orderedQty += orderedQty;
     else cart.push({...med, orderedQty: orderedQty});
-    
     updateCartUI();
 }
 
@@ -333,47 +324,25 @@ function updateCartUI() {
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
-// --- CHECKOUT & FEATURES ---
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
-    
     const totalAmount = document.getElementById('cartTotal').innerText;
-    
-    // 1. Generate PDF Receipt
     generatePDF(cart, totalAmount);
-    
-    // 2. Save to History
     saveToHistory(cart, totalAmount);
-
     lastOrder = JSON.parse(JSON.stringify(cart)); 
 
-    // 3. Update Stock
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
-        if(targetMed) {
-            targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
-        }
+        if(targetMed) targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
     });
 
     syncStorage();
-
-    // 4. WhatsApp Message
-    let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
-    text += "--------------------------%0A";
-    cart.forEach((item, index) => {
-        text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`;
-    });
-    text += "--------------------------%0A";
-    text += `*Total Amount: ₹${totalAmount}*%0A%0A`;
-    text += "📍 Location: Binodpur, Katihar";
+    let text = "📦 *JMD MEDICAL - NEW ORDER*%0A--------------------------%0A";
+    cart.forEach((item, index) => { text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`; });
+    text += `--------------------------%0A*Total Amount: ₹${totalAmount}*%0A%0A📍 Location: Binodpur, Katihar`;
     
-    const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
-    window.open(whatsappURL, '_blank');
-
-    cart = [];
-    updateCartUI();
-    displayMeds(medicines);
-
+    window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
+    cart = []; updateCartUI(); displayMeds(medicines);
     document.getElementById("cancelOrderBtn").style.display = "flex";
 }
 
@@ -431,15 +400,11 @@ function cancelLastOrder() {
     if (!lastOrder) return;
     lastOrder.forEach(item => {
         const targetMed = medicines.find(m => m.name === item.name);
-        if (targetMed) {
-            targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
-        }
+        if (targetMed) targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
     });
-    syncStorage();
-    lastOrder = null;
-    displayMeds(medicines); 
+    syncStorage(); lastOrder = null; displayMeds(medicines); 
     document.getElementById("cancelOrderBtn").style.display = "none";
-    alert("Order cancel ho gaya aur stock wapas add ho gaya!");
+    alert("Order cancel ho gaya!");
 }
 
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
@@ -452,72 +417,56 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
-// --- 🔐 ADMIN PANEL FUNCTIONS (FIXED) ---
+// --- 🔐 ADMIN PANEL FUNCTIONS (FIXED LOGIN & ADD LOGIC) ---
 function openAdmin() {
     const modal = document.getElementById('adminModal');
     if (modal) {
         modal.style.display = 'flex';
         document.getElementById('adminAuth').style.display = 'block';
         document.getElementById('adminControls').style.display = 'none';
-        // Inputs clear karein
         document.getElementById('adminUser').value = "";
         document.getElementById('adminPass').value = "";
     }
 }
 
-function closeAdmin() {
-    document.getElementById('adminModal').style.display = 'none';
-}
+function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
 
 function loginAdmin() {
     const userTyped = document.getElementById('adminUser').value;
     const passTyped = document.getElementById('adminPass').value;
-
     if (userTyped === adminID && passTyped === adminPass) {
         document.getElementById('adminAuth').style.display = 'none';
         document.getElementById('adminControls').style.display = 'block';
-        
         const select = document.getElementById('medSelect');
-        select.innerHTML = medicines.map((m, i) => 
-            `<option value="${i}">${m.name} (Current: ${m.qty})</option>`
-        ).join("");
-        
-        console.log("Login Success");
+        select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (Stock: ${m.qty})</option>`).join("");
     } else {
-        alert("User ID ya Password galat hai!");
+        alert("ID ya Password galat hai!");
     }
 }
 
 function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
-    const newQty = parseFloat(document.getElementById('newStockQty').value);
-    if(!isNaN(newQty)) {
-        medicines[idx].qty = newQty;
-        syncStorage();
-        displayMeds(medicines);
-        alert(medicines[idx].name + " ka stock ab " + newQty + " ho gaya hai.");
-        loginAdmin(); // Dropdown refresh karega
+    const addQty = parseFloat(document.getElementById('newStockQty').value);
+    if(!isNaN(addQty)) {
+        // Logic: Purane mein naya JODNA (Addition)
+        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
+        syncStorage(); displayMeds(medicines);
+        alert(`${medicines[idx].name} mein ${addQty} units add ho gaye. Ab total: ${medicines[idx].qty}`);
+        loginAdmin(); // Refresh dropdown
         document.getElementById('newStockQty').value = "";
     } else {
-        alert("Kripya sahi number daalein!");
+        alert("Sahi number daalein!");
     }
 }
 
 function resetAllStock() {
     if(confirm("Factory Reset? Poora stock purana ho jayega.")) {
-        localStorage.removeItem('jmd_inventory');
-        location.reload();
+        localStorage.removeItem('jmd_inventory'); location.reload();
     }
 }
 
-window.onload = () => {
-    displayMeds(medicines);
-    updateClock();
-};
+window.onload = () => { displayMeds(medicines); updateClock(); };
 
-// --- PWA SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
-  });
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err)); });
 }
