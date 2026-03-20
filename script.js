@@ -1,5 +1,6 @@
-// 1. SETTINGS: Apna WhatsApp Number yahan badlein
+// 1. SETTINGS: Apna WhatsApp Number aur Admin Password yahan badlein
 const myWhatsAppNumber = "9110116102"; 
+const adminSecretPassword = "jmd123"; // 👈 Ye aapka secret password hai
 
 // 2. INITIAL DATA (Live Stock Data)
 const initialMedicines = [
