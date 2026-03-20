@@ -213,20 +213,18 @@ const initialMedicines = [
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
-let lastOrder = null; // Backup for cancel
+let lastOrder = null;
 
 function syncStorage() {
     localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
 }
 
-// 🕒 Live Clock
 function updateClock() {
     const clockEl = document.getElementById('live-clock');
     if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 
-// 📦 Main Display
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -320,14 +318,11 @@ function updateCartUI() {
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
-// 📲 WhatsApp Checkout & Stock Update
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
     
-    // Create backup for cancellation before clearing cart
     lastOrder = JSON.parse(JSON.stringify(cart));
 
-    // Deduct Stock
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
@@ -349,37 +344,37 @@ function sendWhatsAppOrder() {
     updateCartUI();
     displayMeds(medicines);
 
-    // Show Floating Cancel Button
     const cancelBtn = document.getElementById("cancelOrderBtn");
     if(cancelBtn) cancelBtn.style.display = "flex";
 }
 
-// 🔄 Floating Cancel Function
 function cancelLastOrder() {
     if (!lastOrder) return;
-    
     lastOrder.forEach(item => {
         const targetMed = medicines.find(m => m.name === item.name);
         if (targetMed) {
             targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
         }
     });
-
     syncStorage();
     lastOrder = null;
     displayMeds(medicines);
-    
-    // Hide button
     const cancelBtn = document.getElementById("cancelOrderBtn");
     if(cancelBtn) cancelBtn.style.display = "none";
-    
     alert("Stock update ho gaya (Order Cancelled)!");
 }
 
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
 function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
-function searchMedicine() { displayMeds(medicines); }
+
+// 🔍 FIXED SEARCH LOGIC
+function searchMedicine() {
+    const val = document.getElementById("searchInput").value.toLowerCase();
+    // Search within 'medicines' array (which is live stock)
+    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
+    displayMeds(filtered);
+}
 
 window.onload = () => {
     displayMeds(medicines);
