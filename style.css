@@ -1,32 +1,110 @@
+/* Professional Medical Theme */
+:root {
+    --primary: #0056b3;
+    --accent: #e74c3c;
+    --success: #28a745;
+    --warning: #f39c12;
+    --dark: #2c3e50;
+    --glass: rgba(255, 255, 255, 0.9);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-body { background-color: #f4f7f6; color: #333; }
-.container { width: 90%; max-width: 1200px; margin: auto; }
 
-/* Header */
-header { background: #0056b3; color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.nav-container { display: flex; justify-content: space-between; align-items: center; width: 90%; margin: auto; }
-.logo { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-.location { font-size: 14px; opacity: 0.9; }
+body { 
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+    min-height: 100vh;
+    color: #333;
+}
 
-/* Search Area */
-.search-section { background: #007bff; padding: 40px 0; text-align: center; color: white; }
-.search-section h1 { margin-bottom: 20px; font-size: 28px; }
-.search-bar { position: relative; max-width: 600px; margin: auto; }
-.search-bar i { position: absolute; left: 20px; top: 18px; color: #888; }
-.search-bar input { width: 100%; padding: 15px 15px 15px 50px; border-radius: 30px; border: none; font-size: 16px; outline: none; }
+.container { width: 92%; max-width: 1200px; margin: auto; }
+
+/* Header Styling */
+.main-header {
+    background: white;
+    padding: 12px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.header-flex { display: flex; justify-content: space-between; align-items: center; }
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.logo-area i { font-size: 35px; color: var(--accent); }
+.brand-name { display: block; font-size: 22px; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+.brand-sub { font-size: 11px; color: #666; font-weight: 500; }
+
+.header-right { display: flex; align-items: center; gap: 20px; }
+.clock-display { 
+    background: var(--dark); color: #00d2ff; 
+    padding: 6px 15px; border-radius: 25px; 
+    font-size: 14px; font-weight: 600;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+}
+
+.cart-btn { position: relative; cursor: pointer; font-size: 24px; color: var(--primary); transition: 0.3s; }
+.cart-btn:hover { transform: scale(1.1); }
+#cart-badge {
+    position: absolute; top: -10px; right: -12px; 
+    background: var(--accent); color: white; 
+    font-size: 11px; padding: 2px 7px; border-radius: 50%;
+    font-weight: 700;
+}
+
+/* Hero Section */
+.hero-search { padding: 50px 0; text-align: center; }
+.hero-search h1 { font-size: 32px; color: var(--dark); font-weight: 700; }
+.hero-search p { color: #555; margin-bottom: 25px; }
+.search-wrapper { position: relative; max-width: 550px; margin: auto; }
+.search-wrapper input { 
+    width: 100%; padding: 15px 50px; border-radius: 40px; 
+    border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    font-size: 16px; outline: none;
+}
+.search-wrapper i { position: absolute; left: 20px; top: 18px; color: #999; }
 
 /* Stock Grid */
-.stock-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 20px; }
-.med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px; }
+.stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.legend { font-size: 12px; display: flex; gap: 15px; }
+.dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
+.green { background: var(--success); } .orange { background: var(--warning); } .red { background: var(--accent); }
 
-.med-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; border-left: 5px solid #007bff; }
-.med-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-.med-card h3 { font-size: 18px; color: #0056b3; margin-bottom: 10px; text-transform: uppercase; }
-.med-card p { font-size: 14px; color: #666; margin: 5px 0; }
-.med-card .price { font-size: 18px; font-weight: 700; color: #28a745; margin-top: 10px; }
-.med-card .qty { font-weight: 600; color: #333; }
+.med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 40px; }
+.med-card { 
+    background: white; padding: 20px; border-radius: 15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+    display: flex; flex-direction: column;
+}
+.med-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.med-card h3 { font-size: 16px; color: var(--primary); height: 45px; overflow: hidden; }
 
-.btn-order { display: block; width: 100%; padding: 10px; background: #25d366; color: white; border: none; border-radius: 6px; margin-top: 15px; cursor: pointer; text-decoration: none; text-align: center; font-weight: 600; font-size: 14px; }
-.btn-order:hover { background: #128c7e; }
+/* Quantity Buttons */
+.qty-row { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; background: #f8f9fa; padding: 8px; border-radius: 10px; }
+.qty-btns { display: flex; align-items: center; gap: 12px; }
+.q-btn { width: 30px; height: 30px; border-radius: 5px; border: 1px solid #ddd; background: white; cursor: pointer; font-weight: bold; }
+.q-btn:hover { background: #eee; }
 
-footer { text-align: center; padding: 30px; background: #333; color: white; margin-top: 50px; }
+.add-btn { 
+    background: var(--primary); color: white; border: none; 
+    padding: 10px; border-radius: 8px; cursor: pointer; 
+    font-weight: 600; width: 100%;
+}
+
+/* Sidebar Cart */
+.cart-sidebar {
+    position: fixed; right: -400px; top: 0; width: 350px; height: 100%;
+    background: white; z-index: 2000; transition: 0.4s; padding: 25px;
+    display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+.cart-sidebar.open { right: 0; }
+.cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+.close-cart { font-size: 30px; cursor: pointer; }
+.cart-items-list { flex: 1; overflow-y: auto; padding: 15px 0; }
+.cart-footer { border-top: 1px solid #eee; padding-top: 20px; }
+.total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+.whatsapp-btn { 
+    background: #25d366; color: white; border: none; width: 100%; 
+    padding: 15px; border-radius: 10px; font-size: 16px; 
+    font-weight: 700; cursor: pointer; 
+}
+
+footer { text-align: center; padding: 30px; color: #777; font-size: 13px; }
