@@ -23,62 +23,63 @@ body {
 
 .container { width: 92%; max-width: 1200px; margin: auto; }
 
-/* Header Styling - Perfectly Centered for JMD Medical */
+/* Header Styling - 3 Column Layout (Left, Center, Right) */
 .main-header {
     background: white;
-    padding: 15px 0;
+    padding: 10px 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
-.header-flex { 
-    display: flex; 
-    flex-direction: column; /* Mobile friendly center alignment */
-    justify-content: center; 
-    align-items: center; 
-    position: relative; 
+
+.header-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Space divided into 3 parts */
+    align-items: center;
+    width: 100%;
 }
 
-.header-branding { 
+/* 1. Left Side: Logo */
+.header-left { 
     display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 8px; 
-    text-align: center;
+    justify-content: flex-start; 
 }
-
-/* Aapka Signboard Logo Style */
-.sign-logo { 
-    height: 80px; /* Thoda bada kiya taaki text saaf dikhe */
+.sign-logo-small { 
+    height: 55px; 
     width: auto;
-    border-radius: 8px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    border: 2px solid #eee;
+    border-radius: 5px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    border: 1px solid #eee;
 }
 
+/* 2. Center: Branding */
+.header-center { 
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .brand-name { 
-    display: block; 
-    font-size: 28px; 
+    font-size: 26px; 
     font-weight: 800; 
     color: var(--primary); 
-    letter-spacing: 1px;
     margin: 0;
+    letter-spacing: 1px;
+    line-height: 1.2;
 }
 .brand-sub { 
-    font-size: 13px; 
+    font-size: 12px; 
     color: #555; 
     font-weight: 600; 
-    text-align: center;
-    max-width: 300px;
 }
 
-/* Tools like Clock and Cart aligned correctly */
-.header-tools {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    margin-top: 15px;
+/* 3. Right Side: Tools */
+.header-right-tools { 
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    gap: 15px; 
 }
 
 .clock-display { 
@@ -86,7 +87,7 @@ body {
     color: #00d2ff; 
     padding: 6px 15px; 
     border-radius: 20px; 
-    font-size: 14px; 
+    font-size: 13px; 
     font-weight: 600;
     box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
 }
@@ -127,7 +128,7 @@ body {
 .search-wrapper input:focus { border-color: var(--primary); }
 .search-wrapper i { position: absolute; left: 22px; top: 18px; color: #999; font-size: 18px; }
 
-/* Stock Grid Indicators */
+/* Stock Grid */
 .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .legend { font-size: 13px; display: flex; gap: 15px; font-weight: 600; }
 .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
@@ -181,3 +182,15 @@ footer {
 footer h3 { font-size: 20px; margin-bottom: 20px; color: var(--primary); font-weight: 700; }
 footer p { font-size: 15px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500; }
 footer i { color: var(--primary); font-size: 18px; }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .header-left, .header-center, .header-right-tools {
+        justify-content: center;
+    }
+    .sign-logo-small { height: 50px; }
+}
