@@ -11,25 +11,17 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
 body { 
-    /* Purana body section hata kar ye paste karein */
-
-body { 
-    /* 1. Aapki bheji hui photo background mein */
+    /* 1. Background Image with Light Overlay */
     background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), 
                       url('WhatsApp Image 2026-03-20 at 5.34.15 PM.jpeg');
     
-    /* 2. Photo ko screen par set karne ke liye settings */
-    background-size: cover;          /* Photo poori screen par failegi */
-    background-position: center;     /* Photo center mein rahegi */
-    background-attachment: fixed;    /* Scroll karne par background nahi hilega */
-    background-repeat: no-repeat;    /* Photo repeat nahi hogi */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     
     min-height: 100vh;
     color: #333;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Baki ka CSS purana hi rahega, use na chedein */
 }
 
 .container { width: 92%; max-width: 1200px; margin: auto; }
@@ -121,6 +113,30 @@ body {
     background: #25d366; color: white; border: none; width: 100%; 
     padding: 15px; border-radius: 10px; font-size: 16px; 
     font-weight: 700; cursor: pointer; 
+}
+
+/* Floating Cancel Button CSS */
+.floating-cancel {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+    cursor: pointer;
+    z-index: 3000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.floating-cancel:hover {
+    background: #c0392b;
+    transform: translateY(-3px) scale(1.05);
 }
 
 footer { text-align: center; padding: 30px; color: #777; font-size: 13px; }
