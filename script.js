@@ -1,7 +1,7 @@
 // 1. SETTINGS: Apna WhatsApp Number yahan badlein
 const myWhatsAppNumber = "9110116102"; 
 
-// 2. COMPLETE MEDICINE DATA
+// 2. MEDICINE DATA (Wahi rahega)
 const medicines = [
    { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
     { "name": "3ML", "qty": 205.0, "rate": 0.0 },
@@ -221,12 +221,11 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// 📦 Display Function
+// 📦 Display Function (Fixed Quantity ID logic)
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
-    const searchInput = document.getElementById("searchInput");
-    const searchVal = searchInput ? searchInput.value : "";
+    const searchVal = document.getElementById("searchInput") ? document.getElementById("searchInput").value : "";
     
     if (!medList) return;
     medList.innerHTML = "";
@@ -238,7 +237,9 @@ function displayMeds(data) {
     }
 
     displayData.forEach((med) => {
-        const originalIndex = medicines.findIndex(m => m.name === med.name);
+        // Hum unique ID ke liye medicine name ka use karenge
+        const safeId = med.name.replace(/[^a-zA-Z0-9]/g, "");
+        
         const card = document.createElement("div");
         card.className = "med-card";
         
@@ -254,12 +255,12 @@ function displayMeds(data) {
             <div class="qty-row">
                 <span>Qty:</span>
                 <div class="qty-btns">
-                    <button class="q-btn" onclick="changeQty(${originalIndex}, -1)">-</button>
-                    <b id="q-val-${originalIndex}">1</b>
-                    <button class="q-btn" onclick="changeQty(${originalIndex}, 1)">+</button>
+                    <button class="q-btn" onclick="changeQtyDirect('${safeId}', -1)">-</button>
+                    <b id="qty-box-${safeId}">1</b>
+                    <button class="q-btn" onclick="changeQtyDirect('${safeId}', 1)">+</button>
                 </div>
             </div>
-            <button class="add-btn" onclick="addToCart(${originalIndex})" ${med.qty <= 0 ? 'disabled' : ''}>
+            <button class="add-btn" onclick="addToCartByName('${med.name}', '${safeId}')" ${med.qty <= 0 ? 'disabled' : ''}>
                 ${med.qty <= 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
         `;
@@ -278,23 +279,23 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
-// 🛠️ Fixed Quantity Change Logic (Consistent ID used)
-function changeQty(idx, delta) {
-    const el = document.getElementById(`q-val-${idx}`);
+// 🛠️ Simple Change Quantity Logic
+function changeQtyDirect(safeId, delta) {
+    const el = document.getElementById(`qty-box-${safeId}`);
     if (el) {
         let val = parseInt(el.innerText) + delta;
         if(val >= 1) el.innerText = val;
     }
 }
 
-// 🛒 Cart Logic
-function addToCart(idx) {
-    const med = medicines[idx];
-    const qtyEl = document.getElementById(`q-val-${idx}`);
-    if (!qtyEl) return;
+// 🛒 Cart Logic by Name (Safe for Search/Show More)
+function addToCartByName(name, safeId) {
+    const med = medicines.find(m => m.name === name);
+    const qtyEl = document.getElementById(`qty-box-${safeId}`);
+    if (!med || !qtyEl) return;
     
     const orderedQty = parseInt(qtyEl.innerText);
-    const existing = cart.find(i => i.name === med.name);
+    const existing = cart.find(i => i.name === name);
     
     if(existing) {
         existing.orderedQty += orderedQty;
@@ -303,7 +304,6 @@ function addToCart(idx) {
     }
     
     updateCartUI();
-    console.log(med.name + " added to cart");
 }
 
 function updateCartUI() {
@@ -347,36 +347,31 @@ function toggleCart() {
     if (sidebar) sidebar.classList.toggle('open');
 }
 
-// 📲 WhatsApp Checkout & Stock Update
 function sendWhatsAppOrder() {
     if(cart.length === 0) {
         alert("Pehle cart mein medicines add karein!");
         return;
     }
     
-    // Stock ghatane ka logic
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
-            targetMed.qty = Math.max(0, targetMed.qty - cartItem.orderedQty);
+            targetMed.qty = Math.max(0, (targetMed.qty - cartItem.orderedQty).toFixed(2));
         }
     });
 
-    // Message taiyar karna
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
     text += "--------------------------%0A";
     cart.forEach((item, index) => {
         text += `${index + 1}. *${item.name}*%0A`;
-        text += `   Qty: ${item.orderedQty} | Rate: ₹${item.rate}%0A`;
+        text += `   Qty: ${item.orderedQty}%0A`;
     });
     text += "--------------------------%0A";
-    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*%0A%0A`;
-    text += "📍 Location: Binodpur, Katihar";
+    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*`;
     
     const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
     window.open(whatsappURL, '_blank');
 
-    // Cart reset aur display refresh
     cart = [];
     updateCartUI();
     displayMeds(medicines);
