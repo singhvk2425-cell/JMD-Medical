@@ -1,6 +1,7 @@
-// 1. SETTINGS: Apna WhatsApp Number aur Admin Password yahan badlein
+// 1. SETTINGS: Apna WhatsApp Number, User ID aur Admin Password yahan badlein
 const myWhatsAppNumber = "9110116102"; 
-const adminSecretPassword = "jmd123"; // 👈 Ye aapka secret password hai
+const adminID = "vishal123";      // 👈 Aapki User ID
+const adminPass = "jmd123";       // 👈 Aapka Password
 
 // 2. INITIAL DATA (Live Stock Data)
 const initialMedicines = [
@@ -451,13 +452,16 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
-// --- 🔐 ADMIN PANEL FUNCTIONS ---
+// --- 🔐 ADMIN PANEL FUNCTIONS (FIXED) ---
 function openAdmin() {
     const modal = document.getElementById('adminModal');
     if (modal) {
         modal.style.display = 'flex';
         document.getElementById('adminAuth').style.display = 'block';
         document.getElementById('adminControls').style.display = 'none';
+        // Inputs clear karein
+        document.getElementById('adminUser').value = "";
+        document.getElementById('adminPass').value = "";
     }
 }
 
@@ -466,17 +470,21 @@ function closeAdmin() {
 }
 
 function loginAdmin() {
-    const passInput = document.getElementById('adminPass');
-    if (passInput.value === adminSecretPassword) {
+    const userTyped = document.getElementById('adminUser').value;
+    const passTyped = document.getElementById('adminPass').value;
+
+    if (userTyped === adminID && passTyped === adminPass) {
         document.getElementById('adminAuth').style.display = 'none';
         document.getElementById('adminControls').style.display = 'block';
+        
         const select = document.getElementById('medSelect');
         select.innerHTML = medicines.map((m, i) => 
             `<option value="${i}">${m.name} (Current: ${m.qty})</option>`
         ).join("");
-        alert("Login Success! Welcome Vishal Bhai.");
+        
+        console.log("Login Success");
     } else {
-        alert("Galat Password!");
+        alert("User ID ya Password galat hai!");
     }
 }
 
@@ -487,16 +495,16 @@ function updateStockNow() {
         medicines[idx].qty = newQty;
         syncStorage();
         displayMeds(medicines);
-        alert(medicines[idx].name + " updated to " + newQty);
-        loginAdmin();
+        alert(medicines[idx].name + " ka stock ab " + newQty + " ho gaya hai.");
+        loginAdmin(); // Dropdown refresh karega
         document.getElementById('newStockQty').value = "";
     } else {
-        alert("Sahi number daalein!");
+        alert("Kripya sahi number daalein!");
     }
 }
 
 function resetAllStock() {
-    if(confirm("Reset to original?")) {
+    if(confirm("Factory Reset? Poora stock purana ho jayega.")) {
         localStorage.removeItem('jmd_inventory');
         location.reload();
     }
