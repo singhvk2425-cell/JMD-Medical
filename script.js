@@ -307,16 +307,32 @@ function toggleCart() {
 }
 
 // 📲 WhatsApp Order
+// 📲 WhatsApp Checkout (Direct Without Alerts)
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
+    if(cart.length === 0) {
+        alert("Pehle cart mein medicines add karein!"); // Ye zaroori hai taaki khali cart order na ho
+        return;
+    }
     
-    let text = "📦 *JMD MEDICAL ORDER*%0A--------------------------%0A";
-    cart.forEach(item => {
-        text += `• ${item.name} x ${item.orderedQty}%0A`;
+    // Order Message taiyar karna
+    let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
+    text += "--------------------------%0A";
+    
+    cart.forEach((item, index) => {
+        text += `${index + 1}. *${item.name}*%0A`;
+        text += `   Qty: ${item.orderedQty} | Rate: ₹${item.rate}%0A`;
     });
-    text += `--------------------------%0A*Total Bill: ₹${document.getElementById('cartTotal').innerText}*%0A%0ABinodpur, Katihar.`;
     
-    window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
+    text += "--------------------------%0A";
+    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*%0A%0A`;
+    text += "📍 Location: Binodpur, Katihar";
+    
+    // WhatsApp API Link (Direct redirection)
+    const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
+    
+    // Bina kisi alert ke seedhe WhatsApp kholna
+    window.open(whatsappURL, '_blank');
+}
 }
 
 // 🔍 Search
