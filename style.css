@@ -35,21 +35,30 @@ body {
 
 .header-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Space for balance, center is wider */
+    grid-template-columns: 1fr 2fr 1fr; /* Center wider for JMD Medical name */
     align-items: center;
     width: 100%;
 }
 
-/* Left side empty for centering balance */
+/* 🟢 Circle Logo Logic (Add this to your HTML if you want logo back) */
+.sign-logo-small {
+    height: 60px;
+    width: 60px; /* Equal width/height for circle */
+    border-radius: 50%; /* Perfect Circle */
+    object-fit: cover; /* Photo square to circle fitting */
+    border: 3px solid var(--primary);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
 .header-left-empty { display: block; }
 
-/* Center Branding - Main focus */
 .header-center { 
     text-align: center; 
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .brand-name { 
     font-size: 30px; 
     font-weight: 800; 
@@ -58,6 +67,7 @@ body {
     letter-spacing: 1.5px;
     line-height: 1.1;
 }
+
 .brand-sub { 
     font-size: 13px; 
     color: #555; 
@@ -119,7 +129,7 @@ body {
 .search-wrapper input:focus { border-color: var(--primary); }
 .search-wrapper i { position: absolute; left: 22px; top: 18px; color: #999; font-size: 18px; }
 
-/* Stock Grid */
+/* Stock Grid Indicators */
 .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .legend { font-size: 13px; display: flex; gap: 15px; font-weight: 600; }
 .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
@@ -183,4 +193,5 @@ footer i { color: var(--primary); font-size: 18px; }
     .header-center { text-align: center; }
     .header-right-tools { justify-content: center; margin-top: 10px; }
     .brand-name { font-size: 24px; }
+    .sign-logo-small { height: 50px; width: 50px; } /* Mobile circle logo size */
 }
