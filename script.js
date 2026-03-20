@@ -215,6 +215,7 @@ let cart = [];
 let isShowingAll = false;
 let lastOrder = null;
 
+// --- STORAGE & CLOCK ---
 function syncStorage() {
     localStorage.setItem('jmd_inventory', JSON.stringify(medicines));
 }
@@ -225,6 +226,7 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
+// --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -283,6 +285,7 @@ function changeQty(idx, delta) {
     }
 }
 
+// --- CART & ORDER LOGIC ---
 function addToCart(idx) {
     const med = medicines[idx];
     const qtyEl = document.getElementById(`qty-box-${idx}`);
@@ -328,11 +331,21 @@ function updateCartUI() {
     if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
+// --- CHECKOUT & FEATURES ---
 function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle cart mein medicines add karein!");
     
+    const totalAmount = document.getElementById('cartTotal').innerText;
+    
+    // 1. Generate PDF Receipt
+    generatePDF(cart, totalAmount);
+    
+    // 2. Save to History
+    saveToHistory(cart, totalAmount);
+
     lastOrder = JSON.parse(JSON.stringify(cart)); 
 
+    // 3. Update Stock
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) {
@@ -342,13 +355,14 @@ function sendWhatsAppOrder() {
 
     syncStorage();
 
+    // 4. WhatsApp Message
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A";
     text += "--------------------------%0A";
     cart.forEach((item, index) => {
         text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`;
     });
     text += "--------------------------%0A";
-    text += `*Total Amount: ₹${document.getElementById('cartTotal').innerText}*%0A%0A`;
+    text += `*Total Amount: ₹${totalAmount}*%0A%0A`;
     text += "📍 Location: Binodpur, Katihar";
     
     const whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${text}`;
@@ -361,20 +375,67 @@ function sendWhatsAppOrder() {
     document.getElementById("cancelOrderBtn").style.display = "flex";
 }
 
+// --- PDF, HISTORY, CATEGORY LOGIC ---
+async function generatePDF(orderData, total) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(20); doc.setTextColor(0, 86, 179);
+    doc.text("J.M.D. MEDICAL - INVOICE", 105, 20, { align: "center" });
+    doc.setFontSize(10); doc.setTextColor(100);
+    doc.text("Binodpur, Katihar, Bihar 854105 | Mo: 9110116102", 105, 28, { align: "center" });
+    doc.text(`Date: ${new Date().toLocaleString()}`, 20, 40);
+    doc.line(20, 45, 190, 45);
+    let y = 55;
+    doc.setFontSize(11); doc.text("Medicine Name", 20, y); doc.text("Qty", 130, y); doc.text("Total", 160, y);
+    orderData.forEach(item => {
+        y += 10; doc.text(item.name, 20, y); doc.text(item.orderedQty.toString(), 130, y);
+        doc.text(`Rs.${(item.rate * item.orderedQty).toFixed(2)}`, 160, y);
+    });
+    doc.line(20, y+5, 190, y+5);
+    doc.setFontSize(14); doc.text(`Grand Total: Rs. ${total}`, 160, y + 15, { align: "right" });
+    doc.save(`JMD_Bill_${Date.now()}.pdf`);
+}
+
+function filterCategory(cat, btn) {
+    document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    if(cat === 'all') return displayMeds(medicines);
+    const filtered = medicines.filter(m => m.name.toUpperCase().includes(cat.toUpperCase()));
+    displayMeds(filtered);
+}
+
+function saveToHistory(order, total) {
+    let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
+    history.unshift({ date: new Date().toLocaleString(), items: order, total: total });
+    localStorage.setItem('jmd_history', JSON.stringify(history.slice(0, 5)));
+}
+
+function showHistory() {
+    const modal = document.getElementById('historyModal');
+    const list = document.getElementById('historyList');
+    let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
+    list.innerHTML = history.length ? history.map(h => `
+        <div style="border-bottom:1px solid #eee; padding:12px 0;">
+            <small style="color:#888;">${h.date}</small>
+            <p><b>Items:</b> ${h.items.map(i => i.name).join(", ")}</p>
+            <p style="color:#28a745; font-weight:700;">Total: ₹${h.total}</p>
+        </div>
+    `).join("") : "<p style='padding:20px; text-align:center;'>Abhi koi order nahi hai.</p>";
+    modal.style.display = 'flex';
+}
+function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
+
 function cancelLastOrder() {
     if (!lastOrder) return;
-    
     lastOrder.forEach(item => {
         const targetMed = medicines.find(m => m.name === item.name);
         if (targetMed) {
             targetMed.qty = parseFloat((targetMed.qty + item.orderedQty).toFixed(2));
         }
     });
-
     syncStorage();
     lastOrder = null;
     displayMeds(medicines); 
-    
     document.getElementById("cancelOrderBtn").style.display = "none";
     alert("Order cancel ho gaya aur stock wapas add ho gaya!");
 }
@@ -394,22 +455,9 @@ window.onload = () => {
     updateClock();
 };
 
-// ==========================================
-// 🚀 PWA Logic (Asli App Feature) Yahan Se
-// ==========================================
-
-// 1. Service Worker Register karna
+// --- PWA SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then(reg => {
-      console.log('App ready to be installed!');
-    }).catch(err => console.log('SW registration failed:', err));
+    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
   });
 }
-
-// 2. Browser ko batana ki ye Installable hai
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
