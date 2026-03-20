@@ -220,16 +220,34 @@ function updateClock() {
 setInterval(updateClock, 1000);
 
 // 📦 Display Medicines
+let isShowingAll = false; // Track karne ke liye ki kya sab dikh raha hai
+
+// 📦 Modified Display Function
 function displayMeds(data) {
     const medList = document.getElementById("medList");
+    const showMoreBtn = document.getElementById("showMoreBtn");
     medList.innerHTML = "";
-    data.forEach((med, index) => {
+
+    // Agar search nahi ho raha aur "Show More" nahi dabaya, toh sirf 10 dikhao
+    let displayData = (isShowingAll || document.getElementById("searchInput").value !== "") 
+                      ? data 
+                      : data.slice(0, 10);
+
+    // Button kab dikhana hai
+    if (data.length <= 10 || isShowingAll || document.getElementById("searchInput").value !== "") {
+        showMoreBtn.style.display = "none";
+    } else {
+        showMoreBtn.style.display = "inline-block";
+    }
+
+    displayData.forEach((med, index) => {
+        // ... (Wahi purana card banane ka code jo pehle tha) ...
         const card = document.createElement("div");
         card.className = "med-card";
         
-        let border = "border-left: 5px solid #28a745"; // Available
-        if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; // Out
-        else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; // Low
+        let border = "border-left: 5px solid #28a745"; 
+        if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; 
+        else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; 
 
         card.style = border;
         card.innerHTML = `
@@ -237,7 +255,7 @@ function displayMeds(data) {
             <p>Stock: <b>${med.qty} Units</b></p>
             <p style="color:#28a745; font-weight:700">Price: ₹${med.rate}</p>
             <div class="qty-row">
-                <span>Quantity:</span>
+                <span>Qty:</span>
                 <div class="qty-btns">
                     <button class="q-btn" onclick="changeQty(${index}, -1)">-</button>
                     <b id="q-val-${index}">1</b>
@@ -249,6 +267,21 @@ function displayMeds(data) {
             </button>
         `;
         medList.appendChild(card);
+    });
+}
+
+// "Show More" dabane par
+function showAllMeds() {
+    isShowingAll = true;
+    displayMeds(medicines);
+}
+
+// Search Logic (Isme hamesha saari list check hogi)
+function searchMedicine() {
+    const val = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
+    displayMeds(filtered);
+}
     });
 }
 
