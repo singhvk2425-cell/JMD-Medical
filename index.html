@@ -8,12 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
     <header class="main-header">
         <div class="container header-layout">
-            <div class="header-left-empty"></div>
+            <div class="header-left-empty">
+                <button onclick="showHistory()" class="history-btn" title="Old Orders">
+                    <i class="fas fa-history"></i>
+                </button>
+            </div>
 
             <div class="header-center">
                 <h1 class="brand-name">J.M.D. MEDICAL</h1>
@@ -34,9 +39,18 @@
         <div class="container">
             <h1> Online Order Now </h1>
             <p>Trusted Pharmacy in Binodpur</p>
+            
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Medicine ka naam likhein..." onkeyup="searchMedicine()">
+            </div>
+
+            <div class="category-container">
+                <button class="cat-chip active" onclick="filterCategory('all', this)">All</button>
+                <button class="cat-chip" onclick="filterCategory('TAB', this)">Tablets</button>
+                <button class="cat-chip" onclick="filterCategory('SYP', this)">Syrups</button>
+                <button class="cat-chip" onclick="filterCategory('INJ', this)">Injections</button>
+                <button class="cat-chip" onclick="filterCategory('CAP', this)">Capsules</button>
             </div>
         </div>
     </section>
@@ -74,7 +88,7 @@
                 <span>₹<span id="cartTotal">0.00</span></span>
             </div>
             <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
-                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                <i class="fab fa-whatsapp"></i> Order & Get PDF Bill
             </button>
         </div>
     </div>
@@ -82,6 +96,16 @@
     <button id="cancelOrderBtn" onclick="cancelLastOrder()" class="floating-cancel" style="display: none;">
         <i class="fas fa-undo"></i> Cancel Last Order
     </button>
+
+    <div id="historyModal" class="history-modal" style="display:none;">
+        <div class="history-content">
+            <div class="cart-header">
+                <h3>Recent Orders</h3>
+                <span onclick="closeHistory()" style="cursor:pointer; font-size:24px;">&times;</span>
+            </div>
+            <div id="historyList"></div>
+        </div>
+    </div>
 
     <footer style="background: #f8f9fa; padding: 40px 0; border-top: 2px solid #eee; margin-top: 50px;">
         <div class="container" style="text-align: center;">
