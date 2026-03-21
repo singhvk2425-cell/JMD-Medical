@@ -10,7 +10,7 @@ const firebaseConfig = {
   databaseURL: "https://jmd-medical-88d46-default-rtdb.firebaseio.com"
 };
 
-// Safely Initialize Firebase
+// Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -25,9 +25,9 @@ let medicines = [];
 let cart = [];
 let isShowingAll = false;
 
-// MASTER DATA (Replace with your full list)
+// 3. MASTER DATA (Initial medicines for Reset)
 const initialMedicines = [
-   { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
+     { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
     { "name": "A to z DROUP", "qty": 2.0, "mrp": 150.0, "exp": "30/09/26", "batch": "25490733" },
     { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
@@ -382,18 +382,18 @@ db.ref('orders').on('value', (snapshot) => {
     if (!historyList) return;
     
     if (!historyData) {
-        historyList.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>No orders yet.</p>";
+        historyList.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Koi order history nahi hai.</p>";
         return;
     }
 
     let html = "";
     Object.values(historyData).reverse().forEach(order => {
-        html += `<div style="background:#f1f1f1; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid #25D366; font-size:12px;">
+        html += `<div style="background:#f9f9f9; padding:12px; border-radius:10px; margin-bottom:10px; border-left:4px solid #25D366; font-size:13px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <div style="display:flex; justify-content:space-between; font-weight:bold;">
                 <span>📅 ${order.time}</span>
                 <span style="color:#28a745;">₹${order.total}</span>
             </div>
-            <div style="color:#444; margin-top:5px;">${order.summary}</div>
+            <div style="color:#555; margin-top:5px; line-height:1.4;">${order.summary}</div>
         </div>`;
     });
     historyList.innerHTML = html;
@@ -420,15 +420,15 @@ function displayMeds(data) {
         card.innerHTML = `
             <h3>${med.name}</h3>
             <p><small>Batch: ${med.batch} | Exp: ${med.exp}</small></p>
-            <p>Stock: <b style="color:blue;">${parseFloat(med.qty).toFixed(1)} ${isTabCap ? 'Strips' : 'Pcs'}</b></p>
+            <p>Live Stock: <b style="color:blue;">${parseFloat(med.qty).toFixed(1)} ${isTabCap ? 'Strips' : 'Pcs'}</b></p>
             <p style="color:#28a745; font-weight:700">₹${Number(med.mrp).toFixed(2)} /${isTabCap ? 'Strip' : 'Pce'}</p>
             <div class="qty-row">
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, -1)">-</button>
                 <b id="qty-box-${realIdx}">1</b>
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, 1)">+</button>
-                <span style="font-size:11px; margin-left:4px;">${isTabCap ? 'Tabs' : 'Qty'}</span>
+                <span style="font-size:11px; margin-left:5px;">${isTabCap ? 'Tabs' : 'Qty'}</span>
             </div>
-            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add to Order</button>
+            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add Order</button>
         `;
         medList.appendChild(card);
     });
@@ -451,7 +451,7 @@ function addToCart(idx) {
     const isTabCap = med.name.toUpperCase().includes("TAB") || med.name.toUpperCase().includes("CAP");
     const stockVal = isTabCap ? (reqQty / 10) : reqQty;
 
-    if (stockVal > med.qty) return alert("Insufficient Stock!");
+    if (stockVal > med.qty) return alert("Stock kam hai!");
 
     const existing = cart.find(i => i.name === med.name);
     if(existing) {
@@ -473,7 +473,7 @@ function updateCartUI() {
     if (!list) return;
 
     if(cart.length === 0) {
-        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart is empty</p>";
+        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
         if(totalEl) totalEl.innerText = "0.00";
         return;
     }
@@ -492,7 +492,7 @@ function updateCartUI() {
 }
 
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Cart is empty!");
+    if(cart.length === 0) return alert("Items add karein!");
     let totalBill = 0;
     let summaryText = "";
     let waText = "📦 *NEW ORDER - JMD MEDICAL*%0A--------------------------%0A";
@@ -504,15 +504,13 @@ function sendWhatsAppOrder() {
         summaryText += `${item.name} (${item.orderedQty}), `;
         
         const idx = medicines.findIndex(m => m.name === item.name);
-        if(idx !== -1) { 
-            medicines[idx].qty = parseFloat((medicines[idx].qty - item.stockVal).toFixed(2)); 
-        }
+        if(idx !== -1) { medicines[idx].qty = parseFloat((medicines[idx].qty - item.stockVal).toFixed(2)); }
     });
 
     waText += "--------------------------%0A";
     waText += `*GRAND TOTAL: ₹${totalBill.toFixed(2)}*`;
 
-    // Save Order to Firebase History
+    // History log
     const orderLog = {
         time: new Date().toLocaleString('en-IN'),
         total: totalBill.toFixed(2),
@@ -520,40 +518,51 @@ function sendWhatsAppOrder() {
     };
     db.ref('orders').push(orderLog);
 
-    // Sync Stock & Open WhatsApp
     db.ref('inventory').set(medicines).then(() => {
         window.open(`https://wa.me/${myWhatsAppNumber}?text=${waText}`, '_blank');
         cart = []; updateCartUI();
     });
 }
 
-// --- ADMIN ---
+// --- ADMIN PANEL FUNCTIONS ---
 function loginAdmin() {
     const u = document.getElementById('adminUser').value;
     const p = document.getElementById('adminPass').value;
     if (u === adminID && p === adminPass) {
         document.getElementById('adminAuth').style.display = 'none';
         document.getElementById('adminControls').style.display = 'block';
+        
         const select = document.getElementById('medSelect');
         select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (${m.qty})</option>`).join("");
         
-        if(!document.getElementById('clearHistBtn')) {
-            const extraDiv = document.getElementById('adminExtraActions');
+        // Add Clear History button
+        const extraDiv = document.getElementById('adminExtraActions');
+        if(extraDiv && !document.getElementById('clearHistBtn')) {
             const btn = document.createElement("button");
             btn.id = "clearHistBtn";
-            btn.innerText = "❌ Clear Order History";
+            btn.innerText = "🗑️ Clear Order History";
             btn.onclick = clearHistory;
             btn.className = "whatsapp-btn";
-            btn.style.background = "#d9534f";
-            btn.style.marginTop = "10px";
-            if(extraDiv) extraDiv.appendChild(btn);
+            btn.style.background = "#666";
+            btn.style.marginBottom = "10px";
+            extraDiv.appendChild(btn);
         }
-    } else { alert("Wrong ID/Pass!"); }
+    } else { alert("ID/Pass Error!"); }
+}
+
+// Ye function ab 100% kaam karega
+function resetAllStock() {
+    if(confirm("Dhyan Dein: Kya aap poora stock aur list reset karke factory settings par lana chahte hain?")) {
+        db.ref('inventory').set(initialMedicines).then(() => {
+            alert("Database Reset Successful!");
+            location.reload();
+        }).catch(err => alert("Error: " + err));
+    }
 }
 
 function clearHistory() {
-    if(confirm("Are you sure you want to delete order history?")) {
-        db.ref('orders').remove().then(() => alert("History Cleared!"));
+    if(confirm("Sari order history mita dein?")) {
+        db.ref('orders').remove().then(() => alert("History Cleaned!"));
     }
 }
 
@@ -578,6 +587,7 @@ function openAdmin() { document.getElementById('adminModal').style.display = 'fl
 function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
 function showHistory() { document.getElementById('historyModal').style.display = 'flex'; }
 function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
+
 function filterCategory(cat, btn) {
     document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
@@ -585,10 +595,10 @@ function filterCategory(cat, btn) {
     const filtered = medicines.filter(m => m.name.toUpperCase().includes(cat.toUpperCase()));
     displayMeds(filtered);
 }
+
 function updateClock() { 
     const el = document.getElementById('live-clock');
     if(el) el.innerText = new Date().toLocaleTimeString(); 
 }
-
 setInterval(updateClock, 1000);
 window.onload = updateClock;
