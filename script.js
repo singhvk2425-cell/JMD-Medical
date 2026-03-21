@@ -1,27 +1,24 @@
-// 1. FIREBASE CONFIG (Aapki Details)
+// 1. APNI FIREBASE DETAILS YAHAN PASTE KAREIN
 const firebaseConfig = {
-  apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
-  authDomain: "jmd-medical-88d46.firebaseapp.com",
-  databaseURL: "https://jmd-medical-88d46-default-rtdb.firebaseio.com", // 👈 Check karein agar ye sahi URL hai
-  projectId: "jmd-medical-88d46",
-  storageBucket: "jmd-medical-88d46.firebasestorage.app",
-  messagingSenderId: "801550606379",
-  appId: "1:801550606379:web:edc86823747d21d8554a6e",
-  measurementId: "G-ZM4TPEG5HV"
+    apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
+    authDomain: "jmd-medical-88d46.firebaseapp.com",
+    databaseURL: "https://jmd-medical-88d46-default-rtdb.firebaseio.com",
+    projectId: "jmd-medical-88d46",
+    storageBucket: "jmd-medical-88d46.appspot.com",
+    messagingSenderId: "801550606379",
+    appId: "1:801550606379:web:edc86823747d21d8554a6e"
 };
 
-// Firebase Initialize (CDN Method ke liye)
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 2. SETTINGS
+// 2. ADMIN SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
-// 3. MASTER DATA (Initial List - Isme se 443 items cloud par jayenge)
+// 3. MASTER DATA (Initial 443 medicines list for reset)
 const initialMedicines = [
     { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
@@ -362,15 +359,16 @@ const initialMedicines = [
 
 let medicines = [];
 let cart = [];
+let isShowingAll = false;
 
-// --- GLOBAL SYNC: Database se live data load karein ---
+// --- DATABASE SYNC: Live data load karein ---
 db.ref('inventory').on('value', (snapshot) => {
     const data = snapshot.val();
     if (data) {
         medicines = data;
-        displayMeds(medicines); // Sabko live update dikhega
+        displayMeds(medicines);
     } else {
-        // Agar first time database khali hai toh data upload karein
+        // Agar database khali hai toh initial data upload karein
         db.ref('inventory').set(initialMedicines);
     }
 });
@@ -378,25 +376,45 @@ db.ref('inventory').on('value', (snapshot) => {
 // --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
+    const showMoreBtn = document.getElementById("showMoreBtn");
+    const searchInput = document.getElementById("searchInput");
+    const searchVal = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    
     if (!medList) return;
     medList.innerHTML = "";
 
-    data.forEach((med, i) => {
+    let displayData;
+    if (searchVal !== "") {
+        displayData = data.filter(m => m.name.toLowerCase().includes(searchVal));
+        if (showMoreBtn) showMoreBtn.style.display = "none";
+    } else {
+        displayData = isShowingAll ? data : data.slice(0, 12);
+        if (showMoreBtn) showMoreBtn.style.display = (data.length <= 12 || isShowingAll) ? "none" : "inline-block";
+    }
+
+    displayData.forEach((med) => {
+        const realIdx = medicines.findIndex(m => m.name === med.name);
         const card = document.createElement("div");
         card.className = "med-card";
-        card.style = `border-left: 5px solid ${med.qty > 0 ? '#28a745' : '#e74c3c'}`;
         
+        let statusColor = "#28a745"; 
+        if(med.qty <= 0) statusColor = "#e74c3c"; 
+        else if(med.qty <= 10) statusColor = "#f39c12"; 
+
+        card.style.borderLeft = `5px solid ${statusColor}`;
         card.innerHTML = `
             <h3>${med.name}</h3>
             <p><small>Batch: ${med.batch} | Exp: ${med.exp}</small></p>
-            <p>Live Stock: <b style="color:blue;">${med.qty} Units</b></p>
+            <p>Live Stock: <b style="color:blue;">${med.qty}</b></p>
             <p style="color:#28a745; font-weight:700">MRP: ₹${med.mrp}</p>
             <div class="qty-row">
-                <button class="q-btn" onclick="changeQtyUI(${i}, -1)">-</button>
-                <b id="qty-box-${i}">1</b>
-                <button class="q-btn" onclick="changeQtyUI(${i}, 1)">+</button>
+                <button class="q-btn" onclick="changeQtyUI(${realIdx}, -1)">-</button>
+                <b id="qty-box-${realIdx}">1</b>
+                <button class="q-btn" onclick="changeQtyUI(${realIdx}, 1)">+</button>
             </div>
-            <button class="add-btn" onclick="addToCart(${i})" ${med.qty <= 0 ? 'disabled' : ''}>Add to Order</button>
+            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>
+                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order'}
+            </button>
         `;
         medList.appendChild(card);
     });
@@ -406,27 +424,6 @@ function changeQtyUI(idx, delta) {
     const el = document.getElementById(`qty-box-${idx}`);
     let val = parseInt(el.innerText) + delta;
     if(val >= 1) el.innerText = val;
-}
-
-// --- GLOBAL ORDER UPDATE (Jahan se live stock kam hoga) ---
-function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Pehle items chuniye!");
-    
-    // Cloud Database mein stock kam karein
-    cart.forEach(cartItem => {
-        const idx = medicines.findIndex(m => m.name === cartItem.name);
-        if(idx !== -1) {
-            medicines[idx].qty = parseFloat((medicines[idx].qty - cartItem.orderedQty).toFixed(2));
-        }
-    });
-
-    // Cloud par update push karein (Ram/Shyam sync)
-    db.ref('inventory').set(medicines).then(() => {
-        let text = "📦 *NEW LIVE ORDER - JMD MEDICAL*%0A";
-        cart.forEach(i => text += `• ${i.name} (${i.orderedQty})%0A`);
-        window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
-        cart = []; updateCartUI();
-    });
 }
 
 function addToCart(idx) {
@@ -443,24 +440,93 @@ function addToCart(idx) {
 
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
+    const list = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
     if (badge) badge.innerText = cart.length;
+    
+    if(cart.length === 0) {
+        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
+        totalEl.innerText = "0.00";
+        return;
+    }
+
+    list.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, i) => {
+        let itemTotal = item.mrp * item.orderedQty;
+        total += itemTotal;
+        list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee">
+            <b>${item.name}</b><br>
+            ${item.orderedQty} x ₹${item.mrp} = ₹${itemTotal.toFixed(2)}
+            <button onclick="removeItem(${i})" style="color:red; float:right; border:none; background:none;">Remove</button>
+        </div>`;
+    });
+    totalEl.innerText = total.toFixed(2);
 }
 
-// Admin Panel: Stock badhana Globally
+function sendWhatsAppOrder() {
+    if(cart.length === 0) return alert("Pehle items add karein!");
+    
+    // Cloud stock update logic
+    cart.forEach(cartItem => {
+        const idx = medicines.findIndex(m => m.name === cartItem.name);
+        if(idx !== -1) {
+            medicines[idx].qty = parseFloat((medicines[idx].qty - cartItem.orderedQty).toFixed(2));
+        }
+    });
+
+    // Master update globally
+    db.ref('inventory').set(medicines).then(() => {
+        let text = "📦 *NEW ORDER - JMD MEDICAL*%0A";
+        cart.forEach(i => text += `• ${i.name} (Qty: ${i.orderedQty})%0A`);
+        window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
+        cart = []; updateCartUI();
+    });
+}
+
+// Admin Panel Functions
+function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
+function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+function loginAdmin() {
+    const u = document.getElementById('adminUser').value;
+    const p = document.getElementById('adminPass').value;
+    if (u === adminID && p === adminPass) {
+        document.getElementById('adminAuth').style.display = 'none';
+        document.getElementById('adminControls').style.display = 'block';
+        const select = document.getElementById('medSelect');
+        select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (Stock: ${m.qty})</option>`).join("");
+    } else { alert("Galat ID/Password!"); }
+}
+
 function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
     const addQty = parseFloat(document.getElementById('newStockQty').value);
     if(!isNaN(addQty)) {
         medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
-        db.ref('inventory').set(medicines); // Sabko dikhega
+        db.ref('inventory').set(medicines);
         alert("Stock updated globally!");
+        document.getElementById('newStockQty').value = "";
     }
 }
 
 function resetAllStock() {
-    if(confirm("Full Reset? Saara data naya ho jayega.")) {
+    if(confirm("Reset Cloud Data? Sabhi 443 medicines cloud par load ho jayengi.")) {
         db.ref('inventory').set(initialMedicines).then(() => location.reload());
     }
 }
 
-window.onload = () => { if(typeof medicines !== 'undefined') displayMeds(medicines); };
+function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
+function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
+function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
+function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
+
+function searchMedicine() {
+    displayMeds(medicines);
+}
+
+function updateClock() {
+    const clockEl = document.getElementById('live-clock');
+    if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+window.onload = updateClock;
