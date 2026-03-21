@@ -45,11 +45,11 @@
     <section class="hero-search">
         <div class="container">
             <h1> Online Order Now </h1>
-            <p>Trusted Pharmacy in Binodpur</p>
+            <p>Trusted Pharmacy in Binodpur (10 Tabs = 1 Strip)</p>
             
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Medicine ka naam likhein..." onkeyup="searchMedicine()">
+                <input type="text" id="searchInput" placeholder="Medicine ka naam likhein..." oninput="searchMedicine()">
             </div>
 
             <div class="category-container">
@@ -72,69 +72,56 @@
             </div>
         </div>
         
-        <div id="medList" class="med-grid"></div>
+        <div id="medList" class="med-grid">
+            </div>
 
         <div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
             <button id="showMoreBtn" onclick="showAllMeds()" class="add-btn" style="width: 250px; background-color: #0056b3; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                Show More Medicines
+                Show All Medicines
             </button>
         </div>
     </main>
 
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-basket"></i> Your Cart</h3>
+            <h3><i class="fas fa-shopping-basket"></i> Your Order List</h3>
             <span class="close-cart" onclick="toggleCart()">&times;</span>
         </div>
         <div id="cartItems" class="cart-items-list">
             <p style="text-align:center; padding:20px; color:#888;">Cart khali hai...</p>
         </div>
         <div class="cart-footer">
-            <div class="total-row" style="display: flex; justify-content: space-between; padding: 15px; font-weight: bold; border-top: 1px solid #eee;">
-                <span>Total Amount:</span>
-                <span style="color: #28a745;">₹<span id="cartTotal">0.00</span></span>
+            <div class="total-row" style="display: flex; justify-content: space-between; padding: 15px; font-weight: bold; border-top: 2px solid #eee;">
+                <span>GRAND TOTAL:</span>
+                <span style="color: #28a745; font-size: 1.2rem;">₹<span id="cartTotal">0.00</span></span>
             </div>
-            <button class="whatsapp-btn" onclick="sendWhatsAppOrder()" style="width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 0 0 15px 15px; cursor: pointer; font-weight: bold;">
-                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+            <button class="whatsapp-btn" onclick="sendWhatsAppOrder()" style="width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 0 0 15px 15px; cursor: pointer; font-weight: bold; font-size: 1rem;">
+                <i class="fab fa-whatsapp"></i> Send Order on WhatsApp
             </button>
         </div>
     </div>
 
-    <div id="adminModal" class="history-modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
-        <div class="history-content" style="background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px;">
-            <div class="cart-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <h3><i class="fas fa-user-shield"></i> Admin Login</h3>
-                <span onclick="closeAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
+    <div id="adminModal" class="history-modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="history-content" style="background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <div class="cart-header" style="display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <h3><i class="fas fa-user-shield"></i> JMD Admin Panel</h3>
+                <span onclick="closeAdmin()" style="cursor:pointer; font-size:28px; color:#999;">&times;</span>
             </div>
+            
             <div id="adminAuth">
-                <p>User ID:</p>
-                <input type="text" id="adminUser" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
-                <p>Password:</p>
-                <input type="password" id="adminPass" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
-                <button onclick="loginAdmin()" class="whatsapp-btn" style="width:100%; background:#007bff;">Login</button>
+                <p style="margin-bottom: 5px; font-weight: 600;">User ID:</p>
+                <input type="text" id="adminUser" placeholder="Enter ID" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
+                <p style="margin-bottom: 5px; font-weight: 600;">Password:</p>
+                <input type="password" id="adminPass" placeholder="Enter Password" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ddd; border-radius:8px;">
+                <button onclick="loginAdmin()" class="whatsapp-btn" style="width:100%; background:#007bff; border-radius: 8px;">Login</button>
             </div>
+
             <div id="adminControls" style="display:none;">
-                <p>Select Medicine:</p>
-                <select id="medSelect" style="width:100%; padding:10px; margin-bottom:15px;"></select>
-                <p>Add Quantity:</p>
-                <input type="number" id="newStockQty" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd;">
-                <button onclick="updateStockNow()" class="whatsapp-btn" style="width:100%;">Update Stock</button>
+                <p style="margin-bottom: 5px; font-weight: 600;">Select Medicine:</p>
+                <select id="medSelect" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;"></select>
+                <p style="margin-bottom: 5px; font-weight: 600;">Add Strips (e.g., 1.5 = 1 Strip 5 Tabs):</p>
+                <input type="number" id="newStockQty" step="0.1" placeholder="Quantity to Add" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ddd; border-radius:8px;">
+                <button onclick="updateStockNow()" class="whatsapp-btn" style="width:100%; margin-bottom: 10px; border-radius: 8px;">Update Stock Now</button>
                 <hr style="margin:20px 0;">
-                <button onclick="resetAllStock()" style="width:100%; background:#dc3545; color: white; padding: 10px; border:none; border-radius:8px;">Factory Reset Data</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="historyModal" class="history-modal" style="display:none;">
-        <div class="history-content">
-            <div class="cart-header">
-                <h3>Recent Orders</h3>
-                <span onclick="closeHistory()" style="cursor:pointer; font-size:24px;">&times;</span>
-            </div>
-            <div id="historyList"></div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <button onclick="resetAllStock()" style="width:100%; background:#dc3545; color: white; padding: 12px; border:none; border-radius:8px; font-weight: 600; cursor: pointer;">
+                    <i class="fas fa-exclamation-triangle"></i> Factory Reset Cloud
