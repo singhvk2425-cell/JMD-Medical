@@ -1,11 +1,23 @@
-// 1. SETTINGS
+// 1. FIREBASE CONFIG (Aapne console mein jo dekha tha wo yahan daalein)
+const firebaseConfig = {
+    apiKey: "AIzaSy...", // Aapki API Key
+    databaseURL: "https://jmd-medical-default-rtdb.firebaseio.com" // Aapka Database URL
+};
+
+// Firebase Initialize
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
+
+// 2. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
-// 2. INITIAL DATA (Total 443 Items)
+// 3. MASTER DATA (Saari 444 Medicines - Saltum, Zonamax sab isme hain)
 const initialMedicines = [
-   { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
+    { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
     { "name": "A to z DROUP", "qty": 2.0, "mrp": 150.0, "exp": "30/09/26", "batch": "25490733" },
     { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
@@ -342,58 +354,43 @@ const initialMedicines = [
     { "name": "ZYLORIC 100", "qty": 30.0, "mrp": 45.0, "exp": "31/03/27", "batch": "ZY-2595" }
 ];
 
-// Browser memory logic
-let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
+let medicines = [];
 let cart = [];
-let isShowingAll = false;
 
-function syncStorage() { localStorage.setItem('jmd_inventory', JSON.stringify(medicines)); }
-
-function updateClock() {
-    const clockEl = document.getElementById('live-clock');
-    if (clockEl) clockEl.innerText = new Date().toLocaleTimeString();
-}
-setInterval(updateClock, 1000);
-
+// Live Database Sync
+db.ref('inventory').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+        medicines = data;
+        displayMeds(medicines);
+    } else {
+        db.ref('inventory').set(initialMedicines);
+    }
+});
 // --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
-    const showMoreBtn = document.getElementById("showMoreBtn");
-    const searchInput = document.getElementById("searchInput");
-    const searchVal = searchInput ? searchInput.value.trim() : "";
-    
     if (!medList) return;
     medList.innerHTML = "";
 
-    let displayData = searchVal !== "" ? data : (isShowingAll ? data : data.slice(0, 10));
-    if (showMoreBtn) showMoreBtn.style.display = (searchVal !== "" || data.length <= 10 || isShowingAll) ? "none" : "inline-block";
-
-    displayData.forEach((med) => {
-        const realIdx = medicines.findIndex(m => m.name === med.name);
+    data.forEach((med, i) => {
         const card = document.createElement("div");
         card.className = "med-card";
+        card.style = `border-left: 5px solid ${med.qty > 0 ? '#28a745' : '#e74c3c'}`;
         
-        let border = "border-left: 5px solid #28a745"; 
-        if(med.qty <= 0) border = "border-left: 5px solid #e74c3c"; 
-        else if(med.qty <= 10) border = "border-left: 5px solid #f39c12"; 
-
-        card.style = border;
         card.innerHTML = `
             <h3>${med.name}</h3>
-            <div style="font-size: 0.8rem; color: #777; margin-bottom: 5px;">
+            <div style="font-size: 0.8rem; color: #777;">
                 <b>Batch:</b> ${med.batch} | <b>Exp:</b> ${med.exp}
             </div>
-            <p>Stock: <b id="stock-val-${realIdx}">${med.qty} Units</b></p>
+            <p>Live Stock: <b style="color:blue;">${med.qty} Units</b></p>
             <p style="color:#28a745; font-weight:700">MRP: ₹${med.mrp}</p>
             <div class="qty-row">
-                <span>Qty:</span>
-                <div class="qty-btns">
-                    <button class="q-btn" onclick="changeQty(${realIdx}, -1)">-</button>
-                    <b id="qty-box-${realIdx}">1</b>
-                    <button class="q-btn" onclick="changeQty(${realIdx}, 1)">+</button>
-                </div>
+                <button class="q-btn" onclick="changeQtyUI(${i}, -1)">-</button>
+                <b id="qty-box-${i}">1</b>
+                <button class="q-btn" onclick="changeQtyUI(${i}, 1)">+</button>
             </div>
-            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>
+            <button class="add-btn" onclick="addToCart(${i})" ${med.qty <= 0 ? 'disabled' : ''}>
                 ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order List'}
             </button>
         `;
@@ -401,20 +398,39 @@ function displayMeds(data) {
     });
 }
 
-function changeQty(idx, delta) {
+function changeQtyUI(idx, delta) {
     const el = document.getElementById(`qty-box-${idx}`);
-    if (el) {
-        let val = parseInt(el.innerText) + delta;
-        if(val >= 1) el.innerText = val;
-    }
+    let val = parseInt(el.innerText) + delta;
+    if(val >= 1) el.innerText = val;
+}
+
+// --- GLOBAL ORDER UPDATE (Jahan se live stock kam hoga) ---
+function sendWhatsAppOrder() {
+    if(cart.length === 0) return alert("Items chuniye!");
+    
+    // Cloud Database update karein (Taaki Ram aur Shyam dono ko dikhe)
+    cart.forEach(cartItem => {
+        const idx = medicines.findIndex(m => m.name === cartItem.name);
+        if(idx !== -1) {
+            medicines[idx].qty = parseFloat((medicines[idx].qty - cartItem.orderedQty).toFixed(2));
+        }
+    });
+
+    // Database push
+    db.ref('inventory').set(medicines).then(() => {
+        let text = "📦 *NEW LIVE ORDER - JMD MEDICAL*%0A";
+        cart.forEach(i => text += `• ${i.name} (${i.orderedQty})%0A`);
+        window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
+        cart = []; updateCartUI();
+    });
 }
 
 function addToCart(idx) {
     const med = medicines[idx];
-    const qtyEl = document.getElementById(`qty-box-${idx}`);
-    if (!med || !qtyEl) return;
-    const orderedQty = parseInt(qtyEl.innerText);
-    if (orderedQty > med.qty) { alert("Stock kam hai!"); return; }
+    const qtyBox = document.getElementById(`qty-box-${idx}`);
+    const orderedQty = parseInt(qtyBox.innerText);
+    if (orderedQty > med.qty) return alert("Maal kam hai!");
+
     const existing = cart.find(i => i.name === med.name);
     if(existing) existing.orderedQty += orderedQty;
     else cart.push({...med, orderedQty: orderedQty});
@@ -423,107 +439,25 @@ function addToCart(idx) {
 
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
-    const list = document.getElementById('cartItems');
     if (badge) badge.innerText = cart.length;
-    if(!list) return;
-    if(cart.length === 0) {
-        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
-        return;
-    }
-    list.innerHTML = "";
-    cart.forEach((item, i) => {
-        list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee">
-            <b>${item.name}</b><br>Qty: ${item.orderedQty}
-            <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
-        </div>`;
-    });
 }
 
-function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Pehle items chuniye!");
-    saveToHistory(cart);
-    cart.forEach(cartItem => {
-        const targetMed = medicines.find(m => m.name === cartItem.name);
-        if(targetMed) targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
-    });
-    syncStorage();
-    let text = "📦 *NEW ORDER - JMD MEDICAL*%0A--------------------------%0A";
-    cart.forEach((item, index) => { text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`; });
-    window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
-    cart = []; updateCartUI(); displayMeds(medicines);
-}
-
-function filterCategory(cat, btn) {
-    document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    if(cat === 'all') return displayMeds(medicines);
-    const filtered = medicines.filter(m => m.name.toUpperCase().includes(cat.toUpperCase()));
-    displayMeds(filtered);
-}
-
-function saveToHistory(order) {
-    let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
-    history.unshift({ date: new Date().toLocaleString(), items: order });
-    localStorage.setItem('jmd_history', JSON.stringify(history.slice(0, 5)));
-}
-
-function showHistory() {
-    const modal = document.getElementById('historyModal');
-    const list = document.getElementById('historyList');
-    let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
-    list.innerHTML = history.length ? history.map(h => `<div style="border-bottom:1px solid #eee; padding:10px 0;"><small>${h.date}</small><p>${h.items.map(i => i.name).join(", ")}</p></div>`).join("") : "<p>No history.</p>";
-    modal.style.display = 'flex';
-}
-
-function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
-function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
-function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
-function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
-
-function searchMedicine() {
-    const val = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = medicines.filter(m => m.name.toLowerCase().includes(val));
-    displayMeds(filtered);
-}
-
-function openAdmin() {
-    document.getElementById('adminModal').style.display = 'flex';
-    document.getElementById('adminAuth').style.display = 'block';
-    document.getElementById('adminControls').style.display = 'none';
-    document.getElementById('adminUser').value = "";
-    document.getElementById('adminPass').value = "";
-}
-
-function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-
-function loginAdmin() {
-    const u = document.getElementById('adminUser').value;
-    const p = document.getElementById('adminPass').value;
-    if (u === adminID && p === adminPass) {
-        document.getElementById('adminAuth').style.display = 'none';
-        document.getElementById('adminControls').style.display = 'block';
-        const select = document.getElementById('medSelect');
-        select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (Stock: ${m.qty})</option>`).join("");
-    } else { alert("ID/Pass Galat!"); }
-}
-
+// Admin Stock Update (Live Globally)
 function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
     const addQty = parseFloat(document.getElementById('newStockQty').value);
     if(!isNaN(addQty)) {
-        const currentQty = parseFloat(medicines[idx].qty);
-        medicines[idx].qty = parseFloat((currentQty + addQty).toFixed(2));
-        syncStorage(); displayMeds(medicines);
-        alert(`${medicines[idx].name} Updated!`);
-        loginAdmin(); 
+        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
+        db.ref('inventory').set(medicines); // Sabko live dikhega!
+        alert("Stock updated globally!");
         document.getElementById('newStockQty').value = "";
     }
 }
 
 function resetAllStock() {
-    if(confirm("Factory Reset? Sabhi data update ho jayega.")) {
-        localStorage.removeItem('jmd_inventory'); location.reload();
+    if(confirm("Full Reset? Cloud data original ho jayega.")) {
+        db.ref('inventory').set(initialMedicines).then(() => location.reload());
     }
 }
 
-window.onload = () => { displayMeds(medicines); updateClock(); };
+window.onload = () => { if(typeof medicines !== 'undefined') displayMeds(medicines); };
