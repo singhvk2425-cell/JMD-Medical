@@ -10,28 +10,27 @@ const initialMedicines = [
     { "name": "A to z DROUP", "qty": 2.0, "mrp": 150.0, "exp": "30/09/26", "batch": "25490733" },
     { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
     { "name": "ABDOMINAL BELT REGULAR", "qty": 3.0, "mrp": 520.0, "exp": "01/10/26", "batch": "HGSDVF" },
-    { "name": "ACILOC 150TAB", "qty": 15.01, "mrp": 49.1, "exp": "31/10/26", "batch": "LD24242" },
-    { "name": "ACILOC 300", "qty": 2.01, "mrp": 54.8, "exp": "30/11/26", "batch": "LO24138" },
+    { "name": "ACILOC 150TAB", "qty": 15.009, "mrp": 49.1, "exp": "31/10/26", "batch": "LD24242" },
     { "name": "ACILOC AMP", "qty": 4.0, "mrp": 7.2, "exp": "31/07/27", "batch": "IN24091" },
     { "name": "ACILOC RD 15 TAB", "qty": 34.0, "mrp": 92.3, "exp": "31/03/27", "batch": "JKAD25011" },
     { "name": "ACR-200 caps", "qty": 4.0, "mrp": 122.0, "exp": "30/11/25", "batch": "GC4612A" },
     { "name": "AKUZID 1000", "qty": 18.0, "mrp": 254.24, "exp": "28/02/27", "batch": "25DI14F" },
     { "name": "AKUZID TZ 250g", "qty": 49.0, "mrp": 114.0, "exp": "28/02/27", "batch": "25DI03G" },
-    { "name": "ALEX P SYP", "qty": 2.0, "mrp": 158.43, "exp": "31/10/27", "batch": "11251479" },
+    { "name": "ALEX  P  SYP", "qty": 2.0, "mrp": 158.43, "exp": "31/10/27", "batch": "11251479" },
     { "name": "Alex Lozenges 5mg", "qty": 7.0, "mrp": 118.0, "exp": "31/10/26", "batch": "73230086" },
     { "name": "Ambroled-DX Syp", "qty": 3.0, "mrp": 113.0, "exp": "30/09/27", "batch": "STY-250212" },
-    { "name": "Amelior-D3 Tab", "qty": 4.0, "mrp": 225.0, "exp": "01/06/25", "batch": "SHT-085" },
+    { "name": "Amelior-D3  Tab", "qty": 4.0, "mrp": 225.0, "exp": "01/06/25", "batch": "SHT-085" },
     { "name": "AMIKAMAC 500", "qty": 1.0, "mrp": 113.73, "exp": "30/09/26", "batch": "18242802A" },
     { "name": "AMIRID TAB", "qty": 3.0, "mrp": 111.0, "exp": "30/06/26", "batch": "2424303" },
-    { "name": "ANTIMAX 500MG", "qty": 11.0, "mrp": 570.0, "exp": "01/06/27", "batch": "STB-250704" },
+    { "name": "ANTIMAX 500MG", "qty": 11.004, "mrp": 570.0, "exp": "01/06/27", "batch": "STB-250704" },
     { "name": "Applevit 4G cap", "qty": 1.0, "mrp": 267.19, "exp": "30/04/27", "batch": "1120525D" },
     { "name": "AQUASOL A", "qty": 5.0, "mrp": 35.75, "exp": "31/03/26", "batch": "49001916" },
     { "name": "Ariflam MR tab", "qty": 8.0, "mrp": 274.0, "exp": "30/11/26", "batch": "LT2412180" },
     { "name": "ARISTOZYME LIQUID", "qty": 1.0, "mrp": 162.0, "exp": "30/11/26", "batch": "MPF252098" },
-    { "name": "AROPEN TAB", "qty": 16.0, "mrp": 120.0, "exp": "28/02/27", "batch": "02125001" },
+    { "name": "AROPEN TAB", "qty": 16.001, "mrp": 120.0, "exp": "28/02/27", "batch": "02125001" },
     { "name": "Asrizone-TZ 1.125 inj", "qty": 64.0, "mrp": 347.0, "exp": "31/03/27", "batch": "25DD34G" },
     { "name": "AUSILID 600 MG TAB", "qty": 3.0, "mrp": 220.0, "exp": "31/05/26", "batch": "24S2GTB393" },
-    { "name": "AUSITUM 500 MG", "qty": 0.01, "mrp": 320.0, "exp": "30/04/25", "batch": "MF5AK09" },
+    { "name": "AUSITUM 500 MG", "qty": 0.005, "mrp": 320.0, "exp": "30/04/25", "batch": "MF5AK09" },
     { "name": "AUSITUM CV 625", "qty": 13.0, "mrp": 489.0, "exp": "31/07/26", "batch": "GLT25021" },
     { "name": "AVERT 16", "qty": 1.0, "mrp": 151.95, "exp": "31/12/27", "batch": "P-9620" },
     { "name": "AZIKOT 500", "qty": 12.0, "mrp": 134.25, "exp": "30/04/27", "batch": "UTN-25804" },
@@ -56,13 +55,11 @@ const initialMedicines = [
     { "name": "Bio-D3 Joint", "qty": 1.0, "mrp": 874.0, "exp": "30/11/26", "batch": "BID5T06" },
     { "name": "BISLARY WATER 1L", "qty": 42.0, "mrp": 20.0, "exp": "01/12/25", "batch": "4875" },
     { "name": "BOTTAL 150ML", "qty": 68.0, "mrp": 50.0, "exp": "31/10/27", "batch": "3254" },
-    { "name": "BOTTAL 250 ML", "qty": 53.0, "mrp": 60.0, "exp": "31/10/27", "batch": "4525" },
-    { "name": "BOTTOL 125ML", "qty": 37.0, "mrp": 45.0, "exp": "31/10/27", "batch": "2525" },
     { "name": "BREEZY", "qty": 87.0, "mrp": 80.0, "exp": "31/03/27", "batch": "BB7784" },
     { "name": "BUDECORT RESP 0.5", "qty": 2.0, "mrp": 26.46, "exp": "30/04/27", "batch": "SN30610" },
-    { "name": "C-Lysin Gold Tab", "qty": 3.01, "mrp": 77.0, "exp": "28/02/27", "batch": "0869" },
+    { "name": "C-Lysin Gold Tab", "qty": 3.009, "mrp": 77.0, "exp": "28/02/27", "batch": "0869" },
     { "name": "Cabliz 0.5", "qty": 1.0, "mrp": 268.0, "exp": "30/04/27", "batch": "25S2GTB288" },
-    { "name": "CACEFEN - P", "qty": 46.01, "mrp": 56.5, "exp": "31/05/27", "batch": "D251455A" },
+    { "name": "CACEFEN - P", "qty": 46.006, "mrp": 56.5, "exp": "31/05/27", "batch": "D251455A" },
     { "name": "Califer-XT tab", "qty": 5.0, "mrp": 205.0, "exp": "31/08/27", "batch": "FHT-1971" },
     { "name": "CALPOL DROPS", "qty": 2.0, "mrp": 33.05, "exp": "31/08/27", "batch": "NA457" },
     { "name": "CALZICA SUS", "qty": 8.0, "mrp": 155.56, "exp": "31/08/25", "batch": "SVL-C0213" },
@@ -70,21 +67,21 @@ const initialMedicines = [
     { "name": "CANDIBIOTIC EAR DROUP", "qty": 2.0, "mrp": 106.0, "exp": "30/11/26", "batch": "N25CP021" },
     { "name": "CANDID B CREAM", "qty": 8.0, "mrp": 182.0, "exp": "28/02/27", "batch": "11250347" },
     { "name": "CANDID M/PAINT", "qty": 3.0, "mrp": 189.5, "exp": "29/02/28", "batch": "11250324" },
-    { "name": "CANDID POWDER 60 GM", "qty": 0.0, "mrp": 104.0, "exp": "31/05/28", "batch": "71240170" },
+    { "name": "CANDID POWDER  60 GM", "qty": 0.0, "mrp": 104.0, "exp": "31/05/28", "batch": "71240170" },
     { "name": "CANDID POWDER 120 GM", "qty": 0.0, "mrp": 174.0, "exp": "31/03/28", "batch": "71250175" },
     { "name": "CARBA PLUS", "qty": 3.0, "mrp": 50.0, "exp": "31/05/25", "batch": "PRT2201" },
     { "name": "Cefoblaze O tab", "qty": 12.0, "mrp": 129.0, "exp": "31/12/26", "batch": "DMF04AAA" },
     { "name": "CEFOLAC O 200MG", "qty": 4.0, "mrp": 232.3, "exp": "31/03/27", "batch": "18251514B" },
-    { "name": "CEFOPAN O TAB", "qty": 26.0, "mrp": 219.61, "exp": "28/02/27", "batch": "BFU03AAA" },
+    { "name": "CEFOPAN O TAB", "qty": 26.002, "mrp": 219.61, "exp": "28/02/27", "batch": "BFU03AAA" },
     { "name": "cefuross 250", "qty": 6.0, "mrp": 250.0, "exp": "31/03/27", "batch": "CEX25002D" },
     { "name": "Cefuross-125 tab", "qty": 3.0, "mrp": 168.0, "exp": "31/03/27", "batch": "CXD25001A" },
     { "name": "Cefuswag - CV 500", "qty": 8.0, "mrp": 690.0, "exp": "31/03/27", "batch": "CACC5004E" },
     { "name": "Cepoday-cv 325", "qty": 3.0, "mrp": 319.5, "exp": "30/11/26", "batch": "T250291C" },
-    { "name": "CETIL DRY SURP", "qty": 1.0, "mrp": 354.8, "exp": "31/05/25", "batch": "CD23487" },
-    { "name": "CETZINE 10MG", "qty": 7.0, "mrp": 31.5, "exp": "30/09/27", "batch": "EMV242067" },
+    { "name": "CETIL DRY  SURP", "qty": 1.0, "mrp": 354.8, "exp": "31/05/25", "batch": "CD23487" },
+    { "name": "CETZINE 10MG", "qty": 7.003, "mrp": 31.5, "exp": "30/09/27", "batch": "EMV242067" },
     { "name": "Cintagest drops", "qty": 1.0, "mrp": 85.0, "exp": "31/08/26", "batch": "72001122WJ" },
     { "name": "CITAPURE FORTE", "qty": 34.0, "mrp": 96.54, "exp": "31/01/28", "batch": "P-9640" },
-    { "name": "CLAVAM 625", "qty": 2.01, "mrp": 195.47, "exp": "30/04/27", "batch": "25444413" },
+    { "name": "CLAVAM 625", "qty": 2.006, "mrp": 195.47, "exp": "30/04/27", "batch": "25444413" },
     { "name": "CLAVAM DROP", "qty": 2.0, "mrp": 121.0, "exp": "30/09/26", "batch": "24443764" },
     { "name": "CLAVAM FORTE DRY SYRUP", "qty": 1.0, "mrp": 178.0, "exp": "31/05/26", "batch": "24444518" },
     { "name": "CLID VL", "qty": 1.0, "mrp": 159.5, "exp": "31/01/27", "batch": "BPLT-25045" },
@@ -105,7 +102,7 @@ const initialMedicines = [
     { "name": "CREPE KING6INCH", "qty": 10.0, "mrp": 192.0, "exp": "31/03/26", "batch": "58" },
     { "name": "CURASIDE-ET", "qty": 1.0, "mrp": 195.0, "exp": "30/06/25", "batch": "ST23-1970" },
     { "name": "Cyclovarin cap", "qty": 2.0, "mrp": 290.0, "exp": "31/07/26", "batch": "3036" },
-    { "name": "Cystone Forte TAB", "qty": 1.0, "mrp": 155.0, "exp": "31/03/27", "batch": "722500095" },
+    { "name": "Cystone Forte     TAB", "qty": 1.0, "mrp": 155.0, "exp": "31/03/27", "batch": "722500095" },
     { "name": "CYSTONE TAB", "qty": 0.0, "mrp": 260.0, "exp": "30/04/28", "batch": "106250573" },
     { "name": "D-PROTIN POWDER", "qty": 1.0, "mrp": 630.0, "exp": "31/05/26", "batch": "DP2401" },
     { "name": "D3 SHOT", "qty": 25.0, "mrp": 38.0, "exp": "31/03/27", "batch": "P-9812" },
@@ -122,7 +119,7 @@ const initialMedicines = [
     { "name": "Dideral Plus tab", "qty": 5.0, "mrp": 125.0, "exp": "31/03/27", "batch": "DP-2408" },
     { "name": "Docorite cap.", "qty": 6.0, "mrp": 185.0, "exp": "31/03/27", "batch": "DR-2409" },
     { "name": "DOLO 250 SYP", "qty": 1.0, "mrp": 45.0, "exp": "31/03/27", "batch": "DL-2409" },
-    { "name": "DOLO 650 TAB", "qty": 20.93, "mrp": 31.0, "exp": "31/03/27", "batch": "DL-2410" },
+    { "name": "DOLO 650 TAB", "qty": 20.933, "mrp": 31.0, "exp": "31/03/27", "batch": "DL-2410" },
     { "name": "DOM DT 10", "qty": 30.0, "mrp": 25.0, "exp": "30/09/27", "batch": "DT-2411" },
     { "name": "DOXOKOT M TAB", "qty": 6.9, "mrp": 92.0, "exp": "31/03/27", "batch": "DK-2412" },
     { "name": "Doxyrax OD tab", "qty": 9.0, "mrp": 110.0, "exp": "31/03/27", "batch": "DX-2413" },
@@ -145,23 +142,12 @@ const initialMedicines = [
     { "name": "Farofence CV", "qty": 17.0, "mrp": 540.0, "exp": "31/03/27", "batch": "FF-2426" },
     { "name": "Farozius-200", "qty": 3.0, "mrp": 490.0, "exp": "31/03/27", "batch": "FZ-2427" },
     { "name": "Fe Daily Tab", "qty": 9.0, "mrp": 280.0, "exp": "31/03/27", "batch": "FD-2428" },
-    { "name": "FEMCLAVE LB 625 TAB", "qty": 36.0, "mrp": 185.0, "exp": "31/03/27", "batch": "FL-2429" },
-    { "name": "FLAGYL 400", "qty": 45.0, "mrp": 28.0, "exp": "31/08/27", "batch": "FG-2430" },
-    { "name": "FLORASANTE CAP", "qty": 1.0, "mrp": 260.0, "exp": "31/03/27", "batch": "FS-2431" },
-    { "name": "FLUUKA 150", "qty": 15.0, "mrp": 14.5, "exp": "31/05/27", "batch": "FK-2432" },
-    { "name": "FOLVITE TAB", "qty": 30.0, "mrp": 82.0, "exp": "31/01/28", "batch": "FV-2433" },
     { "name": "FOLYS CATHETAR 24", "qty": 20.0, "mrp": 120.0, "exp": "31/03/27", "batch": "FC-2432" },
-    { "name": "GELUSIL MPS LIQ", "qty": 3.0, "mrp": 135.0, "exp": "31/07/27", "batch": "GS-2434" },
-    { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GZ-2434" },
     { "name": "GAUZE", "qty": 3.0, "mrp": 85.0, "exp": "31/03/27", "batch": "GZ-2433" },
-    { "name": "Glexim CV 325", "qty": 3.0, "mrp": 310.0, "exp": "31/03/27", "batch": "GX-2435" },
-    { "name": "GLIMY M 2", "qty": 25.0, "mrp": 115.0, "exp": "31/12/27", "batch": "GM-2436" },
+    { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GZ-2434" },
     { "name": "GLOVES 7 NO", "qty": 12.0, "mrp": 35.0, "exp": "31/03/27", "batch": "GV-2435" },
-    { "name": "GLUCON-D 500G", "qty": 5.0, "mrp": 190.0, "exp": "30/06/27", "batch": "GD-2437" },
-    { "name": "Growly Syrup", "qty": 10.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GY-2438" },
-    { "name": "GUFICOX 450", "qty": 12.0, "mrp": 110.0, "exp": "31/03/27", "batch": "GC-2439" },
-    { "name": "HIFENAC P", "qty": 30.0, "mrp": 92.0, "exp": "31/10/27", "batch": "HP-2440" },
-    { "name": "HISTAFREE 120", "qty": 15.0, "mrp": 165.0, "exp": "31/03/27", "batch": "HF-2441" },
+    { "name": "Glexim CV 325", "qty": 3.0, "mrp": 310.0, "exp": "31/03/27", "batch": "GX-2436" },
+    { "name": "Growly Syrup", "qty": 10.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GY-2437" },
     { "name": "HOTFLAM - P", "qty": 69.2, "mrp": 35.0, "exp": "31/03/27", "batch": "HP-2438" },
     { "name": "HOTFLAM - SP TAB", "qty": 16.3, "mrp": 110.0, "exp": "31/03/27", "batch": "HS-2439" },
     { "name": "HUGGIES (M) 28 PANTS", "qty": 20.0, "mrp": 450.0, "exp": "31/03/27", "batch": "HG-2440" },
@@ -225,8 +211,10 @@ const initialMedicines = [
     { "name": "RIKVIT-HD", "qty": 35.0, "mrp": 65.0, "exp": "31/03/27", "batch": "RV-2494" },
     { "name": "Rucam 400", "qty": 3.0, "mrp": 410.0, "exp": "31/03/27", "batch": "RC-2495" },
     { "name": "safcold tab", "qty": 31.6, "mrp": 65.0, "exp": "31/03/27", "batch": "ST-2512" },
-    { "name": "saltum kid 250", "qty": 5.0, "mrp": 290.0, "exp": "31/03/27", "batch": "SK-2513" },
-    { "name": "Sarcoboost Sachet", "qty": 28.0, "mrp": 85.0, "exp": "31/03/27", "batch": "SB-2509" },
+    { "name": "saltum kid 250", "qty": 5.0, "mrp": 290.0, "exp": "31/08/26", "batch": "TB240193" },
+    { "name": "SALTUM -DS", "qty": 30.0, "mrp": 645.88, "exp": "30/04/27", "batch": "TSMB5007" },
+    { "name": "SALTUM 375", "qty": 10.0, "mrp": 592.97, "exp": "31/03/27", "batch": "TSMA5018" },
+    { "name": "SALTUM INJ 1.5GM", "qty": 80.0, "mrp": 158.5, "exp": "30/11/27", "batch": "G592507A" },
     { "name": "SARIDON TAB", "qty": 3.1, "mrp": 45.0, "exp": "31/03/27", "batch": "SR-2533" },
     { "name": "SATMINE OINT 10GM", "qty": 13.0, "mrp": 195.0, "exp": "31/03/27", "batch": "SM-2496" },
     { "name": "SEPROLIV SYP", "qty": 9.0, "mrp": 145.0, "exp": "31/03/27", "batch": "SP-2497" },
@@ -246,7 +234,7 @@ const initialMedicines = [
     { "name": "SV SET 20 NO.", "qty": 5.0, "mrp": 25.0, "exp": "31/03/27", "batch": "SV-2507" },
     { "name": "SV SET 22 NO.", "qty": 26.0, "mrp": 25.0, "exp": "31/03/27", "batch": "SV-2508" },
     { "name": "Systoliv syp", "qty": 8.0, "mrp": 115.0, "exp": "31/03/27", "batch": "SY-2511" },
-    { "name": "THROMBOPHOB OINT", "qty": 2.0, "mrp": 185.0, "exp": "31/03/27", "batch": "TP-2537" },
+{ "name": "THROMBOPHOB OINT", "qty": 2.0, "mrp": 185.0, "exp": "31/03/27", "batch": "TP-2537" },
     { "name": "THROMBOTROY QPS SPRA", "qty": 1.0, "mrp": 195.0, "exp": "31/03/27", "batch": "TT-2514" },
     { "name": "TINIBA 500ML", "qty": 1.0, "mrp": 85.0, "exp": "31/03/27", "batch": "TN-2535" },
     { "name": "TINIBA INFU", "qty": 8.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-220" },
@@ -266,10 +254,21 @@ const initialMedicines = [
     { "name": "Weekzot - D3", "qty": 1.0, "mrp": 125.0, "exp": "31/03/27", "batch": "WZ-2527" },
     { "name": "XERODERM OTC CREAM", "qty": 3.0, "mrp": 155.0, "exp": "31/03/27", "batch": "XD-2528" },
     { "name": "xerolac cap", "qty": 5.0, "mrp": 185.0, "exp": "31/03/27", "batch": "XL-2530" },
+    { "name": "XOXE  CV  500", "qty": 11.0, "mrp": 657.05, "exp": "30/04/27", "batch": "COXE6004" },
+    { "name": "XOXE 500", "qty": 1.0, "mrp": 576.02, "exp": "31/01/26", "batch": "C1174006" },
+    { "name": "XT LIV  SYP", "qty": 19.0, "mrp": 295.56, "exp": "31/05/27", "batch": "SVL-25080" },
+    { "name": "XTRIL  100ML", "qty": 22.0, "mrp": 108.89, "exp": "30/06/26", "batch": "SVL-24117" },
     { "name": "Xtril Kid Syrup", "qty": 2.0, "mrp": 95.0, "exp": "31/03/27", "batch": "XT-2491" },
+    { "name": "ZENTEL 400MG", "qty": 4.0, "mrp": 9.09, "exp": "31/12/27", "batch": "A210" },
+    { "name": "ZENTRYP-D", "qty": 4.0, "mrp": 192.0, "exp": "30/09/25", "batch": "ZEN230096" },
+    { "name": "ZERODOL P TAB", "qty": 9.009, "mrp": 81.0, "exp": "30/09/27", "batch": "KVB0325138A0" },
+    { "name": "ZERODOL-SP", "qty": 9.009, "mrp": 149.04, "exp": "31/01/28", "batch": "FND0725075BH" },
     { "name": "ZIG ZIG COTTON", "qty": 10.0, "mrp": 45.0, "exp": "01/01/26", "batch": "ZZ01" },
-    { "name": "zikem-200 susp", "qty": 8.0, "mrp": 115.0, "exp": "31/03/27", "batch": "ZK-2531" }
+    { "name": "ZIKEM 500 TAB", "qty": 79.0, "mrp": 79.0, "exp": "31/03/27", "batch": "SDT25031D" },
+    { "name": "zikem-200 susp", "qty": 8.0, "mrp": 115.0, "exp": "31/03/27", "batch": "ZK-2531" },
+    { "name": "ZONAMAX ES 1.5gm", "qty": 20.0, "mrp": 275.62, "exp": "31/10/27", "batch": "18254517A" }
 ];
+
 // Browser memory logic
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
@@ -322,7 +321,7 @@ function displayMeds(data) {
                 </div>
             </div>
             <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>
-                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order'}
+                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order List'}
             </button>
         `;
         medList.appendChild(card);
@@ -368,7 +367,7 @@ function updateCartUI() {
 }
 
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Items add karein!");
+    if(cart.length === 0) return alert("Pehle items chuniye!");
     saveToHistory(cart);
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
@@ -414,7 +413,6 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
-// --- 🔐 ADMIN PANEL FUNCTIONS ---
 function openAdmin() {
     document.getElementById('adminModal').style.display = 'flex';
     document.getElementById('adminAuth').style.display = 'block';
@@ -443,14 +441,14 @@ function updateStockNow() {
         const currentQty = parseFloat(medicines[idx].qty);
         medicines[idx].qty = parseFloat((currentQty + addQty).toFixed(2));
         syncStorage(); displayMeds(medicines);
-        alert(`${medicines[idx].name} updated!`);
+        alert(`${medicines[idx].name} Updated!`);
         loginAdmin(); 
         document.getElementById('newStockQty').value = "";
     }
 }
 
 function resetAllStock() {
-    if(confirm("Factory Reset? Sabhi naya data load ho jayega.")) {
+    if(confirm("Factory Reset? Sabhi data update ho jayega.")) {
         localStorage.removeItem('jmd_inventory'); location.reload();
     }
 }
