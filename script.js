@@ -1,15 +1,25 @@
 // 1. FIREBASE CONFIG (Aapne console mein jo dekha tha wo yahan daalein)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSy...", // Aapki API Key
-    databaseURL: "https://jmd-medical-default-rtdb.firebaseio.com" // Aapka Database URL
+  apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
+  authDomain: "jmd-medical-88d46.firebaseapp.com",
+  projectId: "jmd-medical-88d46",
+  storageBucket: "jmd-medical-88d46.firebasestorage.app",
+  messagingSenderId: "801550606379",
+  appId: "1:801550606379:web:edc86823747d21d8554a6e",
+  measurementId: "G-ZM4TPEG5HV"
 };
 
-// Firebase Initialize
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // 2. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
