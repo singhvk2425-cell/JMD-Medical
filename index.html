@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -21,7 +22,7 @@
                 <button onclick="showHistory()" class="history-btn" title="Old Orders">
                     <i class="fas fa-history"></i>
                 </button>
-                <button onclick="openAdmin()" class="history-btn" style="color: var(--accent);" title="Admin Login">
+                <button onclick="openAdmin()" class="history-btn" style="color: #ff9800;" title="Admin Login">
                     <i class="fas fa-user-lock"></i>
                 </button>
             </div>
@@ -89,13 +90,38 @@
             <p style="text-align:center; padding:20px; color:#888;">Cart khali hai...</p>
         </div>
         <div class="cart-footer">
-            <div class="total-row">
+            <div class="total-row" style="display: flex; justify-content: space-between; padding: 15px; font-weight: bold; border-top: 1px solid #eee;">
                 <span>Total Amount:</span>
-                <span>₹<span id="cartTotal">0.00</span></span>
+                <span style="color: #28a745;">₹<span id="cartTotal">0.00</span></span>
             </div>
-            <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
-                <i class="fab fa-whatsapp"></i> Order & Get PDF Bill
+            <button class="whatsapp-btn" onclick="sendWhatsAppOrder()" style="width: 100%; padding: 15px; background: #25D366; color: white; border: none; border-radius: 0 0 15px 15px; cursor: pointer; font-weight: bold;">
+                <i class="fab fa-whatsapp"></i> Order on WhatsApp
             </button>
+        </div>
+    </div>
+
+    <div id="adminModal" class="history-modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="history-content" style="background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px;">
+            <div class="cart-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <h3><i class="fas fa-user-shield"></i> Admin Login</h3>
+                <span onclick="closeAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
+            </div>
+            <div id="adminAuth">
+                <p>User ID:</p>
+                <input type="text" id="adminUser" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
+                <p>Password:</p>
+                <input type="password" id="adminPass" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
+                <button onclick="loginAdmin()" class="whatsapp-btn" style="width:100%; background:#007bff;">Login</button>
+            </div>
+            <div id="adminControls" style="display:none;">
+                <p>Select Medicine:</p>
+                <select id="medSelect" style="width:100%; padding:10px; margin-bottom:15px;"></select>
+                <p>Add Quantity:</p>
+                <input type="number" id="newStockQty" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd;">
+                <button onclick="updateStockNow()" class="whatsapp-btn" style="width:100%;">Update Stock</button>
+                <hr style="margin:20px 0;">
+                <button onclick="resetAllStock()" style="width:100%; background:#dc3545; color: white; padding: 10px; border:none; border-radius:8px;">Factory Reset Data</button>
+            </div>
         </div>
     </div>
 
@@ -108,40 +134,6 @@
             <div id="historyList"></div>
         </div>
     </div>
-
-    <div id="adminModal" class="history-modal" style="display:none;">
-        <div class="history-content">
-            <div class="cart-header">
-                <h3><i class="fas fa-user-shield"></i> Admin Login</h3>
-                <span onclick="closeAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
-            </div>
-            <div id="adminAuth">
-                <p>Admin User ID:</p>
-                <input type="text" id="adminUser" placeholder="ID daalein" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
-                <p>Password:</p>
-                <input type="password" id="adminPass" placeholder="Password daalein" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
-                <button onclick="loginAdmin()" class="whatsapp-btn" style="background:var(--primary);">Login</button>
-            </div>
-            <div id="adminControls" style="display:none;">
-                <p><b>Select Medicine:</b></p>
-                <select id="medSelect" style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;"></select>
-                <p><b>Add Quantity:</b></p>
-                <input type="number" id="newStockQty" placeholder="Example: 50" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
-                <button onclick="updateStockNow()" class="whatsapp-btn">Add Stock</button>
-                <hr style="margin:20px 0;">
-                <button onclick="resetAllStock()" style="background:#888;" class="whatsapp-btn">Factory Reset Cloud Data</button>
-            </div>
-        </div>
-    </div>
-
-    <footer style="background: #f8f9fa; padding: 40px 0; border-top: 2px solid #eee; margin-top: 50px;">
-        <div class="container" style="text-align: center;">
-            <h3 style="color: var(--primary); margin-bottom: 20px;">Contact Us</h3>
-            <p><i class="fas fa-mobile-alt"></i> <b>Mobile No:</b> 9110116102</p>
-            <p><i class="far fa-envelope"></i> <b>Gmail ID:</b> singhvk2425@gmail.com</p>
-            <p>&copy; 2026 JMD Medical Binodpur | Developed for Vishal Kumar Singh</p>
-        </div>
-    </footer>
 
     <script src="script.js"></script>
 </body>
