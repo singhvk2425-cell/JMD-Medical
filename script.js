@@ -1,4 +1,3 @@
-// 1. FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
   authDomain: "jmd-medical-88d46.firebaseapp.com",
@@ -10,20 +9,15 @@ const firebaseConfig = {
   databaseURL: "https://jmd-medical-88d46-default-rtdb.firebaseio.com"
 };
 
-// Initialize
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.database();
 
-// 2. ADMIN SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
-// 3. MASTER DATA
 const initialMedicines = [
-   { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
+     { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
     { "name": "A to z DROUP", "qty": 2.0, "mrp": 150.0, "exp": "30/09/26", "batch": "25490733" },
     { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
@@ -364,49 +358,39 @@ let medicines = [];
 let cart = [];
 let isShowingAll = false;
 
-// --- DATABASE SYNC ---
 db.ref('inventory').on('value', (snapshot) => {
     const data = snapshot.val();
-    if (data) {
-        medicines = data;
-        displayMeds(medicines);
-    } else {
-        db.ref('inventory').set(initialMedicines);
-    }
+    if (data) { medicines = data; displayMeds(medicines); }
+    else { db.ref('inventory').set(initialMedicines); }
 });
 
-// --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
     const searchVal = document.getElementById("searchInput").value.trim().toLowerCase();
-    
     if (!medList) return;
     medList.innerHTML = "";
 
-    let displayData = searchVal !== "" ? 
-        data.filter(m => m.name.toLowerCase().includes(searchVal)) : 
-        (isShowingAll ? data : data.slice(0, 12));
-
+    let displayData = searchVal !== "" ? data.filter(m => m.name.toLowerCase().includes(searchVal)) : (isShowingAll ? data : data.slice(0, 12));
     if (showMoreBtn) showMoreBtn.style.display = (searchVal !== "" || isShowingAll) ? "none" : "inline-block";
 
     displayData.forEach((med) => {
         const realIdx = medicines.findIndex(m => m.name === med.name);
         const card = document.createElement("div");
         card.className = "med-card";
-        let statusColor = med.qty <= 0 ? "#e74c3c" : (med.qty <= 10 ? "#f39c12" : "#28a745");
+        let statusColor = med.qty <= 0 ? "#e74c3c" : (med.qty <= 1.0 ? "#f39c12" : "#28a745");
         card.style.borderLeft = `5px solid ${statusColor}`;
         card.innerHTML = `
             <h3>${med.name}</h3>
             <p><small>Batch: ${med.batch} | Exp: ${med.exp}</small></p>
-            <p>Live Stock: <b style="color:blue;">${med.qty}</b></p>
-            <p style="color:#28a745; font-weight:700">MRP: ₹${Number(med.mrp).toFixed(2)}</p>
+            <p>Live Stock: <b style="color:blue;">${parseFloat(med.qty).toFixed(1)} Strips</b></p>
+            <p style="color:#28a745; font-weight:700">MRP: ₹${Number(med.mrp).toFixed(2)}/Strip</p>
             <div class="qty-row">
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, -1)">-</button>
                 <b id="qty-box-${realIdx}">1</b>
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, 1)">+</button>
             </div>
-            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add to Order</button>
+            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add Tablets</button>
         `;
         medList.appendChild(card);
     });
@@ -420,13 +404,18 @@ function changeQtyUI(idx, delta) {
 
 function addToCart(idx) {
     const med = medicines[idx];
-    const qtyBox = document.getElementById(`qty-box-${idx}`);
-    const orderedQty = parseInt(qtyBox.innerText);
-    if (orderedQty > med.qty) return alert("Stock kam hai!");
+    const tabletsRequested = parseInt(document.getElementById(`qty-box-${idx}`).innerText);
+    const stripValueRequested = tabletsRequested / 10; // Logic: 10 tablet = 1.0 strip
+
+    if (stripValueRequested > med.qty) return alert("Stock kam hai!");
 
     const existing = cart.find(i => i.name === med.name);
-    if(existing) existing.orderedQty += orderedQty;
-    else cart.push({...med, orderedQty: orderedQty});
+    if(existing) {
+        existing.orderedQty += tabletsRequested;
+        existing.decimalQty += stripValueRequested;
+    } else {
+        cart.push({...med, orderedQty: tabletsRequested, decimalQty: stripValueRequested});
+    }
     updateCartUI();
 }
 
@@ -435,8 +424,8 @@ function updateCartUI() {
     const list = document.getElementById('cartItems');
     const totalEl = document.getElementById('cartTotal');
     if (badge) badge.innerText = cart.length;
-    
     if(!list) return;
+
     if(cart.length === 0) {
         list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
         if(totalEl) totalEl.innerText = "0.00";
@@ -446,13 +435,13 @@ function updateCartUI() {
     list.innerHTML = "";
     let grandTotal = 0;
     cart.forEach((item, i) => {
-        let price = Number(item.mrp) || 0;
-        let itemTotal = price * item.orderedQty;
+        let pricePerTab = Number(item.mrp) / 10;
+        let itemTotal = pricePerTab * item.orderedQty;
         grandTotal += itemTotal;
         list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee">
             <b>${item.name}</b><br>
-            ${item.orderedQty} x ₹${price.toFixed(2)} = <b>₹${itemTotal.toFixed(2)}</b>
-            <button onclick="removeItem(${i})" style="color:red; float:right; border:none; background:none; cursor:pointer;">Remove</button>
+            ${item.orderedQty} Tablets (₹${itemTotal.toFixed(2)})
+            <button onclick="removeItem(${i})" style="color:red; float:right; border:none; background:none;">Remove</button>
         </div>`;
     });
     if(totalEl) totalEl.innerText = grandTotal.toFixed(2);
@@ -463,55 +452,23 @@ function sendWhatsAppOrder() {
     let totalBill = 0;
     let text = "📦 *NEW ORDER - JMD MEDICAL*%0A--------------------------%0A";
     cart.forEach((item, index) => {
-        let price = Number(item.mrp) || 0;
-        let itemTotal = price * item.orderedQty;
+        let pricePerTab = Number(item.mrp) / 10;
+        let itemTotal = pricePerTab * item.orderedQty;
         totalBill += itemTotal;
-        text += `${index + 1}. *${item.name}*%0A   Qty: ${item.orderedQty} x ₹${price.toFixed(2)} = ₹${itemTotal.toFixed(2)}%0A`;
+        text += `${index + 1}. *${item.name}*%0A   Qty: ${item.orderedQty} Tabs (Strip Value: ${item.decimalQty.toFixed(1)})%0A   Amt: ₹${itemTotal.toFixed(2)}%0A`;
+        
         const idx = medicines.findIndex(m => m.name === item.name);
-        if(idx !== -1) { medicines[idx].qty = parseFloat((medicines[idx].qty - item.orderedQty).toFixed(2)); }
+        if(idx !== -1) { 
+            let currentStock = parseFloat(medicines[idx].qty);
+            medicines[idx].qty = parseFloat((currentStock - item.decimalQty).toFixed(2)); 
+        }
     });
     text += "--------------------------%0A";
-    text += `*GRAND TOTAL: ₹${totalBill.toFixed(2)}*`;
+    text += `*TOTAL BILL: ₹${totalBill.toFixed(2)}*`;
     db.ref('inventory').set(medicines).then(() => {
         window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
         cart = []; updateCartUI();
     });
-}
-
-// Admin & Extra
-function loginAdmin() {
-    const u = document.getElementById('adminUser').value;
-    const p = document.getElementById('adminPass').value;
-    if (u === adminID && p === adminPass) {
-        document.getElementById('adminAuth').style.display = 'none';
-        document.getElementById('adminControls').style.display = 'block';
-        const select = document.getElementById('medSelect');
-        select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name}</option>`).join("");
-    } else { alert("ID/Pass Galat!"); }
-}
-
-function updateStockNow() {
-    const idx = document.getElementById('medSelect').value;
-    const addQty = parseFloat(document.getElementById('newStockQty').value);
-    if(!isNaN(addQty)) {
-        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
-        db.ref('inventory').set(medicines);
-        alert("Stock updated!");
-    }
-}
-
-function resetAllStock() {
-    if(confirm("Full Reset?")) {
-        db.ref('inventory').set(initialMedicines).then(() => location.reload());
-    }
-}
-
-function filterCategory(cat, btn) {
-    document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    if(cat === 'all') { displayMeds(medicines); return; }
-    const filtered = medicines.filter(m => m.name.toUpperCase().includes(cat.toUpperCase()));
-    displayMeds(filtered);
 }
 
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
@@ -520,7 +477,24 @@ function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
 function searchMedicine() { displayMeds(medicines); }
 function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
 function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-function showHistory() { alert("Orders are Live!"); }
+function loginAdmin() {
+    if (document.getElementById('adminUser').value === adminID && document.getElementById('adminPass').value === adminPass) {
+        document.getElementById('adminAuth').style.display = 'none';
+        document.getElementById('adminControls').style.display = 'block';
+        document.getElementById('medSelect').innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name}</option>`).join("");
+    } else { alert("Error!"); }
+}
+function updateStockNow() {
+    const idx = document.getElementById('medSelect').value;
+    const addQty = parseFloat(document.getElementById('newStockQty').value);
+    if(!isNaN(addQty)) {
+        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
+        db.ref('inventory').set(medicines);
+        alert("Updated!");
+    }
+}
+function resetAllStock() { if(confirm("Reset?")) { db.ref('inventory').set(initialMedicines).then(() => location.reload()); } }
+function showHistory() { alert("Firebase Sync Active!"); }
 function updateClock() { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString(); }
 setInterval(updateClock, 1000);
 window.onload = updateClock;
