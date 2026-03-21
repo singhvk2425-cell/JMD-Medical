@@ -1,3 +1,4 @@
+// 1. FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
   authDomain: "jmd-medical-88d46.firebaseapp.com",
@@ -12,10 +13,16 @@ const firebaseConfig = {
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.database();
 
+// 2. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
+let medicines = [];
+let cart = [];
+let isShowingAll = false;
+
+// 3. MASTER DATA (Initial medicines for Reset)
 const initialMedicines = [
      { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
@@ -354,16 +361,18 @@ const initialMedicines = [
     { "name": "ZYLORIC 100", "qty": 30.0, "mrp": 45.0, "exp": "31/03/27", "batch": "ZY-2595" }
 ];
 
-let medicines = [];
-let cart = [];
-let isShowingAll = false;
-
+// --- LIVE DATABASE SYNC ---
 db.ref('inventory').on('value', (snapshot) => {
     const data = snapshot.val();
-    if (data) { medicines = data; displayMeds(medicines); }
-    else { db.ref('inventory').set(initialMedicines); }
+    if (data) {
+        medicines = data;
+        displayMeds(medicines);
+    } else {
+        db.ref('inventory').set(initialMedicines);
+    }
 });
 
+// --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -378,19 +387,26 @@ function displayMeds(data) {
         const realIdx = medicines.findIndex(m => m.name === med.name);
         const card = document.createElement("div");
         card.className = "med-card";
+        
+        // 🧪 Tablet/Capsule Logic
+        const isTabCap = med.name.toUpperCase().includes("TAB") || med.name.toUpperCase().includes("CAP");
+        const unitLabel = isTabCap ? "Strips" : "Pcs";
+        const btnLabel = isTabCap ? "Tabs" : "Qty";
+
         let statusColor = med.qty <= 0 ? "#e74c3c" : (med.qty <= 1.0 ? "#f39c12" : "#28a745");
         card.style.borderLeft = `5px solid ${statusColor}`;
         card.innerHTML = `
             <h3>${med.name}</h3>
             <p><small>Batch: ${med.batch} | Exp: ${med.exp}</small></p>
-            <p>Live Stock: <b style="color:blue;">${parseFloat(med.qty).toFixed(1)} Strips</b></p>
-            <p style="color:#28a745; font-weight:700">MRP: ₹${Number(med.mrp).toFixed(2)}/Strip</p>
+            <p>Live Stock: <b style="color:blue;">${parseFloat(med.qty).toFixed(1)} ${unitLabel}</b></p>
+            <p style="color:#28a745; font-weight:700">MRP: ₹${Number(med.mrp).toFixed(2)} /${isTabCap ? 'Strip' : 'Pce'}</p>
             <div class="qty-row">
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, -1)">-</button>
                 <b id="qty-box-${realIdx}">1</b>
                 <button class="q-btn" onclick="changeQtyUI(${realIdx}, 1)">+</button>
+                <span style="font-size:12px; margin-left:5px;">${btnLabel}</span>
             </div>
-            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add Tablets</button>
+            <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>Add to Order</button>
         `;
         medList.appendChild(card);
     });
@@ -404,17 +420,25 @@ function changeQtyUI(idx, delta) {
 
 function addToCart(idx) {
     const med = medicines[idx];
-    const tabletsRequested = parseInt(document.getElementById(`qty-box-${idx}`).innerText);
-    const stripValueRequested = tabletsRequested / 10; // Logic: 10 tablet = 1.0 strip
+    const requestedQty = parseInt(document.getElementById(`qty-box-${idx}`).innerText);
+    const isTabCap = med.name.toUpperCase().includes("TAB") || med.name.toUpperCase().includes("CAP");
+    
+    // Logic: Agar Tab/Cap hai toh 10 se divide (0.1 strip), Syrup hai toh direct 1 piece
+    const stockToMinus = isTabCap ? (requestedQty / 10) : requestedQty;
 
-    if (stripValueRequested > med.qty) return alert("Stock kam hai!");
+    if (stockToMinus > med.qty) return alert("Stock kam hai!");
 
     const existing = cart.find(i => i.name === med.name);
     if(existing) {
-        existing.orderedQty += tabletsRequested;
-        existing.decimalQty += stripValueRequested;
+        existing.orderedQty += requestedQty;
+        existing.stockMinusValue += stockToMinus;
     } else {
-        cart.push({...med, orderedQty: tabletsRequested, decimalQty: stripValueRequested});
+        cart.push({
+            ...med, 
+            orderedQty: requestedQty, 
+            stockMinusValue: stockToMinus,
+            isTabCap: isTabCap 
+        });
     }
     updateCartUI();
 }
@@ -435,13 +459,13 @@ function updateCartUI() {
     list.innerHTML = "";
     let grandTotal = 0;
     cart.forEach((item, i) => {
-        let pricePerTab = Number(item.mrp) / 10;
-        let itemTotal = pricePerTab * item.orderedQty;
+        // Price: Tab/Cap ka 1/10th, Syrup ka poora MRP
+        let itemTotal = item.isTabCap ? (Number(item.mrp) / 10 * item.orderedQty) : (Number(item.mrp) * item.orderedQty);
         grandTotal += itemTotal;
         list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee">
             <b>${item.name}</b><br>
-            ${item.orderedQty} Tablets (₹${itemTotal.toFixed(2)})
-            <button onclick="removeItem(${i})" style="color:red; float:right; border:none; background:none;">Remove</button>
+            ${item.orderedQty} ${item.isTabCap ? 'Tabs' : 'Pcs'} = <b>₹${itemTotal.toFixed(2)}</b>
+            <button onclick="removeItem(${i})" style="color:red; float:right; border:none; background:none; cursor:pointer;">Remove</button>
         </div>`;
     });
     if(totalEl) totalEl.innerText = grandTotal.toFixed(2);
@@ -451,50 +475,54 @@ function sendWhatsAppOrder() {
     if(cart.length === 0) return alert("Pehle items add karein!");
     let totalBill = 0;
     let text = "📦 *NEW ORDER - JMD MEDICAL*%0A--------------------------%0A";
+    
     cart.forEach((item, index) => {
-        let pricePerTab = Number(item.mrp) / 10;
-        let itemTotal = pricePerTab * item.orderedQty;
+        let itemTotal = item.isTabCap ? (Number(item.mrp) / 10 * item.orderedQty) : (Number(item.mrp) * item.orderedQty);
         totalBill += itemTotal;
-        text += `${index + 1}. *${item.name}*%0A   Qty: ${item.orderedQty} Tabs (Strip Value: ${item.decimalQty.toFixed(1)})%0A   Amt: ₹${itemTotal.toFixed(2)}%0A`;
+        text += `${index + 1}. *${item.name}*%0A   Qty: ${item.orderedQty} ${item.isTabCap ? 'Tabs' : 'Pcs'}%0A   Amt: ₹${itemTotal.toFixed(2)}%0A`;
         
         const idx = medicines.findIndex(m => m.name === item.name);
         if(idx !== -1) { 
-            let currentStock = parseFloat(medicines[idx].qty);
-            medicines[idx].qty = parseFloat((currentStock - item.decimalQty).toFixed(2)); 
+            medicines[idx].qty = parseFloat((medicines[idx].qty - item.stockMinusValue).toFixed(2)); 
         }
     });
+
     text += "--------------------------%0A";
-    text += `*TOTAL BILL: ₹${totalBill.toFixed(2)}*`;
+    text += `*GRAND TOTAL: ₹${totalBill.toFixed(2)}*`;
+
     db.ref('inventory').set(medicines).then(() => {
         window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
         cart = []; updateCartUI();
     });
 }
 
+function loginAdmin() {
+    if (document.getElementById('adminUser').value === adminID && document.getElementById('adminPass').value === adminPass) {
+        document.getElementById('adminAuth').style.display = 'none';
+        document.getElementById('adminControls').style.display = 'block';
+        document.getElementById('medSelect').innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (${m.qty})</option>`).join("");
+    } else { alert("Login Error!"); }
+}
+
+function updateStockNow() {
+    const idx = document.getElementById('medSelect').value;
+    const addVal = parseFloat(document.getElementById('newStockQty').value);
+    if(!isNaN(addVal)) {
+        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addVal).toFixed(2));
+        db.ref('inventory').set(medicines);
+        alert("Stock Updated!");
+        loginAdmin(); // Refresh select
+    }
+}
+
+// Utils
 function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
 function showAllMeds() { isShowingAll = true; displayMeds(medicines); }
 function searchMedicine() { displayMeds(medicines); }
 function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
 function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-function loginAdmin() {
-    if (document.getElementById('adminUser').value === adminID && document.getElementById('adminPass').value === adminPass) {
-        document.getElementById('adminAuth').style.display = 'none';
-        document.getElementById('adminControls').style.display = 'block';
-        document.getElementById('medSelect').innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name}</option>`).join("");
-    } else { alert("Error!"); }
-}
-function updateStockNow() {
-    const idx = document.getElementById('medSelect').value;
-    const addQty = parseFloat(document.getElementById('newStockQty').value);
-    if(!isNaN(addQty)) {
-        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
-        db.ref('inventory').set(medicines);
-        alert("Updated!");
-    }
-}
-function resetAllStock() { if(confirm("Reset?")) { db.ref('inventory').set(initialMedicines).then(() => location.reload()); } }
-function showHistory() { alert("Firebase Sync Active!"); }
+function resetAllStock() { if(confirm("Reset Database?")) { db.ref('inventory').set(initialMedicines).then(() => location.reload()); } }
 function updateClock() { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString(); }
 setInterval(updateClock, 1000);
 window.onload = updateClock;
