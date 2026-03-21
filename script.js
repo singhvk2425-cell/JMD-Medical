@@ -234,7 +234,7 @@ const initialMedicines = [
     { "name": "SV SET 20 NO.", "qty": 5.0, "mrp": 25.0, "exp": "31/03/27", "batch": "SV-2507" },
     { "name": "SV SET 22 NO.", "qty": 26.0, "mrp": 25.0, "exp": "31/03/27", "batch": "SV-2508" },
     { "name": "Systoliv syp", "qty": 8.0, "mrp": 115.0, "exp": "31/03/27", "batch": "SY-2511" },
-{ "name": "THROMBOPHOB OINT", "qty": 2.0, "mrp": 185.0, "exp": "31/03/27", "batch": "TP-2537" },
+    { "name": "THROMBOPHOB OINT", "qty": 2.0, "mrp": 185.0, "exp": "31/03/27", "batch": "TP-2537" },
     { "name": "THROMBOTROY QPS SPRA", "qty": 1.0, "mrp": 195.0, "exp": "31/03/27", "batch": "TT-2514" },
     { "name": "TINIBA 500ML", "qty": 1.0, "mrp": 85.0, "exp": "31/03/27", "batch": "TN-2535" },
     { "name": "TINIBA INFU", "qty": 8.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-220" },
