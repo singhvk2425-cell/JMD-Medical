@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
 
@@ -98,10 +99,6 @@
         </div>
     </div>
 
-    <button id="cancelOrderBtn" onclick="cancelLastOrder()" class="floating-cancel" style="display: none;">
-        <i class="fas fa-undo"></i> Cancel Last Order
-    </button>
-
     <div id="historyModal" class="history-modal" style="display:none;">
         <div class="history-content">
             <div class="cart-header">
@@ -119,22 +116,20 @@
                 <span onclick="closeAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
             </div>
             <div id="adminAuth">
-                <p style="margin-bottom:5px;">Admin User ID:</p>
-                <input type="text" id="adminUser" placeholder="ID daalein" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
-                
-                <p style="margin-bottom:5px;">Password:</p>
-                <input type="password" id="adminPass" placeholder="Password daalein" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
-                
-                <button onclick="loginAdmin()" class="whatsapp-btn" style="background:var(--primary);">Login & Update Stock</button>
+                <p>Admin User ID:</p>
+                <input type="text" id="adminUser" placeholder="ID daalein" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+                <p>Password:</p>
+                <input type="password" id="adminPass" placeholder="Password daalein" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+                <button onclick="loginAdmin()" class="whatsapp-btn" style="background:var(--primary);">Login</button>
             </div>
             <div id="adminControls" style="display:none;">
-                <p style="margin-bottom:5px;"><b>Select Medicine:</b></p>
+                <p><b>Select Medicine:</b></p>
                 <select id="medSelect" style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;"></select>
-                <p style="margin-bottom:5px;"><b>New Stock Quantity:</b></p>
-                <input type="number" id="newStockQty" placeholder="Example: 500" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
-                <button onclick="updateStockNow()" class="whatsapp-btn">Update Stock Now</button>
+                <p><b>Add Quantity:</b></p>
+                <input type="number" id="newStockQty" placeholder="Example: 50" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+                <button onclick="updateStockNow()" class="whatsapp-btn">Add Stock</button>
                 <hr style="margin:20px 0;">
-                <button onclick="resetAllStock()" style="background:#888;" class="whatsapp-btn">Reset to Original List</button>
+                <button onclick="resetAllStock()" style="background:#888;" class="whatsapp-btn">Factory Reset Cloud Data</button>
             </div>
         </div>
     </div>
@@ -142,9 +137,8 @@
     <footer style="background: #f8f9fa; padding: 40px 0; border-top: 2px solid #eee; margin-top: 50px;">
         <div class="container" style="text-align: center;">
             <h3 style="color: var(--primary); margin-bottom: 20px;">Contact Us</h3>
-            <p style="margin-bottom: 10px;"><i class="fas fa-mobile-alt" style="color: var(--primary);"></i> <b>Mobile No:</b> 9110116102</p>
-            <p style="margin-bottom: 20px;"><i class="far fa-envelope" style="color: var(--primary);"></i> <b>Gmail ID:</b> singhvk2425@gmail.com</p>
-            <hr style="margin: 20px auto; width: 50%; opacity: 0.2;">
+            <p><i class="fas fa-mobile-alt"></i> <b>Mobile No:</b> 9110116102</p>
+            <p><i class="far fa-envelope"></i> <b>Gmail ID:</b> singhvk2425@gmail.com</p>
             <p>&copy; 2026 JMD Medical Binodpur | Developed for Vishal Kumar Singh</p>
         </div>
     </footer>
