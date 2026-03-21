@@ -3,7 +3,7 @@ const myWhatsAppNumber = "9110116102";
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
-// 2. INITIAL DATA (Total 444 Items)
+// 2. INITIAL DATA (Total 443 Items)
 const initialMedicines = [
     { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
@@ -11,6 +11,7 @@ const initialMedicines = [
     { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
     { "name": "ABDOMINAL BELT REGULAR", "qty": 3.0, "mrp": 520.0, "exp": "01/10/26", "batch": "HGSDVF" },
     { "name": "ACILOC 150TAB", "qty": 15.009, "mrp": 49.1, "exp": "31/10/26", "batch": "LD24242" },
+    { "name": "ACILOC 300", "qty": 2.005, "mrp": 54.8, "exp": "30/11/26", "batch": "LO24138" },
     { "name": "ACILOC AMP", "qty": 4.0, "mrp": 7.2, "exp": "31/07/27", "batch": "IN24091" },
     { "name": "ACILOC RD 15 TAB", "qty": 34.0, "mrp": 92.3, "exp": "31/03/27", "batch": "JKAD25011" },
     { "name": "ACR-200 caps", "qty": 4.0, "mrp": 122.0, "exp": "30/11/25", "batch": "GC4612A" },
@@ -142,12 +143,23 @@ const initialMedicines = [
     { "name": "Farofence CV", "qty": 17.0, "mrp": 540.0, "exp": "31/03/27", "batch": "FF-2426" },
     { "name": "Farozius-200", "qty": 3.0, "mrp": 490.0, "exp": "31/03/27", "batch": "FZ-2427" },
     { "name": "Fe Daily Tab", "qty": 9.0, "mrp": 280.0, "exp": "31/03/27", "batch": "FD-2428" },
+    { "name": "FEMCLAVE LB 625 TAB", "qty": 36.0, "mrp": 185.0, "exp": "31/03/27", "batch": "FL-2429" },
+    { "name": "FLAGYL 400", "qty": 45.0, "mrp": 28.0, "exp": "31/08/27", "batch": "FG-2430" },
+    { "name": "FLORASANTE CAP", "qty": 1.0, "mrp": 260.0, "exp": "31/03/27", "batch": "FS-2431" },
+    { "name": "FLUUKA 150", "qty": 15.0, "mrp": 14.5, "exp": "31/05/27", "batch": "FK-2432" },
+    { "name": "FOLVITE TAB", "qty": 30.0, "mrp": 82.0, "exp": "31/01/28", "batch": "FV-2433" },
     { "name": "FOLYS CATHETAR 24", "qty": 20.0, "mrp": 120.0, "exp": "31/03/27", "batch": "FC-2432" },
-    { "name": "GAUZE", "qty": 3.0, "mrp": 85.0, "exp": "31/03/27", "batch": "GZ-2433" },
+    { "name": "GELUSIL MPS LIQ", "qty": 3.0, "mrp": 135.0, "exp": "31/07/27", "batch": "GS-2434" },
     { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GZ-2434" },
+    { "name": "GAUZE", "qty": 3.0, "mrp": 85.0, "exp": "31/03/27", "batch": "GZ-2433" },
+    { "name": "Glexim CV 325", "qty": 3.0, "mrp": 310.0, "exp": "31/03/27", "batch": "GX-2435" },
+    { "name": "GLIMY M 2", "qty": 25.0, "mrp": 115.0, "exp": "31/12/27", "batch": "GM-2436" },
     { "name": "GLOVES 7 NO", "qty": 12.0, "mrp": 35.0, "exp": "31/03/27", "batch": "GV-2435" },
-    { "name": "Glexim CV 325", "qty": 3.0, "mrp": 310.0, "exp": "31/03/27", "batch": "GX-2436" },
-    { "name": "Growly Syrup", "qty": 10.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GY-2437" },
+    { "name": "GLUCON-D 500G", "qty": 5.0, "mrp": 190.0, "exp": "30/06/27", "batch": "GD-2437" },
+    { "name": "Growly Syrup", "qty": 10.0, "mrp": 145.0, "exp": "31/03/27", "batch": "GY-2438" },
+    { "name": "GUFICOX 450", "qty": 12.0, "mrp": 110.0, "exp": "31/03/27", "batch": "GC-2439" },
+    { "name": "HIFENAC P", "qty": 30.0, "mrp": 92.0, "exp": "31/10/27", "batch": "HP-2440" },
+    { "name": "HISTAFREE 120", "qty": 15.0, "mrp": 165.0, "exp": "31/03/27", "batch": "HF-2441" },
     { "name": "HOTFLAM - P", "qty": 69.2, "mrp": 35.0, "exp": "31/03/27", "batch": "HP-2438" },
     { "name": "HOTFLAM - SP TAB", "qty": 16.3, "mrp": 110.0, "exp": "31/03/27", "batch": "HS-2439" },
     { "name": "HUGGIES (M) 28 PANTS", "qty": 20.0, "mrp": 450.0, "exp": "31/03/27", "batch": "HG-2440" },
@@ -211,7 +223,7 @@ const initialMedicines = [
     { "name": "RIKVIT-HD", "qty": 35.0, "mrp": 65.0, "exp": "31/03/27", "batch": "RV-2494" },
     { "name": "Rucam 400", "qty": 3.0, "mrp": 410.0, "exp": "31/03/27", "batch": "RC-2495" },
     { "name": "safcold tab", "qty": 31.6, "mrp": 65.0, "exp": "31/03/27", "batch": "ST-2512" },
-    { "name": "saltum kid 250", "qty": 5.0, "mrp": 290.0, "exp": "31/08/26", "batch": "TB240193" },
+    { "name": "saltum kid 250", "qty": 5.0, "mrp": 319.4, "exp": "31/08/26", "batch": "TB240193" },
     { "name": "SALTUM -DS", "qty": 30.0, "mrp": 645.88, "exp": "30/04/27", "batch": "TSMB5007" },
     { "name": "SALTUM 375", "qty": 10.0, "mrp": 592.97, "exp": "31/03/27", "batch": "TSMA5018" },
     { "name": "SALTUM INJ 1.5GM", "qty": 80.0, "mrp": 158.5, "exp": "30/11/27", "batch": "G592507A" },
