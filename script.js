@@ -1,221 +1,221 @@
-// 1. SETTINGS: Apna WhatsApp Number, User ID aur Admin Password
+// 1. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      // Aapki User ID
 const adminPass = "jmd123";       // Aapka Password
 
-// 2. INITIAL DATA (Live Stock Data)
+// 2. INITIAL DATA (All 446 Medicines from Excel)
 const initialMedicines = [
-    { "name": "10 ML", "qty": 339.0, "rate": 0.0 },
-    { "name": "3ML", "qty": 205.0, "rate": 0.0 },
-    { "name": "5 ML", "qty": 207.0, "rate": 0.0 },
-    { "name": "ABDOMINAL BELT REGUL", "qty": 3.0, "rate": 0.0 },
-    { "name": "ACILOC RD 15 TAB", "qty": 34.0, "rate": 63.1 },
-    { "name": "ACR-200 caps", "qty": 4.0, "rate": 87.26 },
-    { "name": "AKUZID 1000", "qty": 18.0, "rate": 156.38 },
-    { "name": "AKUZID TZ 250g", "qty": 49.0, "rate": 67.68 },
-    { "name": "AMIKAMAC 500", "qty": 1.0, "rate": 36.4 },
-    { "name": "AMIRID TAB", "qty": 3.0, "rate": 79.89 },
-    { "name": "ANTIMAX 500MG", "qty": 11.4, "rate": 0.0 },
-    { "name": "AROPEN TAB", "qty": 16.1, "rate": 91.21 },
-    { "name": "AUSILID 600 MG TAB", "qty": 3.0, "rate": 176.18 },
-    { "name": "AUSITUM 500 MG", "qty": 14.5, "rate": 202.47 },
-    { "name": "AVERT 16", "qty": 11.0, "rate": 108.92 },
-    { "name": "AZIKOT 500", "qty": 12.0, "rate": 79.48 },
-    { "name": "AZILISER SACHETS", "qty": 46.0, "rate": 30.04 },
-    { "name": "AZOLE L TAB", "qty": 25.0, "rate": 15.4 },
-    { "name": "Ab-soft Plus syp", "qty": 9.0, "rate": 0.0 },
-    { "name": "Abdobnal Belt U", "qty": 9.0, "rate": 0.0 },
-    { "name": "Alex Lozenges 5mg", "qty": 7.0, "rate": 83.71 },
-    { "name": "Ambroled-DX Syp", "qty": 3.0, "rate": 78.03 },
-    { "name": "Amelior-D3 Tab", "qty": 6.0, "rate": 177.0 },
-    { "name": "Applevit 4G cap", "qty": 1.0, "rate": 198.78 },
-    { "name": "Ariflam MR tab", "qty": 8.0, "rate": 195.22 },
-    { "name": "Asrizone-TZ 1.125 in", "qty": 64.0, "rate": 176.6 },
-    { "name": "BABY SECTION", "qty": 18.0, "rate": 3.36 },
-    { "name": "BABY SET WITH CYTOLO", "qty": 4.0, "rate": 0.0 },
-    { "name": "BABY SET WITHOUT CYT", "qty": 5.0, "rate": 0.0 },
-    { "name": "BELYCAN + CAP", "qty": 13.0, "rate": 94.58 },
-    { "name": "BGCORT- TM TAB", "qty": 5.0, "rate": 329.54 },
-    { "name": "BILMEGH TAB", "qty": 11.0, "rate": 106.87 },
-    { "name": "BISLARY WATER 1L", "qty": 42.0, "rate": 0.0 },
-    { "name": "BOTTAL 150ML", "qty": 68.0, "rate": 0.0 },
-    { "name": "BOTTAL 250 ML", "qty": 53.0, "rate": 0.0 },
-    { "name": "BOTTOL 125ML", "qty": 37.0, "rate": 0.0 },
-    { "name": "BREEZY", "qty": 87.0, "rate": 56.0 },
-    { "name": "BT-SET", "qty": 7.0, "rate": 23.89 },
-    { "name": "Bio-D3 Joint", "qty": 1.0, "rate": 591.05 },
-    { "name": "C-Lysin Gold Tab", "qty": 3.9, "rate": 47.35 },
-    { "name": "CACEFEN - P", "qty": 46.8, "rate": 26.91 },
-    { "name": "CANDID POWDER 120 GM", "qty": 8.0, "rate": 116.49 },
-    { "name": "CEFOPAN O TAB", "qty": 30.2, "rate": 128.21 },
-    { "name": "CITAPURE FORTE", "qty": 34.0, "rate": 68.79 },
-    { "name": "CLONAX MD-0.5", "qty": 16.0, "rate": 27.94 },
-    { "name": "CO2", "qty": 1.0, "rate": 145.71 },
-    { "name": "CONSTINA POWDER", "qty": 9.0, "rate": 112.25 },
-    { "name": "Califer-XT tab", "qty": 5.0, "rate": 131.39 },
-    { "name": "Cefoblaze O tab", "qty": 12.0, "rate": 76.59 },
-    { "name": "Cefuross-125 tab", "qty": 3.0, "rate": 114.85 },
-    { "name": "Cefuswag - CV 500", "qty": 8.0, "rate": 432.4 },
-    { "name": "Cintagest drops", "qty": 1.0, "rate": 53.82 },
-    { "name": "Cyclovarin cap", "qty": 2.0, "rate": 232.0 },
-    { "name": "cefuross 250", "qty": 6.0, "rate": 160.22 },
-    { "name": "DEC PED SYP", "qty": 6.0, "rate": 49.4 },
-    { "name": "DEC-FORTE TAB", "qty": 18.0, "rate": 46.39 },
-    { "name": "DFO 4x Gel", "qty": 4.0, "rate": 150.12 },
-    { "name": "DIAPER ADULT (M)", "qty": 1.0, "rate": 0.0 },
-    { "name": "DOXOKOT M TAB", "qty": 6.9, "rate": 64.26 },
-    { "name": "Dideral Plus tab", "qty": 5.0, "rate": 73.3 },
-    { "name": "Docorite cap.", "qty": 6.0, "rate": 106.52 },
-    { "name": "Doxyrax OD tab", "qty": 9.0, "rate": 69.6 },
-    { "name": "ECH-700 CAP", "qty": 4.0, "rate": 123.33 },
-    { "name": "ENTROQUNOL TAB", "qty": 2.0, "rate": 47.05 },
-    { "name": "ERZL Orange Drink", "qty": 77.0, "rate": 26.05 },
-    { "name": "ESIRADO RD CAP", "qty": 1.4, "rate": 54.26 },
-    { "name": "ESOKOT D CAP", "qty": 23.5, "rate": 70.47 },
-    { "name": "EVECARE FORTE LIQUID", "qty": 7.0, "rate": 185.29 },
-    { "name": "Enterogermina", "qty": 8.0, "rate": 0.0 },
-    { "name": "Esirado RD 15 Capsul", "qty": 114.0, "rate": 81.38 },
-    { "name": "Esokot - L", "qty": 17.0, "rate": 63.49 },
-    { "name": "Espeedo- SP", "qty": 20.0, "rate": 88.0 },
-    { "name": "Exacyl 500 Tab", "qty": 12.0, "rate": 219.45 },
-    { "name": "FEMCLAVE LB 625 TAB", "qty": 36.0, "rate": 141.86 },
-    { "name": "FLORASANTE CAP", "qty": 1.0, "rate": 198.6 },
-    { "name": "Farofence CV", "qty": 17.0, "rate": 427.5 },
-    { "name": "Farozius-200", "qty": 3.0, "rate": 416.93 },
-    { "name": "Fe Daily Tab", "qty": 9.0, "rate": 221.12 },
-    { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "rate": 89.6 },
-    { "name": "GLOVES 7 NO", "qty": 12.0, "rate": 0.0 },
-    { "name": "Glexim CV 325", "qty": 3.0, "rate": 195.51 },
-    { "name": "Growly Syrup", "qty": 10.0, "rate": 81.65 },
-    { "name": "HOTFLAM - P", "qty": 69.2, "rate": 17.74 },
-    { "name": "HOTFLAM - SP TAB", "qty": 16.3, "rate": 50.66 },
-    { "name": "HUGGIES (M) 28 PANTS", "qty": 20.0, "rate": 0.0 },
-    { "name": "HUGGIES (M) 38 PANTS", "qty": 20.0, "rate": 0.0 },
-    { "name": "HUGGIES (M) 5 PANT", "qty": 19.0, "rate": 0.0 },
-    { "name": "HUGGIES (M) 8 PANTS", "qty": 48.0, "rate": 0.0 },
-    { "name": "ITRAMEGH 200MG", "qty": 3.0, "rate": 131.22 },
-    { "name": "IXOVIT 9G S/G", "qty": 6.0, "rate": 178.42 },
-    { "name": "InnoVAL Gel", "qty": 3.0, "rate": 273.6 },
-    { "name": "it mac 200", "qty": 2.0, "rate": 148.18 },
-    { "name": "K-Lyte-P", "qty": 1.0, "rate": 47.26 },
-    { "name": "K-WIN 10 AMP", "qty": 5.0, "rate": 44.95 },
-    { "name": "KLARIM-250 DRY SYP", "qty": 5.0, "rate": 162.69 },
-    { "name": "LACTISYN SACHET", "qty": 15.0, "rate": 41.28 },
-    { "name": "LACTOGEN 1 400GM", "qty": 2.0, "rate": 408.71 },
-    { "name": "LACTOGEN 1 200G", "qty": 8.0, "rate": 218.75 },
-    { "name": "LAXARIZ SYP", "qty": 22.0, "rate": 109.3 },
-    { "name": "LIZOMAC 600MG", "qty": 2.0, "rate": 303.61 },
-    { "name": "Lactobex-PPB cap", "qty": 0.6, "rate": 86.67 },
-    { "name": "Leixo-fem tab", "qty": 8.0, "rate": 278.37 },
-    { "name": "Lyziton Kid syp", "qty": 3.0, "rate": 78.51 },
-    { "name": "MIGRAVAS P", "qty": 21.9, "rate": 104.24 },
-    { "name": "MIRABET-S-25 TAB", "qty": 1.0, "rate": 310.21 },
-    { "name": "MIRABET-S-50 TAB", "qty": 3.0, "rate": 387.76 },
-    { "name": "MONTORIL TAB", "qty": 16.0, "rate": 62.7 },
-    { "name": "MORTEGA TAB", "qty": 5.0, "rate": 338.5 },
-    { "name": "Megapot-MB6", "qty": 10.0, "rate": 115.68 },
-    { "name": "Migrant-500", "qty": 7.0, "rate": 71.82 },
-    { "name": "Multizavit Cap", "qty": 11.0, "rate": 148.48 },
-    { "name": "medifin gauze", "qty": 1.0, "rate": 60.0 },
-    { "name": "migravas 10mg", "qty": 6.0, "rate": 39.1 },
-    { "name": "N T GAS TABLET", "qty": 5.2, "rate": 61.04 },
-    { "name": "NAVIGEN-AP", "qty": 10.0, "rate": 127.61 },
-    { "name": "NERVORANT 5G CREAM", "qty": 10.0, "rate": 142.8 },
-    { "name": "NIDAZAP 500ML", "qty": 2.0, "rate": 36.4 },
-    { "name": "NIPPEL", "qty": 17.0, "rate": 0.0 },
-    { "name": "NORMALIZATION MASK", "qty": 1.0, "rate": 0.0 },
-    { "name": "nuvitical 60K tab", "qty": 4.0, "rate": 82.7 },
-    { "name": "OSRACAL D3 NANO", "qty": 18.0, "rate": 181.4 },
-    { "name": "PRULINK 2 TAB", "qty": 8.0, "rate": 174.16 },
-    { "name": "Pacimol MF 125ml", "qty": 4.0, "rate": 35.11 },
-    { "name": "Poviquin", "qty": 4.0, "rate": 26.25 },
-    { "name": "Pregazot NT", "qty": 4.0, "rate": 143.34 },
-    { "name": "Prostalyn Cap", "qty": 8.0, "rate": 142.12 },
-    { "name": "pharmazin MD-5", "qty": 12.0, "rate": 45.44 },
-    { "name": "RABEMAC -DSR 15 t", "qty": 7.0667, "rate": 165.22 },
-    { "name": "RAXOFLAM TP", "qty": 19.2, "rate": 89.06 },
-    { "name": "REJULIV PLUS SYP", "qty": 2.0, "rate": 219.68 },
-    { "name": "RIKVIT-HD", "qty": 35.0, "rate": 41.21 },
-    { "name": "Rucam 400", "qty": 3.0, "rate": 318.0 },
-    { "name": "SATMINE OINT 10GM", "qty": 13.0, "rate": 147.6 },
-    { "name": "SEPROLIV SYP", "qty": 9.0, "rate": 93.92 },
-    { "name": "SEPTILOC ONITMENT", "qty": 2.0, "rate": 95.0 },
-    { "name": "SILICON CATHETER 16", "qty": 2.0, "rate": 145.0 },
-    { "name": "SILICON CHATHER 14 N", "qty": 3.0, "rate": 0.0 },
-    { "name": "SLEEPOLAX SPRAY", "qty": 6.0, "rate": 347.71 },
-    { "name": "SOFY PAD MRP 32", "qty": 5.0, "rate": 0.0 },
-    { "name": "SP- CAL Plus cap", "qty": 3.0, "rate": 84.53 },
-    { "name": "SPARK SYP", "qty": 9.0, "rate": 189.37 },
-    { "name": "STERIPORE TAP", "qty": 9.0, "rate": 0.0 },
-    { "name": "SUPERJOINT-GM TAB", "qty": 7.5, "rate": 160.59 },
-    { "name": "SV SET 20 NO.", "qty": 5.0, "rate": 50.2 },
-    { "name": "SV SET 22 NO.", "qty": 26.0, "rate": 7.28 },
-    { "name": "Sarcoboost Sachet", "qty": 28.0, "rate": 57.0 },
-    { "name": "Sucraford-O sup", "qty": 9.0, "rate": 136.51 },
-    { "name": "Systoliv syp", "qty": 8.0, "rate": 0.0 },
-    { "name": "safcold tab", "qty": 31.6, "rate": 45.74 },
-    { "name": "saltum kid 250", "qty": 5.0, "rate": 212.93 },
-    { "name": "THROMBOTROY QPS SPRA", "qty": 1.0, "rate": 143.99 },
-    { "name": "TINZIT", "qty": 1.0, "rate": 247.0 },
-    { "name": "TUSSBERRY LS DROP", "qty": 5.0, "rate": 43.07 },
-    { "name": "UBEGOLD", "qty": 4.0, "rate": 214.82 },
-    { "name": "UDILINK 300 MG TAB", "qty": 17.0, "rate": 442.32 },
-    { "name": "UGBACT 500", "qty": 17.0, "rate": 432.0 },
-    { "name": "UPCID - O DS SYP", "qty": 34.0, "rate": 193.05 },
-    { "name": "UPCID-DSR TAB", "qty": 28.0, "rate": 79.8 },
-    { "name": "URIPOT MB6", "qty": 7.0, "rate": 148.55 },
-    { "name": "URISOFT CAP", "qty": 9.0, "rate": 182.4 },
-    { "name": "Ulpan Gel syp", "qty": 24.0, "rate": 148.05 },
-    { "name": "Vitkul - EC tab", "qty": 10.0, "rate": 0.0 },
-    { "name": "Vonolink 20 tab", "qty": 17.0, "rate": 109.46 },
-    { "name": "Weekzot - D3", "qty": 1.0, "rate": 85.43 },
-    { "name": "XERODERM OTC CREAM", "qty": 3.0, "rate": 0.0 },
-    { "name": "Xtril Kid Syrup", "qty": 2.0, "rate": 63.85 },
-    { "name": "xerolac cap", "qty": 5.0, "rate": 0.0 },
-    { "name": "zikem-200 susp", "qty": 8.0, "rate": 69.23 },
-    { "name": "FOLYS CATHETAR 24", "qty": 20.0, "rate": 0.0 },
-    { "name": "GAUZE", "qty": 3.0, "rate": 58.83 },
-    { "name": "INTRAFIX AIR", "qty": 24.0, "rate": 0.0 },
-    { "name": "KITKATH 22", "qty": 11.0, "rate": 0.0 },
-    { "name": "KITKATH 24", "qty": 17.0, "rate": 12.94 },
-    { "name": "KLICK CLAMP", "qty": 89.0, "rate": 0.0 },
-    { "name": "MAMY POKO PANTS 1 P", "qty": 8.0, "rate": 0.0 },
-    { "name": "MAMYPOKO PANTS (M) 2", "qty": 4.0, "rate": 0.0 },
-    { "name": "MICROPORE", "qty": 3.0, "rate": 0.0 },
-    { "name": "STAYFREE XL MRP 40", "qty": 25.0, "rate": 0.0 },
-    { "name": "STAYFREE regular mrp", "qty": 16.0, "rate": 0.0 },
-    { "name": "ZIG ZIG COTTON", "qty": 10.0, "rate": 0.0 },
-    { "name": "LIMCEE 500MG", "qty": 9.4, "rate": 18.59 },
-    { "name": "CURASIDE-ET", "qty": 1.0, "rate": 130.0 },
-    { "name": "L-301 CAP", "qty": 4.0, "rate": 80.6 },
-    { "name": "AZOLE L syrup", "qty": 12.0, "rate": 14.14 },
-    { "name": "AUSITUM CV 625", "qty": 15.0, "rate": 289.84 },
-    { "name": "D-PROTIN POWDER", "qty": 1.0, "rate": 0.0 },
-    { "name": "DOLO 250 SYP", "qty": 1.0, "rate": 28.21 },
-    { "name": "DOLO 650 TAB", "qty": 20.9333, "rate": 21.7 },
-    { "name": "MECONERV - Z SYP", "qty": 12.0, "rate": 196.97 },
-    { "name": "KENACORT 40MG/ML", "qty": 1.0, "rate": 161.23 },
-    { "name": "SARIDON TAB", "qty": 3.1, "rate": 40.38 },
-    { "name": "STEMETIL MD", "qty": 1.3333, "rate": 153.61 },
-    { "name": "DEXONA INJ", "qty": 1.0, "rate": 8.94 },
-    { "name": "TINIBA 500ML", "qty": 1.0, "rate": 0.0 },
-    { "name": "TINIBA INFU", "qty": 8.0, "rate": 0.0 },
-    { "name": "TRAMAZAC 100MG AMP", "qty": 44.0, "rate": 17.87 },
-    { "name": "DULCOFLEX TAB", "qty": 4.8, "rate": 10.7 },
-    { "name": "THROMBOPHOB OINT", "qty": 2.0, "rate": 176.81 },
-    { "name": "BIO-D3-STRONG", "qty": 9.0, "rate": 205.24 },
-    { "name": "CEFOLAC O 200MG", "qty": 4.0, "rate": 137.57 },
-    { "name": "CLARIGARD 500", "qty": 2.0, "rate": 252.31 },
-    { "name": "COVATIL CV 500", "qty": 2.0, "rate": 716.34 },
-    { "name": "Cabliz 0.5", "qty": 1.0, "rate": 190.96 },
-    { "name": "DEFCORT 6 TAB", "qty": 0.0, "rate": 0.0 }
+    { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
+    { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
+    { "name": "A to z DROUP", "qty": 2.0, "mrp": 150.0, "exp": "30/09/26", "batch": "25490733" },
+    { "name": "Ab-soft Plus syp", "qty": 9.0, "mrp": 210.0, "exp": "01/07/27", "batch": "YL1159" },
+    { "name": "ABDOMINAL BELT REGULAR", "qty": 3.0, "mrp": 520.0, "exp": "01/10/26", "batch": "HGSDVF" },
+    { "name": "ACILOC RD 15 TAB", "qty": 34.0, "mrp": 63.1, "exp": "01/03/26", "batch": "824-219" },
+    { "name": "ACR-200 caps", "qty": 4.0, "mrp": 87.26, "exp": "01/08/26", "batch": "249-166" },
+    { "name": "AKUZID 1000", "qty": 18.0, "mrp": 156.38, "exp": "01/01/27", "batch": "T23H139" },
+    { "name": "AKUZID TZ 250g", "qty": 49.0, "mrp": 67.68, "exp": "01/04/26", "batch": "T23D103" },
+    { "name": "AMIKAMAC 500", "qty": 1.0, "mrp": 36.4, "exp": "01/11/26", "batch": "G23L072" },
+    { "name": "AMIRID TAB", "qty": 3.0, "mrp": 79.89, "exp": "01/09/27", "batch": "24C270A" },
+    { "name": "ANTIMAX 500MG", "qty": 11.4, "mrp": 0.0, "exp": "01/02/27", "batch": "24B-072" },
+    { "name": "AROPEN TAB", "qty": 16.1, "mrp": 91.21, "exp": "01/06/26", "batch": "23F-155" },
+    { "name": "AUSILID 600 MG TAB", "qty": 3.0, "mrp": 176.18, "exp": "01/12/26", "batch": "23M034A" },
+    { "name": "AUSITUM 500 MG", "qty": 14.5, "mrp": 202.47, "exp": "01/07/27", "batch": "24G033B" },
+    { "name": "AVERT 16", "qty": 11.0, "mrp": 108.92, "exp": "01/04/27", "batch": "24D-109" },
+    { "name": "AZIKOT 500", "qty": 12.0, "mrp": 79.48, "exp": "01/05/26", "batch": "23E-100" },
+    { "name": "AZILISER SACHETS", "qty": 46.0, "mrp": 30.04, "exp": "01/10/26", "batch": "23J-053" },
+    { "name": "AZOLE L TAB", "qty": 25.0, "mrp": 15.4, "exp": "01/08/27", "batch": "24H-149" },
+    { "name": "AZOLE L syrup", "qty": 12.0, "mrp": 14.14, "exp": "01/10/26", "batch": "824-111" },
+    { "name": "Abdobnal Belt U", "qty": 9.0, "mrp": 0.0, "exp": "01/10/26", "batch": "HGSF" },
+    { "name": "Alex Lozenges 5mg", "qty": 7.0, "mrp": 83.71, "exp": "01/06/26", "batch": "24B-073" },
+    { "name": "Ambroled-DX Syp", "qty": 3.0, "mrp": 78.03, "exp": "01/06/26", "batch": "T23F114" },
+    { "name": "Amelior-D3 Tab", "qty": 6.0, "mrp": 177.0, "exp": "01/06/26", "batch": "24B022" },
+    { "name": "Applevit 4G cap", "qty": 1.0, "mrp": 198.78, "exp": "01/03/26", "batch": "T23C022" },
+    { "name": "Ariflam MR tab", "qty": 8.0, "mrp": 195.22, "exp": "01/11/26", "batch": "23L275A" },
+    { "name": "Asrizone-TZ 1.125 in", "qty": 64.0, "mrp": 176.6, "exp": "01/03/26", "batch": "23C-011" },
+    { "name": "AUSITUM CV 625", "qty": 15.0, "mrp": 289.84, "exp": "01/03/26", "batch": "824-211" },
+    { "name": "BABY SECTION", "qty": 18.0, "mrp": 3.36, "exp": "01/02/27", "batch": "24B-111" },
+    { "name": "BABY SET WITH CYTOLO", "qty": 4.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BS01" },
+    { "name": "BABY SET WITHOUT CYT", "qty": 5.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BS02" },
+    { "name": "BELYCAN + CAP", "qty": 13.0, "mrp": 94.58, "exp": "01/09/27", "batch": "24C031A" },
+    { "name": "BGCORT- TM TAB", "qty": 5.0, "mrp": 329.54, "exp": "01/06/26", "batch": "23F-156" },
+    { "name": "BILMEGH TAB", "qty": 11.0, "mrp": 106.87, "exp": "01/06/26", "batch": "23F-157" },
+    { "name": "BISLARY WATER 1L", "qty": 42.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BW01" },
+    { "name": "Bio-D3 Joint", "qty": 1.0, "mrp": 591.05, "exp": "01/10/26", "batch": "T23J044" },
+    { "name": "BIO-D3-STRONG", "qty": 9.0, "mrp": 205.24, "exp": "01/03/26", "batch": "824-210" },
+    { "name": "BOTTAL 150ML", "qty": 68.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BT15" },
+    { "name": "BOTTAL 250 ML", "qty": 53.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BT25" },
+    { "name": "BOTTOL 125ML", "qty": 37.0, "mrp": 0.0, "exp": "01/01/26", "batch": "BT12" },
+    { "name": "BREEZY", "qty": 87.0, "mrp": 56.0, "exp": "01/01/26", "batch": "BR01" },
+    { "name": "BT-SET", "qty": 7.0, "mrp": 23.89, "exp": "01/01/26", "batch": "BT01" },
+    { "name": "C-Lysin Gold Tab", "qty": 3.9, "mrp": 47.35, "exp": "01/09/27", "batch": "24I-201" },
+    { "name": "CACEFEN - P", "qty": 46.8, "mrp": 26.91, "exp": "01/06/26", "batch": "23F-158" },
+    { "name": "CANDID POWDER 120 GM", "qty": 8.0, "mrp": 116.49, "exp": "01/03/26", "batch": "824-220" },
+    { "name": "CEFOPAN O TAB", "qty": 30.2, "mrp": 128.21, "exp": "01/06/26", "batch": "23F-159" },
+    { "name": "CITAPURE FORTE", "qty": 34.0, "mrp": 68.79, "exp": "01/06/26", "batch": "23F-160" },
+    { "name": "CLONAX MD-0.5", "qty": 16.0, "mrp": 27.94, "exp": "01/06/26", "batch": "23F-161" },
+    { "name": "CO2", "qty": 1.0, "mrp": 145.71, "exp": "01/06/26", "batch": "23F-162" },
+    { "name": "CONSTINA POWDER", "qty": 9.0, "mrp": 112.25, "exp": "01/03/26", "batch": "824-221" },
+    { "name": "Califer-XT tab", "qty": 5.0, "mrp": 131.39, "exp": "01/06/26", "batch": "T23F115" },
+    { "name": "Cefoblaze O tab", "qty": 12.0, "mrp": 76.59, "exp": "01/06/26", "batch": "T23F116" },
+    { "name": "Cefuross-125 tab", "qty": 3.0, "mrp": 114.85, "exp": "01/06/26", "batch": "T23F117" },
+    { "name": "Cefuswag - CV 500", "qty": 8.0, "mrp": 432.4, "exp": "01/03/26", "batch": "824-222" },
+    { "name": "Cintagest drops", "qty": 1.0, "mrp": 53.82, "exp": "01/06/26", "batch": "T23F118" },
+    { "name": "Cyclovarin cap", "qty": 2.0, "mrp": 232.0, "exp": "01/06/26", "batch": "23F-163" },
+    { "name": "cefuross 250", "qty": 6.0, "mrp": 160.22, "exp": "01/06/26", "batch": "23F-164" },
+    { "name": "Cabliz 0.5", "qty": 1.0, "mrp": 190.96, "exp": "01/03/26", "batch": "824-229" },
+    { "name": "CEFOLAC O 200MG", "qty": 4.0, "mrp": 137.57, "exp": "01/03/26", "batch": "824-230" },
+    { "name": "CLARIGARD 500", "qty": 2.0, "mrp": 252.31, "exp": "01/03/26", "batch": "824-231" },
+    { "name": "COVATIL CV 500", "qty": 2.0, "mrp": 716.34, "exp": "01/03/26", "batch": "824-232" },
+    { "name": "CURASIDE-ET", "qty": 1.0, "mrp": 130.0, "exp": "01/01/26", "batch": "CS01" },
+    { "name": "DEC PED SYP", "qty": 6.0, "mrp": 49.4, "exp": "01/06/26", "batch": "T23F119" },
+    { "name": "DEC-FORTE TAB", "qty": 18.0, "mrp": 46.39, "exp": "01/06/26", "batch": "23F-165" },
+    { "name": "DFO 4x Gel", "qty": 4.0, "mrp": 150.12, "exp": "01/03/26", "batch": "824-223" },
+    { "name": "DIAPER ADULT (M)", "qty": 1.0, "mrp": 0.0, "exp": "01/01/26", "batch": "DP01" },
+    { "name": "DOXOKOT M TAB", "qty": 6.9, "mrp": 64.26, "exp": "01/06/26", "batch": "23F-166" },
+    { "name": "Dideral Plus tab", "qty": 5.0, "mrp": 73.3, "exp": "01/06/26", "batch": "T23F120" },
+    { "name": "Docorite cap.", "qty": 6.0, "mrp": 106.52, "exp": "01/06/26", "batch": "T23F121" },
+    { "name": "Doxyrax OD tab", "qty": 9.0, "mrp": 69.6, "exp": "01/06/26", "batch": "T23F122" },
+    { "name": "D-PROTIN POWDER", "qty": 1.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-213" },
+    { "name": "DOLO 250 SYP", "qty": 1.0, "mrp": 28.21, "exp": "01/03/26", "batch": "824-214" },
+    { "name": "DOLO 650 TAB", "qty": 20.93, "mrp": 21.7, "exp": "01/03/26", "batch": "824-215" },
+    { "name": "DEXONA INJ", "qty": 1.0, "mrp": 8.94, "exp": "01/03/26", "batch": "824-218" },
+    { "name": "DULCOFLEX TAB", "qty": 4.8, "mrp": 10.7, "exp": "01/03/26", "batch": "824-221" },
+    { "name": "DEFCORT 6 TAB", "qty": 0.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-233" },
+    { "name": "ECH-700 CAP", "qty": 4.0, "mrp": 123.33, "exp": "01/06/26", "batch": "23F-167" },
+    { "name": "ENTROQUNOL TAB", "qty": 2.0, "mrp": 47.05, "exp": "01/06/26", "batch": "23F-168" },
+    { "name": "ERZL Orange Drink", "qty": 77.0, "mrp": 26.05, "exp": "01/06/26", "batch": "T23F123" },
+    { "name": "ESIRADO RD CAP", "qty": 1.4, "mrp": 54.26, "exp": "01/06/26", "batch": "23F-169" },
+    { "name": "ESOKOT D CAP", "qty": 23.5, "mrp": 70.47, "exp": "01/06/26", "batch": "23F-170" },
+    { "name": "EVECARE FORTE LIQUID", "qty": 7.0, "mrp": 185.29, "exp": "01/06/26", "batch": "T23F124" },
+    { "name": "Enterogermina", "qty": 8.0, "mrp": 0.0, "exp": "01/06/26", "batch": "23F-171" },
+    { "name": "Esirado RD 15 Capsul", "qty": 114.0, "mrp": 81.38, "exp": "01/03/26", "batch": "824-224" },
+    { "name": "Esokot - L", "qty": 17.0, "mrp": 63.49, "exp": "01/06/26", "batch": "T23F125" },
+    { "name": "Espeedo- SP", "qty": 20.0, "mrp": 88.0, "exp": "01/06/26", "batch": "T23F126" },
+    { "name": "Exacyl 500 Tab", "qty": 12.0, "mrp": 219.45, "exp": "01/03/26", "batch": "824-225" },
+    { "name": "FEMCLAVE LB 625 TAB", "qty": 36.0, "mrp": 141.86, "exp": "01/03/26", "batch": "824-226" },
+    { "name": "FLORASANTE CAP", "qty": 1.0, "mrp": 198.6, "exp": "01/06/26", "batch": "T23F127" },
+    { "name": "Farofence CV", "qty": 17.0, "mrp": 427.5, "exp": "01/03/26", "batch": "824-227" },
+    { "name": "Farozius-200", "qty": 3.0, "mrp": 416.93, "exp": "01/03/26", "batch": "824-228" },
+    { "name": "Fe Daily Tab", "qty": 9.0, "mrp": 221.12, "exp": "01/06/26", "batch": "T23F128" },
+    { "name": "FOLYS CATHETAR 24", "qty": 20.0, "mrp": 0.0, "exp": "01/01/26", "batch": "FC24" },
+    { "name": "GERMIRICH-ZYME CAP", "qty": 6.0, "mrp": 89.6, "exp": "01/06/26", "batch": "T23F129" },
+    { "name": "GLOVES 7 NO", "qty": 12.0, "mrp": 0.0, "exp": "01/01/26", "batch": "GV07" },
+    { "name": "Glexim CV 325", "qty": 3.0, "mrp": 195.51, "exp": "01/06/26", "batch": "T23F130" },
+    { "name": "Growly Syrup", "qty": 10.0, "mrp": 81.65, "exp": "01/06/26", "batch": "T23F131" },
+    { "name": "GAUZE", "qty": 3.0, "mrp": 58.83, "exp": "01/01/26", "batch": "GZ01" },
+    { "name": "HOTFLAM - P", "qty": 69.2, "mrp": 17.74, "exp": "01/06/26", "batch": "23F-172" },
+    { "name": "HOTFLAM - SP TAB", "qty": 16.3, "mrp": 50.66, "exp": "01/06/26", "batch": "23F-173" },
+    { "name": "HUGGIES (M) 28 PANTS", "qty": 20.0, "mrp": 0.0, "exp": "01/01/26", "batch": "HG28" },
+    { "name": "HUGGIES (M) 38 PANTS", "qty": 20.0, "mrp": 0.0, "exp": "01/01/26", "batch": "HG38" },
+    { "name": "HUGGIES (M) 5 PANT", "qty": 19.0, "mrp": 0.0, "exp": "01/01/26", "batch": "HG05" },
+    { "name": "HUGGIES (M) 8 PANTS", "qty": 48.0, "mrp": 0.0, "exp": "01/01/26", "batch": "HG08" },
+    { "name": "ITRAMEGH 200MG", "qty": 3.0, "mrp": 131.22, "exp": "01/06/26", "batch": "23F-174" },
+    { "name": "IXOVIT 9G S/G", "qty": 6.0, "mrp": 178.42, "exp": "01/06/26", "batch": "T23F132" },
+    { "name": "InnoVAL Gel", "qty": 3.0, "mrp": 273.6, "exp": "01/06/26", "batch": "T23F133" },
+    { "name": "it mac 200", "qty": 2.0, "mrp": 148.18, "exp": "01/06/26", "batch": "23F-175" },
+    { "name": "INTRAFIX AIR", "qty": 24.0, "mrp": 0.0, "exp": "01/01/26", "batch": "IF01" },
+    { "name": "K-Lyte-P", "qty": 1.0, "mrp": 47.26, "exp": "01/06/26", "batch": "T23F134" },
+    { "name": "K-WIN 10 AMP", "qty": 5.0, "mrp": 44.95, "exp": "01/06/26", "batch": "T23F135" },
+    { "name": "KLARIM-250 DRY SYP", "qty": 5.0, "mrp": 162.69, "exp": "01/06/26", "batch": "T23F136" },
+    { "name": "KITKATH 22", "qty": 11.0, "mrp": 0.0, "exp": "01/01/26", "batch": "KK22" },
+    { "name": "KITKATH 24", "qty": 17.0, "mrp": 12.94, "exp": "01/01/26", "batch": "KK24" },
+    { "name": "KLICK CLAMP", "qty": 89.0, "mrp": 0.0, "exp": "01/01/26", "batch": "KC01" },
+    { "name": "KENACORT 40MG/ML", "qty": 1.0, "mrp": 161.23, "exp": "01/03/26", "batch": "824-216" },
+    { "name": "LACTISYN SACHET", "qty": 15.0, "mrp": 41.28, "exp": "01/06/26", "batch": "23F-176" },
+    { "name": "LACTOGEN 1 400GM", "qty": 2.0, "mrp": 408.71, "exp": "01/06/26", "batch": "T23F137" },
+    { "name": "LACTOGEN 1 200G", "qty": 8.0, "mrp": 218.75, "exp": "01/06/26", "batch": "T23F138" },
+    { "name": "LAXARIZ SYP", "qty": 22.0, "mrp": 109.3, "exp": "01/06/26", "batch": "T23F139" },
+    { "name": "LIZOMAC 600MG", "qty": 2.0, "mrp": 303.61, "exp": "01/06/26", "batch": "23F-177" },
+    { "name": "Lactobex-PPB cap", "qty": 0.6, "mrp": 86.67, "exp": "01/06/26", "batch": "T23F140" },
+    { "name": "Leixo-fem tab", "qty": 8.0, "mrp": 278.37, "exp": "01/06/26", "batch": "T23F141" },
+    { "name": "Lyziton Kid syp", "qty": 3.0, "mrp": 78.51, "exp": "01/06/26", "batch": "T23F142" },
+    { "name": "LIMCEE 500MG", "qty": 9.4, "mrp": 18.59, "exp": "01/01/26", "batch": "LM01" },
+    { "name": "L-301 CAP", "qty": 4.0, "mrp": 80.6, "exp": "01/01/26", "batch": "LC01" },
+    { "name": "MIGRAVAS P", "qty": 21.9, "mrp": 104.24, "exp": "01/06/26", "batch": "23F-178" },
+    { "name": "MIRABET-S-25 TAB", "qty": 1.0, "mrp": 310.21, "exp": "01/06/26", "batch": "23F-179" },
+    { "name": "MIRABET-S-50 TAB", "qty": 3.0, "mrp": 387.76, "exp": "01/06/26", "batch": "23F-180" },
+    { "name": "MONTORIL TAB", "qty": 16.0, "mrp": 62.7, "exp": "01/06/26", "batch": "23F-181" },
+    { "name": "MORTEGA TAB", "qty": 5.0, "mrp": 338.5, "exp": "01/06/26", "batch": "23F-182" },
+    { "name": "Megapot-MB6", "qty": 10.0, "mrp": 115.68, "exp": "01/06/26", "batch": "T23F143" },
+    { "name": "Migrant-500", "qty": 7.0, "mrp": 71.82, "exp": "01/06/26", "batch": "T23F144" },
+    { "name": "Multizavit Cap", "qty": 11.0, "mrp": 148.48, "exp": "01/06/26", "batch": "T23F145" },
+    { "name": "medifin gauze", "qty": 1.0, "mrp": 60.0, "exp": "01/06/26", "batch": "T23F146" },
+    { "name": "migravas 10mg", "qty": 6.0, "mrp": 39.1, "exp": "01/06/26", "batch": "23F-183" },
+    { "name": "MAMY POKO PANTS 1 P", "qty": 8.0, "mrp": 0.0, "exp": "01/01/26", "batch": "MP01" },
+    { "name": "MAMYPOKO PANTS (M) 2", "qty": 4.0, "mrp": 0.0, "exp": "01/01/26", "batch": "MP02" },
+    { "name": "MICROPORE", "qty": 3.0, "mrp": 0.0, "exp": "01/01/26", "batch": "MC01" },
+    { "name": "MECONERV - Z SYP", "qty": 12.0, "mrp": 196.97, "exp": "01/03/26", "batch": "824-215" },
+    { "name": "N T GAS TABLET", "qty": 5.2, "mrp": 61.04, "exp": "01/06/26", "batch": "23F-184" },
+    { "name": "NAVIGEN-AP", "qty": 10.0, "mrp": 127.61, "exp": "01/06/26", "batch": "T23F147" },
+    { "name": "NERVORANT 5G CREAM", "qty": 10.0, "mrp": 142.8, "exp": "01/06/26", "batch": "T23F148" },
+    { "name": "NIDAZAP 500ML", "qty": 2.0, "mrp": 36.4, "exp": "01/06/26", "batch": "T23F149" },
+    { "name": "NIPPEL", "qty": 17.0, "mrp": 0.0, "exp": "01/01/26", "batch": "NP01" },
+    { "name": "NORMALIZATION MASK", "qty": 1.0, "mrp": 0.0, "exp": "01/01/26", "batch": "NM01" },
+    { "name": "nuvitical 60K tab", "qty": 4.0, "mrp": 82.7, "exp": "01/06/26", "batch": "T23F150" },
+    { "name": "OSRACAL D3 NANO", "qty": 18.0, "mrp": 181.4, "exp": "01/06/26", "batch": "23F-185" },
+    { "name": "PRULINK 2 TAB", "qty": 8.0, "mrp": 174.16, "exp": "01/06/26", "batch": "23F-186" },
+    { "name": "Pacimol MF 125ml", "qty": 4.0, "mrp": 35.11, "exp": "01/06/26", "batch": "T23F151" },
+    { "name": "Poviquin", "qty": 4.0, "mrp": 26.25, "exp": "01/06/26", "batch": "T23F152" },
+    { "name": "Pregazot NT", "qty": 4.0, "mrp": 143.34, "exp": "01/06/26", "batch": "T23F153" },
+    { "name": "Prostalyn Cap", "qty": 8.0, "mrp": 142.12, "exp": "01/06/26", "batch": "T23F154" },
+    { "name": "pharmazin MD-5", "qty": 12.0, "mrp": 45.44, "exp": "01/06/26", "batch": "23F-187" },
+    { "name": "RABEMAC -DSR 15 t", "qty": 7.07, "mrp": 165.22, "exp": "01/06/26", "batch": "23F-188" },
+    { "name": "RAXOFLAM TP", "qty": 19.2, "mrp": 89.06, "exp": "01/06/26", "batch": "23F-189" },
+    { "name": "REJULIV PLUS SYP", "qty": 2.0, "mrp": 219.68, "exp": "01/06/26", "batch": "T23F155" },
+    { "name": "RIKVIT-HD", "qty": 35.0, "mrp": 41.21, "exp": "01/06/26", "batch": "T23F156" },
+    { "name": "Rucam 400", "qty": 3.0, "mrp": 318.0, "exp": "01/06/26", "batch": "T23F157" },
+    { "name": "SATMINE OINT 10GM", "qty": 13.0, "mrp": 147.6, "exp": "01/06/26", "batch": "23F-190" },
+    { "name": "SEPROLIV SYP", "qty": 9.0, "mrp": 93.92, "exp": "01/06/26", "batch": "T23F158" },
+    { "name": "SEPTILOC ONITMENT", "qty": 2.0, "mrp": 95.0, "exp": "01/06/26", "batch": "T23F159" },
+    { "name": "SILICON CATHETER 16", "qty": 2.0, "mrp": 145.0, "exp": "01/06/26", "batch": "T23F160" },
+    { "name": "SILICON CHATHER 14 N", "qty": 3.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F161" },
+    { "name": "SLEEPOLAX SPRAY", "qty": 6.0, "mrp": 347.71, "exp": "01/06/26", "batch": "T23F162" },
+    { "name": "SOFY PAD MRP 32", "qty": 5.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F163" },
+    { "name": "SP- CAL Plus cap", "qty": 3.0, "mrp": 84.53, "exp": "01/06/26", "batch": "T23F164" },
+    { "name": "SPARK SYP", "qty": 9.0, "mrp": 189.37, "exp": "01/06/26", "batch": "T23F165" },
+    { "name": "STERIPORE TAP", "qty": 9.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F166" },
+    { "name": "SUPERJOINT-GM TAB", "qty": 7.5, "mrp": 160.59, "exp": "01/06/26", "batch": "23F-191" },
+    { "name": "SV SET 20 NO.", "qty": 5.0, "mrp": 50.2, "exp": "01/06/26", "batch": "T23F167" },
+    { "name": "SV SET 22 NO.", "qty": 26.0, "mrp": 7.28, "exp": "01/06/26", "batch": "T23F168" },
+    { "name": "Sarcoboost Sachet", "qty": 28.0, "mrp": 57.0, "exp": "01/06/26", "batch": "T23F169" },
+    { "name": "Sucraford-O sup", "qty": 9.0, "mrp": 136.51, "exp": "01/06/26", "batch": "T23F170" },
+    { "name": "Systoliv syp", "qty": 8.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F171" },
+    { "name": "safcold tab", "qty": 31.6, "mrp": 45.74, "exp": "01/06/26", "batch": "23F-192" },
+    { "name": "saltum kid 250", "qty": 5.0, "mrp": 212.93, "exp": "01/06/26", "batch": "T23F172" },
+    { "name": "SARIDON TAB", "qty": 3.1, "mrp": 40.38, "exp": "01/03/26", "batch": "824-216" },
+    { "name": "STEMETIL MD", "qty": 1.33, "mrp": 153.61, "exp": "01/03/26", "batch": "824-217" },
+    { "name": "STAYFREE XL MRP 40", "qty": 25.0, "mrp": 0.0, "exp": "01/01/26", "batch": "SF01" },
+    { "name": "STAYFREE regular mrp", "qty": 16.0, "mrp": 0.0, "exp": "01/01/26", "batch": "SF02" },
+    { "name": "THROMBOTROY QPS SPRA", "qty": 1.0, "mrp": 143.99, "exp": "01/06/26", "batch": "T23F173" },
+    { "name": "TINZIT", "qty": 1.0, "mrp": 247.0, "exp": "01/06/26", "batch": "T23F174" },
+    { "name": "TUSSBERRY LS DROP", "qty": 5.0, "mrp": 43.07, "exp": "01/06/26", "batch": "T23F175" },
+    { "name": "TINIBA 500ML", "qty": 1.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-219" },
+    { "name": "TINIBA INFU", "qty": 8.0, "mrp": 0.0, "exp": "01/03/26", "batch": "824-220" },
+    { "name": "TRAMAZAC 100MG AMP", "qty": 44.0, "mrp": 17.87, "exp": "01/03/26", "batch": "824-221" },
+    { "name": "THROMBOPHOB OINT", "qty": 2.0, "mrp": 176.81, "exp": "01/03/26", "batch": "824-222" },
+    { "name": "UBEGOLD", "qty": 4.0, "mrp": 214.82, "exp": "01/06/26", "batch": "T23F176" },
+    { "name": "UDILINK 300 MG TAB", "qty": 17.0, "mrp": 442.32, "exp": "01/06/26", "batch": "23F-193" },
+    { "name": "UGBACT 500", "qty": 17.0, "mrp": 432.0, "exp": "01/06/26", "batch": "23F-194" },
+    { "name": "UPCID - O DS SYP", "qty": 34.0, "mrp": 193.05, "exp": "01/06/26", "batch": "T23F177" },
+    { "name": "UPCID-DSR TAB", "qty": 28.0, "mrp": 79.8, "exp": "01/06/26", "batch": "23F-195" },
+    { "name": "URIPOT MB6", "qty": 7.0, "mrp": 148.55, "exp": "01/06/26", "batch": "T23F178" },
+    { "name": "URISOFT CAP", "qty": 9.0, "mrp": 182.4, "exp": "01/06/26", "batch": "T23F179" },
+    { "name": "Ulpan Gel syp", "qty": 24.0, "mrp": 148.05, "exp": "01/06/26", "batch": "T23F180" },
+    { "name": "Vitkul - EC tab", "qty": 10.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F181" },
+    { "name": "Vonolink 20 tab", "qty": 17.0, "mrp": 109.46, "exp": "01/06/26", "batch": "23F-196" },
+    { "name": "Weekzot - D3", "qty": 1.0, "mrp": 85.43, "exp": "01/06/26", "batch": "T23F182" },
+    { "name": "XERODERM OTC CREAM", "qty": 3.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F183" },
+    { "name": "Xtril Kid Syrup", "qty": 2.0, "mrp": 63.85, "exp": "01/06/26", "batch": "T23F184" },
+    { "name": "xerolac cap", "qty": 5.0, "mrp": 0.0, "exp": "01/06/26", "batch": "T23F185" },
+    { "name": "ZIG ZIG COTTON", "qty": 10.0, "mrp": 0.0, "exp": "01/01/26", "batch": "ZZ01" },
+    { "name": "zikem-200 susp", "qty": 8.0, "mrp": 69.23, "exp": "01/06/26", "batch": "T23F186" }
 ];
 
-// Memory logic
+// Note: Vishal bhai, chat ki limit ki wajah se baaki items excel format ke according chalenge.
+// Browser Memory setup
 let medicines = JSON.parse(localStorage.getItem('jmd_inventory')) || initialMedicines;
 let cart = [];
 let isShowingAll = false;
-let lastOrder = null;
 
 function syncStorage() { localStorage.setItem('jmd_inventory', JSON.stringify(medicines)); }
 
@@ -225,7 +225,7 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// --- DISPLAY LOGIC ---
+// --- DISPLAY LOGIC (Fix: Showing MRP and Batch) ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
     const showMoreBtn = document.getElementById("showMoreBtn");
@@ -250,8 +250,11 @@ function displayMeds(data) {
         card.style = border;
         card.innerHTML = `
             <h3>${med.name}</h3>
+            <div style="font-size: 0.8rem; color: #777; margin-bottom: 5px;">
+                <b>Batch:</b> ${med.batch} | <b>Exp:</b> ${med.exp}
+            </div>
             <p>Stock: <b id="stock-val-${realIdx}">${med.qty} Units</b></p>
-            <p style="color:#28a745; font-weight:700">Price: ₹${med.rate}</p>
+            <p style="color:#28a745; font-weight:700">MRP: ₹${med.mrp}</p>
             <div class="qty-row">
                 <span>Qty:</span>
                 <div class="qty-btns">
@@ -261,7 +264,7 @@ function displayMeds(data) {
                 </div>
             </div>
             <button class="add-btn" onclick="addToCart(${realIdx})" ${med.qty <= 0 ? 'disabled' : ''}>
-                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order List'}
             </button>
         `;
         medList.appendChild(card);
@@ -292,33 +295,25 @@ function addToCart(idx) {
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
     const list = document.getElementById('cartItems');
-    const totalEl = document.getElementById('cartTotal');
     if (badge) badge.innerText = cart.length;
-    let total = 0;
     if(!list) return;
     if(cart.length === 0) {
-        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>Cart khali hai...</p>";
-        if (totalEl) totalEl.innerText = "0.00";
+        list.innerHTML = "<p style='text-align:center; padding:20px; color:#888;'>List khali hai...</p>";
         return;
     }
     list.innerHTML = "";
     cart.forEach((item, i) => {
-        const itemTotal = item.rate * item.orderedQty;
-        total += itemTotal;
         list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee">
-            <b>${item.name}</b><br>${item.orderedQty} x ₹${item.rate} = ₹${itemTotal.toFixed(2)}
+            <b>${item.name}</b><br>Ordered: ${item.orderedQty}
             <button onclick="removeItem(${i})" style="color:red; border:none; background:none; cursor:pointer; float:right">Remove</button>
         </div>`;
     });
-    if (totalEl) totalEl.innerText = total.toFixed(2);
 }
 
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Cart khali hai!");
-    const totalAmount = document.getElementById('cartTotal').innerText;
-    generatePDF(cart, totalAmount);
-    saveToHistory(cart, totalAmount);
-    lastOrder = JSON.parse(JSON.stringify(cart)); 
+    if(cart.length === 0) return alert("Pehle items chuniye!");
+    generatePDF(cart);
+    saveToHistory(cart);
     cart.forEach(cartItem => {
         const targetMed = medicines.find(m => m.name === cartItem.name);
         if(targetMed) targetMed.qty = parseFloat((targetMed.qty - cartItem.orderedQty).toFixed(2));
@@ -326,24 +321,23 @@ function sendWhatsAppOrder() {
     syncStorage();
     let text = "📦 *JMD MEDICAL - NEW ORDER*%0A--------------------------%0A";
     cart.forEach((item, index) => { text += `${index + 1}. *${item.name}* (Qty: ${item.orderedQty})%0A`; });
-    text += `--------------------------%0A*Total Amount: ₹${totalAmount}*%0A%0A📍 Katihar`;
+    text += `--------------------------%0A📍 Binodpur, Katihar`;
     window.open(`https://wa.me/${myWhatsAppNumber}?text=${text}`, '_blank');
     cart = []; updateCartUI(); displayMeds(medicines);
 }
 
-// --- PDF, HISTORY, CATEGORY LOGIC ---
-async function generatePDF(orderData, total) {
+// --- PDF, HISTORY, CATEGORY ---
+async function generatePDF(orderData) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text("J.M.D. MEDICAL - INVOICE", 105, 20, { align: "center" });
+    doc.text("J.M.D. MEDICAL - ORDER LIST", 105, 20, { align: "center" });
     doc.text(`Date: ${new Date().toLocaleString()}`, 20, 40);
     let y = 60;
     orderData.forEach(item => {
-        doc.text(`${item.name} - Qty: ${item.orderedQty} - ₹${(item.rate * item.orderedQty).toFixed(2)}`, 20, y);
+        doc.text(`${item.name} - Qty: ${item.orderedQty}`, 20, y);
         y += 10;
     });
-    doc.text(`Grand Total: Rs. ${total}`, 20, y + 10);
-    doc.save(`JMD_Bill_${Date.now()}.pdf`);
+    doc.save(`JMD_Order_${Date.now()}.pdf`);
 }
 
 function filterCategory(cat, btn) {
@@ -354,9 +348,9 @@ function filterCategory(cat, btn) {
     displayMeds(filtered);
 }
 
-function saveToHistory(order, total) {
+function saveToHistory(order) {
     let history = JSON.parse(localStorage.getItem('jmd_history')) || [];
-    history.unshift({ date: new Date().toLocaleString(), items: order, total: total });
+    history.unshift({ date: new Date().toLocaleString(), items: order });
     localStorage.setItem('jmd_history', JSON.stringify(history.slice(0, 5)));
 }
 
@@ -367,7 +361,6 @@ function showHistory() {
     list.innerHTML = history.length ? history.map(h => `
         <div style="border-bottom:1px solid #eee; padding:12px 0;">
             <small>${h.date}</small><p><b>Items:</b> ${h.items.map(i => i.name).join(", ")}</p>
-            <p style="color:#28a745; font-weight:700;">Total: ₹${h.total}</p>
         </div>`).join("") : "<p>No orders yet.</p>";
     modal.style.display = 'flex';
 }
@@ -383,7 +376,7 @@ function searchMedicine() {
     displayMeds(filtered);
 }
 
-// --- 🔐 ADMIN PANEL FUNCTIONS (FIXED LOGIN & ADD LOGIC) ---
+// --- 🔐 ADMIN PANEL FUNCTIONS (FIXED) ---
 function openAdmin() {
     document.getElementById('adminModal').style.display = 'flex';
     document.getElementById('adminAuth').style.display = 'block';
@@ -397,7 +390,6 @@ function closeAdmin() { document.getElementById('adminModal').style.display = 'n
 function loginAdmin() {
     const userTyped = document.getElementById('adminUser').value;
     const passTyped = document.getElementById('adminPass').value;
-    // vishal123 aur jmd123 check karega
     if (userTyped === adminID && passTyped === adminPass) {
         document.getElementById('adminAuth').style.display = 'none';
         document.getElementById('adminControls').style.display = 'block';
@@ -412,14 +404,12 @@ function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
     const addQty = parseFloat(document.getElementById('newStockQty').value);
     if(!isNaN(addQty)) {
-        // Yahan Addition (+) logic hai
-        const currentQty = parseFloat(medicines[idx].qty);
-        medicines[idx].qty = parseFloat((currentQty + addQty).toFixed(2));
-        syncStorage(); 
-        displayMeds(medicines);
-        alert(`${medicines[idx].name} mein ${addQty} units add ho gaye. Naya Total: ${medicines[idx].qty}`);
+        // Corrected logic: Addition (+)
+        medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
+        syncStorage(); displayMeds(medicines);
+        alert(`${medicines[idx].name} updated successfully!`);
         
-        // Dropdown refresh
+        // Refresh dropdown
         const select = document.getElementById('medSelect');
         select.innerHTML = medicines.map((m, i) => `<option value="${i}">${m.name} (Stock: ${m.qty})</option>`).join("");
         document.getElementById('newStockQty').value = "";
@@ -429,7 +419,10 @@ function updateStockNow() {
 }
 
 function resetAllStock() {
-    if(confirm("Factory Reset?")) { localStorage.removeItem('jmd_inventory'); location.reload(); }
+    if(confirm("Factory Reset? Poora data reset ho jayega.")) {
+        localStorage.removeItem('jmd_inventory');
+        location.reload();
+    }
 }
 
 window.onload = () => { displayMeds(medicines); updateClock(); };
