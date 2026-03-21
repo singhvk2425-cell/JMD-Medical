@@ -1,15 +1,8 @@
-// 1. FIREBASE CONFIG (Aapne console mein jo dekha tha wo yahan daalein)
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 1. FIREBASE CONFIG (Aapki Details)
 const firebaseConfig = {
   apiKey: "AIzaSyDYyaP7nkUk59s9nOPuZ08K5yEtcifLHCc",
   authDomain: "jmd-medical-88d46.firebaseapp.com",
+  databaseURL: "https://jmd-medical-88d46-default-rtdb.firebaseio.com", // 👈 Check karein agar ye sahi URL hai
   projectId: "jmd-medical-88d46",
   storageBucket: "jmd-medical-88d46.firebasestorage.app",
   messagingSenderId: "801550606379",
@@ -17,15 +10,18 @@ const firebaseConfig = {
   measurementId: "G-ZM4TPEG5HV"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Firebase Initialize (CDN Method ke liye)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
+
 // 2. SETTINGS
 const myWhatsAppNumber = "9110116102"; 
 const adminID = "vishal123";      
 const adminPass = "jmd123";       
 
-// 3. MASTER DATA (Saari 444 Medicines - Saltum, Zonamax sab isme hain)
+// 3. MASTER DATA (Initial List - Isme se 443 items cloud par jayenge)
 const initialMedicines = [
     { "name": "10 ML", "qty": 339.0, "mrp": 14.0, "exp": "01/05/26", "batch": "541100621" },
     { "name": "3ML", "qty": 205.0, "mrp": 5.0, "exp": "01/10/26", "batch": "GDF542" },
@@ -367,16 +363,18 @@ const initialMedicines = [
 let medicines = [];
 let cart = [];
 
-// Live Database Sync
+// --- GLOBAL SYNC: Database se live data load karein ---
 db.ref('inventory').on('value', (snapshot) => {
     const data = snapshot.val();
     if (data) {
         medicines = data;
-        displayMeds(medicines);
+        displayMeds(medicines); // Sabko live update dikhega
     } else {
+        // Agar first time database khali hai toh data upload karein
         db.ref('inventory').set(initialMedicines);
     }
 });
+
 // --- DISPLAY LOGIC ---
 function displayMeds(data) {
     const medList = document.getElementById("medList");
@@ -390,9 +388,7 @@ function displayMeds(data) {
         
         card.innerHTML = `
             <h3>${med.name}</h3>
-            <div style="font-size: 0.8rem; color: #777;">
-                <b>Batch:</b> ${med.batch} | <b>Exp:</b> ${med.exp}
-            </div>
+            <p><small>Batch: ${med.batch} | Exp: ${med.exp}</small></p>
             <p>Live Stock: <b style="color:blue;">${med.qty} Units</b></p>
             <p style="color:#28a745; font-weight:700">MRP: ₹${med.mrp}</p>
             <div class="qty-row">
@@ -400,9 +396,7 @@ function displayMeds(data) {
                 <b id="qty-box-${i}">1</b>
                 <button class="q-btn" onclick="changeQtyUI(${i}, 1)">+</button>
             </div>
-            <button class="add-btn" onclick="addToCart(${i})" ${med.qty <= 0 ? 'disabled' : ''}>
-                ${med.qty <= 0 ? 'Out of Stock' : 'Add to Order List'}
-            </button>
+            <button class="add-btn" onclick="addToCart(${i})" ${med.qty <= 0 ? 'disabled' : ''}>Add to Order</button>
         `;
         medList.appendChild(card);
     });
@@ -416,9 +410,9 @@ function changeQtyUI(idx, delta) {
 
 // --- GLOBAL ORDER UPDATE (Jahan se live stock kam hoga) ---
 function sendWhatsAppOrder() {
-    if(cart.length === 0) return alert("Items chuniye!");
+    if(cart.length === 0) return alert("Pehle items chuniye!");
     
-    // Cloud Database update karein (Taaki Ram aur Shyam dono ko dikhe)
+    // Cloud Database mein stock kam karein
     cart.forEach(cartItem => {
         const idx = medicines.findIndex(m => m.name === cartItem.name);
         if(idx !== -1) {
@@ -426,7 +420,7 @@ function sendWhatsAppOrder() {
         }
     });
 
-    // Database push
+    // Cloud par update push karein (Ram/Shyam sync)
     db.ref('inventory').set(medicines).then(() => {
         let text = "📦 *NEW LIVE ORDER - JMD MEDICAL*%0A";
         cart.forEach(i => text += `• ${i.name} (${i.orderedQty})%0A`);
@@ -439,7 +433,7 @@ function addToCart(idx) {
     const med = medicines[idx];
     const qtyBox = document.getElementById(`qty-box-${idx}`);
     const orderedQty = parseInt(qtyBox.innerText);
-    if (orderedQty > med.qty) return alert("Maal kam hai!");
+    if (orderedQty > med.qty) return alert("Stock kam hai!");
 
     const existing = cart.find(i => i.name === med.name);
     if(existing) existing.orderedQty += orderedQty;
@@ -452,20 +446,19 @@ function updateCartUI() {
     if (badge) badge.innerText = cart.length;
 }
 
-// Admin Stock Update (Live Globally)
+// Admin Panel: Stock badhana Globally
 function updateStockNow() {
     const idx = document.getElementById('medSelect').value;
     const addQty = parseFloat(document.getElementById('newStockQty').value);
     if(!isNaN(addQty)) {
         medicines[idx].qty = parseFloat((parseFloat(medicines[idx].qty) + addQty).toFixed(2));
-        db.ref('inventory').set(medicines); // Sabko live dikhega!
+        db.ref('inventory').set(medicines); // Sabko dikhega
         alert("Stock updated globally!");
-        document.getElementById('newStockQty').value = "";
     }
 }
 
 function resetAllStock() {
-    if(confirm("Full Reset? Cloud data original ho jayega.")) {
+    if(confirm("Full Reset? Saara data naya ho jayega.")) {
         db.ref('inventory').set(initialMedicines).then(() => location.reload());
     }
 }
